@@ -25,14 +25,16 @@ import org.eclipse.swt.graphics.Image;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 
-
 /**
  * The Class ItemLabelProvider.
+ * 
  * @author <a href="mailto:stephane.chomat@imag.fr">Stephane Chomat</a>
  */
 final public class ItemLabelProvider extends LabelProvider {
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
 	@Override
@@ -43,7 +45,7 @@ final public class ItemLabelProvider extends LabelProvider {
 		}
 		return super.getImage(element);
 	}
-	
+
 	/**
 	 * Creates the image.
 	 * 
@@ -57,14 +59,15 @@ final public class ItemLabelProvider extends LabelProvider {
 	private Image createImage(ItemType it, Item item) {
 		return WSPlugin.getDefault().getImageFrom(it, item);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
 	@Override
 	public String getText(Object element) {
-		return ((Item)element).getDisplayName();
+		return ((Item) element).getDisplayName();
 	}
-	
-	
+
 }

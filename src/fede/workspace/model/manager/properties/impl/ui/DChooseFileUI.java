@@ -49,18 +49,17 @@ import fr.imag.adele.cadse.core.ui.UIField;
 /**
  * UI to set the file or folder chooser. TODO : implements delete
  */
-public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<IC> {
-	
-	private String		choosemsg;
-	
-	private Text		textWidget;
-	private Button		btExternalFileWidget;
-	private Button		btWorkspaceWidget;
-	private Button		btExternalFolderWidget;
+public class DChooseFileUI<IC extends IC_ForChooseFile> extends
+		DAbstractField<IC> {
 
-	protected boolean	textWidgetChanged;
+	private String choosemsg;
 
-	
+	private Text textWidget;
+	private Button btExternalFileWidget;
+	private Button btWorkspaceWidget;
+	private Button btExternalFolderWidget;
+
+	protected boolean textWidgetChanged;
 
 	public void setPathText(String text) {
 		if (text != null) {
@@ -82,7 +81,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 	public void createControl(Composite parent, int hspan) {
 
 		Composite composite = (Composite) parent;
-		GridData gd = new GridData(GridData.FILL, GridData.CENTER, false, false, hspan - 1, getVSpan());
+		GridData gd = new GridData(GridData.FILL, GridData.CENTER, false,
+				false, hspan - 1, getVSpan());
 		gd.grabExcessHorizontalSpace = true;
 
 		textWidget = new Text(composite, SWT.LEFT + SWT.BORDER);
@@ -109,7 +109,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 				// Clear the flag to prevent constant update
 				if (textWidgetChanged) {
 					textWidgetChanged = false;
-					_swtuiplatform.broadcastValueChanged(_page, _field, getFilePath());
+					_swtuiplatform.broadcastValueChanged(_page, _field,
+							getFilePath());
 				}
 			}
 		});
@@ -121,8 +122,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 			btExternalFileWidget.setText("External &File...");
 			btExternalFileWidget.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(@SuppressWarnings("unused")
-				SelectionEvent e) {
+				public void widgetSelected(
+						@SuppressWarnings("unused") SelectionEvent e) {
 					handleExternalFile();
 				}
 			});
@@ -133,8 +134,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 			btWorkspaceWidget.setText("&Workspace...");
 			btWorkspaceWidget.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(@SuppressWarnings("unused")
-				SelectionEvent e) {
+				public void widgetSelected(
+						@SuppressWarnings("unused") SelectionEvent e) {
 					handleWorkspace();
 				}
 			});
@@ -145,8 +146,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 			btExternalFolderWidget.setText("External F&older...");
 			btExternalFolderWidget.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(@SuppressWarnings("unused")
-				SelectionEvent e) {
+				public void widgetSelected(
+						@SuppressWarnings("unused") SelectionEvent e) {
 					handleExternalFolder();
 				}
 			});
@@ -155,7 +156,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 	}
 
 	protected void handleWorkspace() {
-		IPath jarFilePath = _ic.selectWorkspaceFile(textWidget.getShell(), choosemsg, getPath());
+		IPath jarFilePath = _ic.selectWorkspaceFile(textWidget.getShell(),
+				choosemsg, getPath());
 		if (jarFilePath != null) {
 			_swtuiplatform.broadcastValueChanged(_page, _field, jarFilePath);
 			textWidget.setText(jarFilePath.toString());
@@ -163,7 +165,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 	}
 
 	protected void handleExternalFolder() {
-		IPath folderPath = _ic.selectExternalFolder(textWidget.getShell(), choosemsg, getPath());
+		IPath folderPath = _ic.selectExternalFolder(textWidget.getShell(),
+				choosemsg, getPath());
 		if (folderPath != null) {
 			_swtuiplatform.broadcastValueChanged(_page, _field, folderPath);
 			textWidget.setText(folderPath.toString());
@@ -171,7 +174,8 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 	}
 
 	protected void handleExternalFile() {
-		IPath jarFilePath = _ic.selectExternalFile(textWidget.getShell(), choosemsg, getPath());
+		IPath jarFilePath = _ic.selectExternalFile(textWidget.getShell(),
+				choosemsg, getPath());
 		if (jarFilePath != null) {
 			_swtuiplatform.broadcastValueChanged(_page, _field, jarFilePath);
 			textWidget.setText(jarFilePath.toString());

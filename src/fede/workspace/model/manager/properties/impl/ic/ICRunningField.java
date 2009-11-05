@@ -10,9 +10,9 @@ import fr.imag.adele.cadse.core.ui.UIField;
 public class ICRunningField implements RuningInteractionController {
 	public Item _ic;
 	public IPageController _uiPlatform;
-	
+
 	@Override
-	public void dispose() {		
+	public void dispose() {
 	}
 
 	@Override
@@ -27,6 +27,5 @@ public class ICRunningField implements RuningInteractionController {
 	@Override
 	public void initAfterUI() {
 	}
-	
-	
+
 }

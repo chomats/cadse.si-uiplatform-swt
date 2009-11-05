@@ -23,15 +23,21 @@ import org.eclipse.jface.viewers.ICellModifier;
 
 public interface ITableUserController {
 
-	int	getTableCollumnCount();
+	int getTableCollumnCount();
+
 	String getTableCollumn(int columnIndex);
-	int	getTableMinSize(int columnIndex);
+
+	int getTableMinSize(int columnIndex);
+
 	boolean getTableResizable(int columnIndex);
-	
+
 	Object[] elements(Object value);
-	String	getText(Object element, int columnIndex);
-	void	setText(Object element, int columnIndex, String text);
-	
+
+	String getText(Object element, int columnIndex);
+
+	void setText(Object element, int columnIndex, String text);
+
 	CellEditor[] getCellsEditor();
+
 	ICellModifier getCellModifier();
 }

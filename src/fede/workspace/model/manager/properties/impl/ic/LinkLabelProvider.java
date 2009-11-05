@@ -33,7 +33,7 @@ import fr.imag.adele.cadse.core.Link;
 
 final public class LinkLabelProvider extends LabelProvider {
 
-	public static final LabelProvider	INSTANCE	= new LinkLabelProvider();
+	public static final LabelProvider INSTANCE = new LinkLabelProvider();
 
 	@Override
 	public String getText(Object element) {

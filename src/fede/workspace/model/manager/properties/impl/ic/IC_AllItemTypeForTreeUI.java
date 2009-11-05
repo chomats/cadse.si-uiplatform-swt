@@ -21,7 +21,6 @@ package fede.workspace.model.manager.properties.impl.ic;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
-
 public class IC_AllItemTypeForTreeUI extends IC_ItemTypeForTreeUI {
 
 	@Override

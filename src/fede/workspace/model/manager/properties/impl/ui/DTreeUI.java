@@ -44,15 +44,14 @@ import fr.imag.adele.cadse.core.ui.UIField;
  */
 
 public class DTreeUI extends DAbstractField<IC_Tree> {
-	private Object[]			_rootNodes;
-	private Object[]			_selectedObjects;
-	private Tree				_treeControl;
-
-	
+	private Object[] _rootNodes;
+	private Object[] _selectedObjects;
+	private Tree _treeControl;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
-		_treeControl = new Tree((Composite) container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		_treeControl = new Tree((Composite) container, SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
 		_treeControl.setLayoutData(gd);
@@ -139,7 +138,6 @@ public class DTreeUI extends DAbstractField<IC_Tree> {
 	public ItemType getType() {
 		return CadseGCST.DTREE;
 	}
-
 
 	@Override
 	public Object getVisualValue() {

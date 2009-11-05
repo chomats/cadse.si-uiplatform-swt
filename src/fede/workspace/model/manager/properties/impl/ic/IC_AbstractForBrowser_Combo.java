@@ -32,22 +32,20 @@ import org.eclipse.ui.dialogs.ListDialog;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 
-public abstract class IC_AbstractForBrowser_Combo extends ICRunningField implements
-		IC_ForBrowserOrCombo {
+public abstract class IC_AbstractForBrowser_Combo extends ICRunningField
+		implements IC_ForBrowserOrCombo {
 
-	
-	
 	@Override
 	public void init() throws CadseException {
-		title = _ic.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_TITLE_);
-		message = _ic.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_MESSAGE_);
+		title = _ic
+				.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_TITLE_);
+		message = _ic
+				.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_MESSAGE_);
 	}
-	
 
 	private String title;
 	private String message;
 
-	
 	public Object selectOrCreateValue(Shell parentShell) {
 		ListDialog lsd = new ListDialog(parentShell);
 		lsd.setInput(sort(getSelectableValues()));
@@ -62,10 +60,9 @@ public abstract class IC_AbstractForBrowser_Combo extends ICRunningField impleme
 			public void dispose() {
 			}
 
-			public void inputChanged(@SuppressWarnings("unused")
-			Viewer viewer, @SuppressWarnings("unused")
-			Object oldInput, @SuppressWarnings("unused")
-			Object newInput) {
+			public void inputChanged(@SuppressWarnings("unused") Viewer viewer,
+					@SuppressWarnings("unused") Object oldInput,
+					@SuppressWarnings("unused") Object newInput) {
 			}
 		});
 		lsd.setLabelProvider(getLabelProvider());

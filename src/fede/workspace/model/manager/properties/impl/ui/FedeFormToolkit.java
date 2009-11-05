@@ -30,13 +30,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
 
-
 /**
  * The Class FedeFormToolkit.
  * 
  * @author <a href="mailto:stephane.chomat@imag.fr">Stephane Chomat</a>
  */
-public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit{
+public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit {
 
 	/**
 	 * Instantiates a new fede form toolkit.
@@ -72,15 +71,15 @@ public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit{
 	 * 
 	 * @return the label
 	 */
-	public Label createLabel(Composite container, int hspan, 
-			String label, EPosLabel posLabel) {
-        Label labelWidget;
-        GridData gd;
-        
-        labelWidget = createLabel(container,label);
-        
-        return labelWidget;
-    }
+	public Label createLabel(Composite container, int hspan, String label,
+			EPosLabel posLabel) {
+		Label labelWidget;
+		GridData gd;
+
+		labelWidget = createLabel(container, label);
+
+		return labelWidget;
+	}
 
 	/**
 	 * Creates the group.
@@ -93,22 +92,30 @@ public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit{
 	 * @return the group
 	 */
 	public Group createGroup(Object container, String label) {
-		Group g = new Group((Composite) container,0);
+		Group g = new Group((Composite) container, 0);
 		if (label != null)
 			g.setText(label);
 		adapt(g, false, false);
 		return g;
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.imag.adele.cadse.core.ui.IFedeFormToolkit#createButton(java.lang.Object, java.lang.String, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.IFedeFormToolkit#createButton(java.lang.Object
+	 * , java.lang.String, int)
 	 */
 	public Object createButton(Object container, String text, int style) {
 		return super.createButton((Composite) container, text, style);
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.imag.adele.cadse.core.ui.IFedeFormToolkit#createText(java.lang.Object, java.lang.String, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.IFedeFormToolkit#createText(java.lang.Object,
+	 * java.lang.String, int)
 	 */
 	public Object createText(Object ocontainer, String defaultValue, int style) {
 		return super.createText((Composite) ocontainer, defaultValue, style);

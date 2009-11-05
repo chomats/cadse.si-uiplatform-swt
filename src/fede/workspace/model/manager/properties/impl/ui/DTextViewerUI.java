@@ -34,22 +34,23 @@ import fr.imag.adele.cadse.core.ui.IPageController;
 
 public class DTextViewerUI extends DAbstractField {
 
-	public DTextViewerUI(String key, String label, EPosLabel poslabel, IModelController mc, RuningInteractionController ic) {
+	public DTextViewerUI(String key, String label, EPosLabel poslabel,
+			IModelController mc, RuningInteractionController ic) {
 		super(key, label, poslabel, mc, ic);
 		// TODO Auto-generated constructor stub
 	}
 
-	public static final String	FLAGS	= "flags";
+	public static final String FLAGS = "flags";
 
-	ITextViewer					fTextViewer;
+	ITextViewer fTextViewer;
 
-	private int					vspan	= 1;
+	private int vspan = 1;
 
-	private int					style	= SWT.SINGLE;
+	private int style = SWT.SINGLE;
 
 	@Override
-	public Object createControl(IPageController globalUIController, IFedeFormToolkit toolkit, Object container,
-			int hspan) {
+	public Object createControl(IPageController globalUIController,
+			IFedeFormToolkit toolkit, Object container, int hspan) {
 
 		fTextViewer = createTextViewer((Composite) container);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

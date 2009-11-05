@@ -17,5 +17,4 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 public class UIFactory {
 
-	
 }

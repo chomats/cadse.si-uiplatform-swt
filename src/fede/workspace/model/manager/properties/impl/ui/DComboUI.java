@@ -44,11 +44,11 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * Object or String
  */
 
-public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> {
+public class DComboUI<IC extends IC_ForBrowserOrCombo> extends
+		DAbstractField<IC> {
 
-	protected CCombo						attributWidget;
-	Object[]								values;
-
+	protected CCombo attributWidget;
+	Object[] values;
 
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
@@ -66,7 +66,8 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field,
+						getVisualValue());
 			}
 
 		});
@@ -108,7 +109,6 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC
 			attributWidget.select(0);
 		}
 	}
-
 
 	@Override
 	public void setEnabled(boolean enabled) {

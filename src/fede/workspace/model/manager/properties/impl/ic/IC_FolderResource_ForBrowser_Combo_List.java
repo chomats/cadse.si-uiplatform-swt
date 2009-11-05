@@ -30,40 +30,37 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
- * Attributes :
- * 		string link-type;
- * 		string title-select ;
+ * Attributes : string link-type; string title-select ;
  */
 
-
-public class IC_FolderResource_ForBrowser_Combo_List  extends IC_ResourceTreeDialogForBrowser_Combo_List {
-	 
-    
+public class IC_FolderResource_ForBrowser_Combo_List extends
+		IC_ResourceTreeDialogForBrowser_Combo_List {
 
 	@Override
 	public IStatus validate(Object[] selection) {
 		return Status.OK_STATUS;
 	}
-	
+
 	@Override
 	protected ViewerFilter getFilter() {
 		return new FolderFileFilter(null);
 	}
-	
+
 	static class FolderFileFilter extends ViewerFilter {
 
 		private List<IFolder> fExcludes;
-		
+
 		/**
-		 * @param excludedFiles Excluded files will not pass the filter.
-		 * <code>null</code> is allowed if no files should be excluded. 
+		 * @param excludedFiles
+		 *            Excluded files will not pass the filter. <code>null</code>
+		 *            is allowed if no files should be excluded.
 		 * 
 		 */
-		
+
 		public FolderFileFilter(List<IFolder> excludedFiles) {
-			fExcludes= excludedFiles;
+			fExcludes = excludedFiles;
 		}
-		
+
 		/*
 		 * @see ViewerFilter#select
 		 */
@@ -74,14 +71,10 @@ public class IC_FolderResource_ForBrowser_Combo_List  extends IC_ResourceTreeDia
 					return false;
 				}
 				return true;
-			} 
+			}
 			return false;
 		}
-		
-		
-		
-		
-				
+
 	}
 
 }

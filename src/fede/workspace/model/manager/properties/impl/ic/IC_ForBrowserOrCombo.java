@@ -82,6 +82,4 @@ public interface IC_ForBrowserOrCombo extends IC_TitleMessage {
 	 */
 	boolean hasDeleteFunction();
 
-	
-
 }

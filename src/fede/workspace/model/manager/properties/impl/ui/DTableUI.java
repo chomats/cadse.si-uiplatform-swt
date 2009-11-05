@@ -63,29 +63,30 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  */
 
 public class DTableUI extends DAbstractField {
-	private String[]	columns;
+	private String[] columns;
 
-	public DTableUI(String key, String label, EPosLabel poslabel, IModelController mc, IC_Tree ic,
-			String[] columns) {
+	public DTableUI(String key, String label, EPosLabel poslabel,
+			IModelController mc, IC_Tree ic, String[] columns) {
 		super(key, label, poslabel, mc, ic);
 		action = ic;
 		this.columns = columns;
 	}
 
-	public static final String	TABLE_COLUMNS	= "table-columns";
-	private Table				table;
-	private Object[]			root;
-	IC_Tree	action;
-	TableViewer					viewer;
-	Map<String, String>			values			= new HashMap<String, String>();
-	int							newValueIndex	= 0;
-	private TableEditor			fTableEditor;
+	public static final String TABLE_COLUMNS = "table-columns";
+	private Table table;
+	private Object[] root;
+	IC_Tree action;
+	TableViewer viewer;
+	Map<String, String> values = new HashMap<String, String>();
+	int newValueIndex = 0;
+	private TableEditor fTableEditor;
 
-	ITableUserController		uctable;
+	ITableUserController uctable;
 
-	public Object createControl(final IPageController globalUIController, IFedeFormToolkit toolkit, Object container,
-			int hspan) {
-		table = new Table((Composite) container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
+	public Object createControl(final IPageController globalUIController,
+			IFedeFormToolkit toolkit, Object container, int hspan) {
+		table = new Table((Composite) container, SWT.H_SCROLL | SWT.V_SCROLL
+				| SWT.BORDER | SWT.VIRTUAL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
 		table.setLayoutData(gd);
@@ -152,7 +153,8 @@ public class DTableUI extends DAbstractField {
 							return null;
 						}
 
-						public void modify(Object element, String property, Object value) {
+						public void modify(Object element, String property,
+								Object value) {
 							// TODO Auto-generated method stub
 
 						}
@@ -161,7 +163,8 @@ public class DTableUI extends DAbstractField {
 				}
 
 				public CellEditor[] getCellsEditor() {
-					return new CellEditor[] { new TextCellEditor(), new TextCellEditor() };
+					return new CellEditor[] { new TextCellEditor(),
+							new TextCellEditor() };
 				}
 
 			};
@@ -171,7 +174,8 @@ public class DTableUI extends DAbstractField {
 			TableColumn tc = new TableColumn(table, SWT.LEFT);
 			tc.setText(uctable.getTableCollumn(i));
 			tc.setResizable(uctable.getTableResizable(i));
-			layout.addColumnData(new ColumnWeightData(uctable.getTableMinSize(i), true));
+			layout.addColumnData(new ColumnWeightData(uctable
+					.getTableMinSize(i), true));
 		}
 
 		table.addSelectionListener(new SelectionListener() {
@@ -269,7 +273,8 @@ public class DTableUI extends DAbstractField {
 				if (e.keyCode == 13) {
 					Text text = (Text) fTableEditor.getEditor();
 					if (text != null) {
-						fTableEditor.getItem().setText(fTableEditor.getColumn(), text.getText());
+						fTableEditor.getItem().setText(
+								fTableEditor.getColumn(), text.getText());
 						text.setVisible(false);
 						text.dispose();
 						fTableEditor.setEditor(null);
@@ -305,7 +310,8 @@ public class DTableUI extends DAbstractField {
 
 			}
 
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
 
 			}
 

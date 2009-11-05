@@ -88,14 +88,14 @@ import fr.imag.adele.fede.workspace.si.view.View;
  */
 public class FieldsPropertySheetPage extends Page implements IPropertySheetPage {
 
-	IItemNode			lastItemNode;
-	Item				lastItem;
-	ScrolledPageBook	pageBook		= null;
-	WorkspaceListener	_listener;
-	boolean				_initListener	= false;
-	private Pages		lastItemPages;
+	IItemNode lastItemNode;
+	Item lastItem;
+	ScrolledPageBook pageBook = null;
+	WorkspaceListener _listener;
+	boolean _initListener = false;
+	private Pages lastItemPages;
 	private SWTUIPlatform _swtuiPlatform;
-	
+
 	public FieldsPropertySheetPage(SWTUIPlatform swtuiPlatform) {
 		this._swtuiPlatform = swtuiPlatform;
 	}
@@ -111,11 +111,13 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 			public void workspaceChanged(ImmutableWorkspaceDelta delta) {
 				for (final ImmutableItemDelta itemDelta : delta.getItems()) {
 					if (itemDelta.isDeleted()) {
-						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								pageBook.removePage(itemDelta.getItem());
-							}
-						});
+						PlatformUI.getWorkbench().getDisplay().asyncExec(
+								new Runnable() {
+									public void run() {
+										pageBook
+												.removePage(itemDelta.getItem());
+									}
+								});
 					}
 				}
 
@@ -134,7 +136,8 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		if (View.getInstance().getWorkspaceLogique() == null) {
 			return;
 		}
-		View.getInstance().getWorkspaceLogique().addListener(_listener, ChangeID.toFilter(ChangeID.DELETE_ITEM));
+		View.getInstance().getWorkspaceLogique().addListener(_listener,
+				ChangeID.toFilter(ChangeID.DELETE_ITEM));
 	}
 
 	protected Composite createEmptyComposite(Composite parent) {
@@ -146,7 +149,8 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		layout.verticalSpacing = 9;
 		Label t = new Label(container, SWT.NONE);
 		t.setText("No item selected.");
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER + GridData.VERTICAL_ALIGN_CENTER);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
+				+ GridData.VERTICAL_ALIGN_CENTER);
 		t.setLayoutData(gd);
 		return container;
 	}
@@ -199,7 +203,8 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		}
 	}
 
-	private void setController(AbstractCadseTreeViewUI view, IItemNode itemNode) throws CadseException {
+	private void setController(AbstractCadseTreeViewUI view, IItemNode itemNode)
+			throws CadseException {
 		if (this.pageBook == null) {
 			return;
 		}
@@ -230,12 +235,15 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		lastItemPages = null;
 		lastItemPages = lastItem.getType().getGoodModificationPage(itemNode);
 		_swtuiPlatform.setPages(lastItemPages);
-		
-		_swtuiPlatform.setItem(lastItem);
-		_swtuiPlatform.setVariable(IFieldDescription.PARENT_CONTEXT, lastItem.getPartParent());
-		_swtuiPlatform.setVariable(IFieldDescription.INCOMING_LINK_TYPE, getContainmentLinkTypeParent(lastItem));
 
-		_swtuiPlatform.setFilterContext(new FilterContext(lastItem, null, lastItem.getType(), view, null, null, itemNode, lastItemPages));
+		_swtuiPlatform.setItem(lastItem);
+		_swtuiPlatform.setVariable(IFieldDescription.PARENT_CONTEXT, lastItem
+				.getPartParent());
+		_swtuiPlatform.setVariable(IFieldDescription.INCOMING_LINK_TYPE,
+				getContainmentLinkTypeParent(lastItem));
+
+		_swtuiPlatform.setFilterContext(new FilterContext(lastItem, null,
+				lastItem.getType(), view, null, null, itemNode, lastItemPages));
 		if (!pageBook.hasPage(lastItem)) {
 			Composite page = pageBook.createPage(lastItem);
 			page.setLayout(new GridLayout());
@@ -254,12 +262,8 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		pageBook.dispose();
 
 		_swtuiPlatform.dispose();
-		View.getInstance().getWorkspaceDomain().getLogicalWorkspace().removeListener(_listener);
+		View.getInstance().getWorkspaceDomain().getLogicalWorkspace()
+				.removeListener(_listener);
 	}
-
-	
-	
-
-	
 
 }

@@ -52,20 +52,16 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * @author vega
  * 
  */
-public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractField<IC> implements SelectionListener {
+public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
+		DAbstractField<IC> implements SelectionListener {
 
-	
-	
+	private Object[] _sources;
+	private Set<Object> _sources_selected = new HashSet<Object>();
+	private Map<Object, TreeItem> _treeItems;
+	private Tree _treeObjects;
 
-	private Object[]				_sources;
-	private Set<Object>				_sources_selected	= new HashSet<Object>();
-	private Map<Object, TreeItem>	_treeItems;
-	private Tree					_treeObjects;
-
-	
-	private int						_heightHint			= 200;
-	private int						_widthHint			= 400;
-
+	private int _heightHint = 200;
+	private int _widthHint = 400;
 
 	/**
 	 * 
@@ -88,10 +84,11 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 	}
 
 	@Override
-	public void createControl(Composite container,	int hspan) {
+	public void createControl(Composite container, int hspan) {
 		GridData gd;
 
-		_treeObjects = new Tree((Composite) container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		_treeObjects = new Tree((Composite) container, SWT.CHECK | SWT.BORDER
+				| SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
 
@@ -107,7 +104,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 
 		setSource(_ic.getSources());
 
-		Button selectAll = _swtuiplatform.getToolkit().createButton((Composite) container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
+		Button selectAll = _swtuiplatform.getToolkit().createButton(
+				(Composite) container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		selectAll.setLayoutData(gd);
 		selectAll.addSelectionListener(new SelectionListener() {
@@ -120,7 +118,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 		});
 		selectAll.setData(UIField.CADSE_MODEL_KEY, _field);
 
-		Button deselectAll = _swtuiplatform.getToolkit().createButton((Composite) container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
+		Button deselectAll = _swtuiplatform.getToolkit().createButton(
+				(Composite) container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		deselectAll.setLayoutData(gd);
 		deselectAll.addSelectionListener(new SelectionListener() {
@@ -134,7 +133,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 		deselectAll.setData(UIField.CADSE_MODEL_KEY, _field);
 
 		if (edit) {
-			Button editButton = _swtuiplatform.getToolkit().createButton((Composite) container, UIField.EDIT_BUTTON, SWT.PUSH);
+			Button editButton = _swtuiplatform.getToolkit().createButton(
+					(Composite) container, UIField.EDIT_BUTTON, SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			editButton.setLayoutData(gd);
 			editButton.addSelectionListener(new SelectionListener() {
@@ -162,7 +162,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 		for (TreeItem ti : this._treeItems.values()) {
 			ti.setChecked(false);
 		}
-		_swtuiplatform.broadcastSubValueRemoved(_page, _field, getVisualValue());
+		_swtuiplatform
+				.broadcastSubValueRemoved(_page, _field, getVisualValue());
 		_sources_selected.clear();
 	}
 
@@ -191,8 +192,6 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 
 	}
 
-	
-
 	@Override
 	public Control getMainControl() {
 		return this._treeObjects;
@@ -211,13 +210,10 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 		return CadseGCST.DCHECKED_LIST;
 	}
 
-
 	@Override
 	public Object getVisualValue() {
 		return this._sources_selected.toArray();
 	}
-
-
 
 	@Override
 	public void setEditable(boolean v) {
@@ -281,7 +277,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 			return;
 		}
 
-		if ((oldSource != null) && (source != null) && (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
+		if ((oldSource != null) && (source != null)
+				&& (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
 			return;
 		}
 
@@ -323,7 +320,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 
 	}
 
-	public void setVisualValue(final Object visualValue, boolean sendNotification) {
+	public void setVisualValue(final Object visualValue,
+			boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				Object[] selectedObject = null;

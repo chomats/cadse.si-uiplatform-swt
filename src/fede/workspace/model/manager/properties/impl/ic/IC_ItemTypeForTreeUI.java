@@ -33,42 +33,42 @@ import fede.workspace.tool.view.dialog.create.InteractifTreeController;
 
 public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 
-	
-
 	public String getText(Object obj) {
 		if (obj instanceof LinkType)
 			return getTreeText((LinkType) obj);
 		return getTreeText((ItemType) obj);
 	}
-	
+
 	protected String getTreeText(LinkType lt) {
-		if (lt.getDestination().getId().equals(CadseDomain.ITEM_ID)) 
-        	return lt.getName();
-        return MessageFormat.format(Messages.getString("dialog.run.create-item.4"), lt.getName() ,lt.getDestination().getId()); //$NON-NLS-1$
-    }
-	
+		if (lt.getDestination().getId().equals(CadseDomain.ITEM_ID))
+			return lt.getName();
+		return MessageFormat
+				.format(
+						Messages.getString("dialog.run.create-item.4"), lt.getName(), lt.getDestination().getId()); //$NON-NLS-1$
+	}
+
 	protected String getTreeText(ItemType it) {
-        return it.getName();
-    }
-	
+		return it.getName();
+	}
+
 	public Image getImage(Object obj) {
 		if (obj instanceof LinkType) {
 			LinkType lt = (LinkType) obj;
 			obj = lt.getDestination();
-			if (obj == null) return null;
+			if (obj == null)
+				return null;
 		}
 		ItemType it = (ItemType) obj;
-        return WSPlugin.getDefault().getImageFrom(it, null);
+		return WSPlugin.getDefault().getImageFrom(it, null);
 	}
-
 
 	public Object[] getChildren(Object obj) {
 		ItemType superItemType;
 		if (obj instanceof LinkType)
-			superItemType = ((LinkType)obj).getDestination();
-		else 
+			superItemType = ((LinkType) obj).getDestination();
+		else
 			superItemType = (ItemType) obj;
-		
+
 		return superItemType.getSubTypes();
 	}
 
@@ -77,5 +77,4 @@ public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 		return null;
 	}
 
-	
 }

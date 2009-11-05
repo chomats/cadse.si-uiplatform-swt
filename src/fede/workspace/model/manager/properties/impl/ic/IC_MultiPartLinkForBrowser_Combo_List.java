@@ -25,50 +25,54 @@ import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
 
-
-
-
-
 /**
  * The Class IC_PartLinkForBrowser_Combo_List.
  * 
  * @generated
  */
-public class IC_MultiPartLinkForBrowser_Combo_List extends IC_FilteredNodeLinkForBrowser_Combo_List {
-	
+public class IC_MultiPartLinkForBrowser_Combo_List extends
+		IC_FilteredNodeLinkForBrowser_Combo_List {
+
 	private final class StringComparor implements Comparator<Item> {
 		public int compare(Item arg0, Item arg1) {
-			return IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg0).compareTo(IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg1));
+			return IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg0)
+					.compareTo(
+							IC_MultiPartLinkForBrowser_Combo_List.this
+									.toString(arg1));
 		}
 	}
 
 	/** The part link type. */
-	LinkType[] showedLinkType ;
-	
-	
+	LinkType[] showedLinkType;
+
 	/**
 	 * The Constructor.
 	 * 
-	 * @param title the title
-	 * @param message the message
-	 * @param linkType the link type
-	 * @param partLinkType the part link type
-	 * @param errormessage the errormessage
+	 * @param title
+	 *            the title
+	 * @param message
+	 *            the message
+	 * @param linkType
+	 *            the link type
+	 * @param partLinkType
+	 *            the part link type
+	 * @param errormessage
+	 *            the errormessage
 	 * 
 	 * @generated
 	 */
-	
-		
-	
+
 	protected void createFiltedModel() {
 		FilteredItemNodeModel newModel = new FilteredItemNodeModel();
 		setModel(newModel);
-		
+
 		for (LinkType lt : showedLinkType) {
-			newModel.addItemFromItemTypeEntry(null, lt.getSource(), getComparator());
-			newModel.addItemFromLinkTypeEntry(lt.getSource(), lt, getComparator(),true, false);
+			newModel.addItemFromItemTypeEntry(null, lt.getSource(),
+					getComparator());
+			newModel.addItemFromLinkTypeEntry(lt.getSource(), lt,
+					getComparator(), true, false);
 		}
-		
+
 	}
 
 	/**
@@ -79,6 +83,5 @@ public class IC_MultiPartLinkForBrowser_Combo_List extends IC_FilteredNodeLinkFo
 	protected Comparator<Item> getComparator() {
 		return new StringComparor();
 	}
-	
-	
+
 }

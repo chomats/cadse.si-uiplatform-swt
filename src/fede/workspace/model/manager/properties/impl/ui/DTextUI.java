@@ -51,21 +51,17 @@ import fr.imag.adele.cadse.core.util.Convert;
 
 public class DTextUI extends DAbstractField implements IContentProposalListener {
 
-	private ContentAssistCommandAdapter	_contentAssistField;
-	private String						_currentValue;
-	private String						_currentValueToSend;
-	private Text						_textControl;
-	private String						_toolTips			= null;
-	private int							_vspan				= 1;
-	private boolean						_sendNotification	= true;
-
-	
+	private ContentAssistCommandAdapter _contentAssistField;
+	private String _currentValue;
+	private String _currentValueToSend;
+	private Text _textControl;
+	private String _toolTips = null;
+	private int _vspan = 1;
+	private boolean _sendNotification = true;
 
 	public String __getVisualValue() {
 		return (_textControl).getText();
 	}
-
-	
 
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
@@ -73,23 +69,30 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		final IFieldContenProposalProvider proposer = getContentAssistant();
 		// Container ocontainer;
 		int style = 0;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_MULTI_LINE_)) ? SWT.MULTI : SWT.SINGLE;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_WRAP_LINE_)) ? SWT.WRAP : 0;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_NO_BORDER_)) ? 0 : SWT.BORDER;
+		style |= (_field.getAttribute(CadseGCST.DTEXT_at_MULTI_LINE_)) ? SWT.MULTI
+				: SWT.SINGLE;
+		style |= (_field.getAttribute(CadseGCST.DTEXT_at_WRAP_LINE_)) ? SWT.WRAP
+				: 0;
+		style |= (_field.getAttribute(CadseGCST.DTEXT_at_NO_BORDER_)) ? 0
+				: SWT.BORDER;
 		style |= (_field.getFlag(Item.UI_HSCROLL)) ? 0 : SWT.H_SCROLL;
 		style |= (_field.getFlag(Item.UI_VSCROLL)) ? 0 : SWT.V_SCROLL;
 		if (!_field.isEditable()) {
 			style |= SWT.READ_ONLY;
 		}
 
-		_textControl = (Text) _swtuiplatform.getToolkit().createText(ocontainer, "", style);
+		_textControl = (Text) _swtuiplatform.getToolkit().createText(
+				ocontainer, "", style);
 		_textControl.setData(UIField.CADSE_MODEL_KEY, _field);
 		if (_field.isEditable() && proposer != null) {
-			IControlContentAdapter contentAdapter = new ProposerTextContentAdapter(this, _swtuiplatform, proposer);
-			_contentAssistField = new ContentAssistCommandAdapter(_textControl, contentAdapter, proposer
-					.getContentProposalProvider(), proposer.getCommandId(), proposer.getAutoActivationCharacters(),
-					true);
-			_contentAssistField.setProposalAcceptanceStyle(proposer.getProposalAcceptanceStyle());
+			IControlContentAdapter contentAdapter = new ProposerTextContentAdapter(
+					this, _swtuiplatform, proposer);
+			_contentAssistField = new ContentAssistCommandAdapter(_textControl,
+					contentAdapter, proposer.getContentProposalProvider(),
+					proposer.getCommandId(), proposer
+							.getAutoActivationCharacters(), true);
+			_contentAssistField.setProposalAcceptanceStyle(proposer
+					.getProposalAcceptanceStyle());
 			_contentAssistField.addContentProposalListener(this);
 		}
 
@@ -147,7 +150,8 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		_sendNotification = false;
 		_textControl.setText(_currentValue);
 		_currentValueToSend = _currentValue;
-		_textControl.setSelection(_currentValue.length(), _currentValue.length());
+		_textControl.setSelection(_currentValue.length(), _currentValue
+				.length());
 		_sendNotification = true;
 	}
 
@@ -181,7 +185,6 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		return CadseGCST.DTEXT;
 	}
 
-
 	@Override
 	public Object getVisualValue() {
 		if (_currentValueToSend == null) {
@@ -190,10 +193,10 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		return _currentValueToSend;
 	}
 
-
 	@Override
 	public void setEditable(boolean v) {
-		if (_textControl == null) return;
+		if (_textControl == null)
+			return;
 		this._textControl.setEditable(v);
 		if (this._labelWidget != null) {
 			this._labelWidget.setEnabled(v);
@@ -205,8 +208,8 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		this._textControl.setVisible(v);
 	}
 
-
-	protected synchronized void sendModificationIfNeed(String value, boolean send) {
+	protected synchronized void sendModificationIfNeed(String value,
+			boolean send) {
 		if (!_field.isEditable()) {
 			return;
 		}
@@ -232,8 +235,6 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		this._textControl.setEnabled(v);
 	}
 
-	
-
 	protected synchronized void setTextModified() {
 		_currentValueToSend = __getVisualValue();
 		sendModificationIfNeed(_currentValueToSend, false);
@@ -253,7 +254,7 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		_sendNotification = sendNotification;
 		try {
 			_currentValueToSend = _currentValue = visualValue.toString();
-			if (_textControl != null && !_textControl.isDisposed()) 
+			if (_textControl != null && !_textControl.isDisposed())
 				_textControl.setText(_currentValue);
 		} finally {
 			_sendNotification = true;
@@ -271,14 +272,16 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 				return;
 			}
 
-			Object newValue = proposer.getValueFromProposal((Proposal) proposal);
+			Object newValue = proposer
+					.getValueFromProposal((Proposal) proposal);
 			// setVisualValue(newValue);
 			if (newValue != null) {
 				_currentValue = newValue.toString();
 				_swtuiplatform.broadcastValueChanged(_page, _field, newValue);
 
 			} else {
-				_swtuiplatform.broadcastValueDeleted(_page, _field, _currentValue);
+				_swtuiplatform.broadcastValueDeleted(_page, _field,
+						_currentValue);
 				_currentValue = null;
 			}
 

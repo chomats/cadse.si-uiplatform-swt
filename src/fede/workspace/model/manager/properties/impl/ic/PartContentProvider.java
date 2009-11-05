@@ -34,74 +34,90 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 
-
 /**
- * sources [] item de divers types
- * linktype acceptable
- * itemtype acceptable;.
+ * sources [] item de divers types linktype acceptable itemtype acceptable;.
  * 
  * @author chomats
  */
 public class PartContentProvider implements ITreeContentProvider {
-	
+
 	/** The lt. */
 	final private LinkType lt;
-	
+
 	/** The comparator. */
 	final private Comparator<Object> comparator;
-	
+
 	/** The selectable value. */
 	final private Object[] selectableValue;
-	
+
 	/**
 	 * Instantiates a new part content provider.
 	 * 
-	 * @param lt the lt
-	 * @param comparator the comparator
-	 * @param selectableValue the selectable value
+	 * @param lt
+	 *            the lt
+	 * @param comparator
+	 *            the comparator
+	 * @param selectableValue
+	 *            the selectable value
 	 */
-	public PartContentProvider(LinkType lt, Comparator<Object> comparator, Object[] selectableValue) {
+	public PartContentProvider(LinkType lt, Comparator<Object> comparator,
+			Object[] selectableValue) {
 		this.lt = lt;
 		this.comparator = comparator;
 		this.selectableValue = selectableValue;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
+	 * Object)
 	 */
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof ItemType){
-			return sort(((ItemType)parentElement).getItems().toArray());
+		if (parentElement instanceof ItemType) {
+			return sort(((ItemType) parentElement).getItems().toArray());
 		}
-		
+
 		if (parentElement instanceof Item) {
-			Item i = ((Item)parentElement);
-			if (i.isInstanceOf(lt.getSource()));
-				Collection<Item> outgoingItems = i.getOutgoingItems(lt, true);
-				if (selectableValue != null) {
-					HashSet<Object> o = new HashSet<Object>(Arrays.asList(selectableValue));
-					o.retainAll(outgoingItems);
-					return sort(o.toArray());
-				}
-				return sort(outgoingItems.toArray());
+			Item i = ((Item) parentElement);
+			if (i.isInstanceOf(lt.getSource()))
+				;
+			Collection<Item> outgoingItems = i.getOutgoingItems(lt, true);
+			if (selectableValue != null) {
+				HashSet<Object> o = new HashSet<Object>(Arrays
+						.asList(selectableValue));
+				o.retainAll(outgoingItems);
+				return sort(o.toArray());
+			}
+			return sort(outgoingItems.toArray());
 		}
 		return new Object[0];
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
+	 * )
 	 */
 	public Object getParent(Object element) {
 		if (element instanceof Item) {
-			Item i = ((Item)element);
-			if (i.isInstanceOf(lt.getDestination()));
-				return i.getPartParent();
+			Item i = ((Item) element);
+			if (i.isInstanceOf(lt.getDestination()))
+				;
+			return i.getPartParent();
 		}
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
+	 * Object)
 	 */
 	public boolean hasChildren(Object element) {
 		return getChildren(element).length != 0;
@@ -109,37 +125,45 @@ public class PartContentProvider implements ITreeContentProvider {
 
 	/**
 	 * Accept ItemType, Item[], and List of Item
+	 * 
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof ItemType){
-			return sort(((ItemType)inputElement).getItems().toArray());
+		if (inputElement instanceof ItemType) {
+			return sort(((ItemType) inputElement).getItems().toArray());
 		}
 		if (inputElement instanceof Item[]) {
-			return sort((Item[])inputElement);
+			return sort((Item[]) inputElement);
 		}
 		if (inputElement instanceof List) {
-			return sort(((List)inputElement).toArray());
+			return sort(((List) inputElement).toArray());
 		}
-		 return new Object[0];
+		return new Object[0];
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
 	public void dispose() {
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
+	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
-	
+
 	/**
 	 * Sort.
 	 * 
-	 * @param selectableValues the selectable values
+	 * @param selectableValues
+	 *            the selectable values
 	 * 
 	 * @return the object[]
 	 */
@@ -148,5 +172,4 @@ public class PartContentProvider implements ITreeContentProvider {
 		return selectableValues;
 	}
 
-	
 }

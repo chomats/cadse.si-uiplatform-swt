@@ -88,11 +88,11 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 public class SWTUIPlatform implements IPageController {
 
 	private Map<UIField, Label> labels = new HashMap<UIField, Label>();
-	private Pages	pages;
+	private Pages pages;
 	private Map<IAttributeType<?>, UIValidator[]> _listen = new HashMap<IAttributeType<?>, UIValidator[]>();
 	private Map<UIField, UIRunningField> runningField = new HashMap<UIField, UIRunningField>();
 	private Composite parent;
-	
+
 	private Map<String, Object> _vars = new HashMap<String, Object>();
 	private List<RemoveListener> _removeListener;
 	private WizardDialog dialog;
@@ -102,7 +102,7 @@ public class SWTUIPlatform implements IPageController {
 	 * 
 	 * @param theCurrentItem
 	 */
-	
+
 	public SWTUIPlatform(Pages desc, Composite parent) {
 		this.pages = desc;
 		this.parent = parent;
@@ -111,57 +111,60 @@ public class SWTUIPlatform implements IPageController {
 	public Pages getPages() {
 		return pages;
 	}
-	
-	public WizardDialog createCreationWizard(Shell parentShell) throws CadseException {
+
+	public WizardDialog createCreationWizard(Shell parentShell)
+			throws CadseException {
 		parent = parentShell;
 		dialog = new WizardDialog(parentShell, new WizardController(this));
 		init();
 		dialog.addPageChangedListener(new IPageChangedListener() {
-			
+
 			@Override
 			public void pageChanged(PageChangedEvent event) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		dialog.addPageChangingListener(new IPageChangingListener() {
-			
+
 			@Override
 			public void handlePageChanging(PageChangingEvent event) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		return dialog;
 	}
-	
+
 	public Composite createPage(IPage page, Composite parentPage) {
 		Composite container = getToolkit().createComposite(parentPage);
-		return createFieldsControl(page, null, container, getFields(page),  null);
+		return createFieldsControl(page, null, container, getFields(page), null);
 
 	}
 
 	public UIField[] getFields(IPage page) {
 		List<UIField> fields = new ArrayList<UIField>();
 		if (page instanceof HierarchyPage) {
-			
+
 		} else {
 			IAttributeType<?>[] attrs = page.getAttributes();
 			for (IAttributeType<?> at : attrs) {
 				UIField f = pages.getUIField(at);
-				if (f!= null)
+				if (f != null)
 					fields.add(f);
 			}
 		}
 		return (UIField[]) fields.toArray(new UIField[fields.size()]);
 	}
 
-	public void createChildrenControl(UIRunningField<?> ui, Composite container, GridLayout layout) {
-		createFieldsControl(ui._page, ui, container, ui._field.getChildren(), layout);
+	public void createChildrenControl(UIRunningField<?> ui,
+			Composite container, GridLayout layout) {
+		createFieldsControl(ui._page, ui, container, ui._field.getChildren(),
+				layout);
 	}
 
-	
-	public Composite createFieldsControl(IPage page, UIRunningField<?> ui, Composite container, UIField[] fields, GridLayout layout) {
+	public Composite createFieldsControl(IPage page, UIRunningField<?> ui,
+			Composite container, UIField[] fields, GridLayout layout) {
 
 		if (layout == null) {
 			layout = new GridLayout();
@@ -185,13 +188,13 @@ public class SWTUIPlatform implements IPageController {
 		layout.numColumns = maxHspan;
 		layout.verticalSpacing = 5; // 9
 
-		UIRunningField<?>[] _children = new UIRunningField<?>[fields.length]; 
+		UIRunningField<?>[] _children = new UIRunningField<?>[fields.length];
 		int i = 0;
 		for (UIField mf : fields) {
 			try {
 				_children[i++] = createControl(page, mf, container, maxHspan);
 			} catch (Throwable e) {
-				log("",e);
+				log("", e);
 			}
 		}
 		if (ui != null)
@@ -201,21 +204,22 @@ public class SWTUIPlatform implements IPageController {
 
 	private void init(UIField mf) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setPages(Pages pages) {
 		this.pages = pages;
 	}
+
 	/**
 	 * @throws CadseException
 	 * @see IDialogPage#createControl(Composite)
 	 */
-	public Composite createControlPage(Composite parentPage) throws CadseException {
+	public Composite createControlPage(Composite parentPage)
+			throws CadseException {
 		this.parent = parentPage;
 		init();
-		
-		
+
 		TabFolder container = new TabFolder(parent, SWT.V_SCROLL + SWT.H_SCROLL);
 		getToolkit().adapt(container);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -248,13 +252,15 @@ public class SWTUIPlatform implements IPageController {
 
 	protected void initAfterUI(IPage page) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private void clearStatusMessage() {
-		if (_pageSite == null) throw new NullPointerException();
-		
-		IStatusLineManager statusLine = _pageSite.getActionBars().getStatusLineManager();
+		if (_pageSite == null)
+			throw new NullPointerException();
+
+		IStatusLineManager statusLine = _pageSite.getActionBars()
+				.getStatusLineManager();
 		if (statusLine != null) {
 			statusLine.setErrorMessage(null);
 			statusLine.setMessage(null);
@@ -263,7 +269,7 @@ public class SWTUIPlatform implements IPageController {
 
 	protected void resetVisualValue(IPage page) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void init() throws CadseException {
@@ -292,17 +298,19 @@ public class SWTUIPlatform implements IPageController {
 			_listen.put(attr, l);
 	}
 
-	protected <T extends RuningInteractionController> UIRunningField<T> createControl(IPage page, UIField field, Composite container, int hspan) {
+	protected <T extends RuningInteractionController> UIRunningField<T> createControl(
+			IPage page, UIField field, Composite container, int hspan) {
 		if (field.isHidden()) {
 			return null;
 		}
 
 		int hspan_label = hspan;
-		if (field.getPosLabel().equals(EPosLabel.left) || field.getPosLabel().equals(EPosLabel.right)) {
+		if (field.getPosLabel().equals(EPosLabel.left)
+				|| field.getPosLabel().equals(EPosLabel.right)) {
 			hspan_label--;
 		}
 		container = createLabelField(field, container, hspan);
-		
+
 		UIRunningField<T> rf = createRunningField(field);
 		if (rf == null)
 			return null;
@@ -321,9 +329,8 @@ public class SWTUIPlatform implements IPageController {
 		return rf;
 	}
 
-	
-
-	protected Composite createLabelField(UIField field, Composite container, int hspan) {
+	protected Composite createLabelField(UIField field, Composite container,
+			int hspan) {
 		GridData gd;
 		if (field.getPosLabel().equals(EPosLabel.left)) {
 			Label l = getToolkit().createLabel(container, field.getLabel());
@@ -349,29 +356,31 @@ public class SWTUIPlatform implements IPageController {
 			gd.horizontalSpan = hspan;
 			g.setLayoutData(gd);
 			container = g;
-			container.setLayout(new org.eclipse.swt.layout.GridLayout(hspan, false));
+			container.setLayout(new org.eclipse.swt.layout.GridLayout(hspan,
+					false));
 		}
 		return container;
 	}
-
-	
 
 	public void updateStatus(String message) {
 		// setErrorMessage(message);
 		// setPageComplete(message == null);
 	}
 
-	public boolean broadcastSubValueAdded(IPage page, UIField field, Object added) {
+	public boolean broadcastSubValueAdded(IPage page, UIField field,
+			Object added) {
 		try {
 			boolean error;
-			error = field.getModelController().validSubValueAdded(this, field, added);
+			error = field.getModelController().validSubValueAdded(this, field,
+					added);
 			if (error) {
 				return true;
 			}
-			UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+			UIValidator[] listeners = this._listen.get(field
+					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
-						error = listeners[i].validSubValueAdded(this,field,added);
+					error = listeners[i].validSubValueAdded(this, field, added);
 					if (error) {
 						return true;
 					}
@@ -395,27 +404,33 @@ public class SWTUIPlatform implements IPageController {
 		}
 	}
 
-	public boolean broadcastSubValueRemoved(IPage page, UIField field, Object removed) {
+	public boolean broadcastSubValueRemoved(IPage page, UIField field,
+			Object removed) {
 		try {
 			boolean error;
-			error = field.getModelController().validSubValueRemoved(this, field, removed);
+			error = field.getModelController().validSubValueRemoved(this,
+					field, removed);
 			if (error) {
 				return true;
 			}
-			UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+			UIValidator[] listeners = this._listen.get(field
+					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
-					error = listeners[i].validSubValueRemoved(this, field, removed);
+					error = listeners[i].validSubValueRemoved(this, field,
+							removed);
 					if (error) {
 						return true;
 					}
 				}
 			}
-			field.getModelController().notifieSubValueRemoved(this, field, removed);
+			field.getModelController().notifieSubValueRemoved(this, field,
+					removed);
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
-						listeners[i].notifieSubValueRemoved(this, field, removed);
+						listeners[i].notifieSubValueRemoved(this, field,
+								removed);
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
@@ -429,15 +444,15 @@ public class SWTUIPlatform implements IPageController {
 		}
 	}
 
-//	@Override
-//	public void thisFieldHasChanged(UIField uiField) {
-//		UIRunningField rf = runningField.get(uiField);
-//		while (rf != null) {
-//			rf.updateValue();
-//			rf = rf._next;
-//		}
-//	}
-	
+	// @Override
+	// public void thisFieldHasChanged(UIField uiField) {
+	// UIRunningField rf = runningField.get(uiField);
+	// while (rf != null) {
+	// rf.updateValue();
+	// rf = rf._next;
+	// }
+	// }
+
 	public void broadcastThisFieldHasChanged(final UIField fd) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
@@ -448,19 +463,20 @@ public class SWTUIPlatform implements IPageController {
 				}
 			}
 		});
-		
+
 	}
 
-	
-
-	public boolean broadcastValueDeleted(IPage page, UIField field, Object oldvalue) {
+	public boolean broadcastValueDeleted(IPage page, UIField field,
+			Object oldvalue) {
 		try {
-			boolean error = field.getModelController().validValueDeleted(this,field, oldvalue);
+			boolean error = field.getModelController().validValueDeleted(this,
+					field, oldvalue);
 			if (error) {
 				return true;
 			}
-			
-			UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+
+			UIValidator[] listeners = this._listen.get(field
+					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
@@ -471,7 +487,8 @@ public class SWTUIPlatform implements IPageController {
 					}
 				}
 			}
-			field.getModelController().notifieValueDeleted(this, field, oldvalue);
+			field.getModelController().notifieValueDeleted(this, field,
+					oldvalue);
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
@@ -540,8 +557,8 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	@Override
-	public void addListener(final Item item,
-			final WorkspaceListener listener, int eventFilter) {
+	public void addListener(final Item item, final WorkspaceListener listener,
+			int eventFilter) {
 		item.addListener(listener, eventFilter);
 		_removeListener.add(new RemoveListener() {
 			public void dispose() {
@@ -554,7 +571,7 @@ public class SWTUIPlatform implements IPageController {
 	public void addLogicalWorkspaceTransactionListener(
 			LogicalWorkspaceTransactionListener logicalWorkspaceTransactionListener) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -593,7 +610,7 @@ public class SWTUIPlatform implements IPageController {
 	@Override
 	public void setMessageError(String string) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -620,7 +637,8 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	@Override
-	public void setVisualField(IAttributeType<?> attributeDefinition, Object visualValue) {
+	public void setVisualField(IAttributeType<?> attributeDefinition,
+			Object visualValue) {
 		setVisualValue(attributeDefinition, visualValue, true);
 	}
 
@@ -628,18 +646,19 @@ public class SWTUIPlatform implements IPageController {
 	public void setVisualValue(IAttributeType<?> attributeDefinition,
 			Object visualValue, boolean b) {
 		UIField uiField = pages.getUIField(attributeDefinition);
-		if (uiField == null) return;
+		if (uiField == null)
+			return;
 		UIRunningField rf = runningField.get(uiField);
 		while (rf != null) {
 			rf = rf._next;
 		}
 	}
 
-	
-	
 	public void sendChangedValue(UIField field, Object visualValue) {
-		field.getModelController().notifieValueChanged(this, field, visualValue);
-		UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+		field.getModelController()
+				.notifieValueChanged(this, field, visualValue);
+		UIValidator[] listeners = this._listen.get(field
+				.getAttributeDefinition());
 		if (listeners != null) {
 			for (int i = 0; i < listeners.length; i++) {
 				try {
@@ -651,7 +670,7 @@ public class SWTUIPlatform implements IPageController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Return true if error. Validate this field, if no error, call validator
 	 * associated to this field. Other fields are not revalidate to test if
@@ -664,11 +683,13 @@ public class SWTUIPlatform implements IPageController {
 
 	public boolean validateValueChanged(UIField field, Object visualValue) {
 		boolean error;
-		error = field.getModelController().validValueChanged(this, field, visualValue);
+		error = field.getModelController().validValueChanged(this, field,
+				visualValue);
 		if (error) {
 			return true;
 		}
-		UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+		UIValidator[] listeners = this._listen.get(field
+				.getAttributeDefinition());
 		if (listeners != null) {
 			for (UIValidator v : listeners) {
 				try {
@@ -684,14 +705,16 @@ public class SWTUIPlatform implements IPageController {
 		}
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.ui.UIField#broadcastValueChanged(fr.imag.adele.cadse.core.ui.IPageController,
-	 *      java.lang.Object)
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.UIField#broadcastValueChanged(fr.imag.adele
+	 * .cadse.core.ui.IPageController, java.lang.Object)
 	 */
-	public boolean broadcastValueChanged(IPage page, UIField field, Object visualValue) {
+	public boolean broadcastValueChanged(IPage page, UIField field,
+			Object visualValue) {
 		try {
 			try {
 				if (validateValueChanged(field, visualValue)) {
@@ -700,7 +723,8 @@ public class SWTUIPlatform implements IPageController {
 				sendChangedValue(field, visualValue);
 			} catch (RuntimeException e) {
 				log("Exception raised ! messages = " + e.getMessage(), e);
-				setMessageError("Exception raised ! messages = " + e.getMessage());
+				setMessageError("Exception raised ! messages = "
+						+ e.getMessage());
 				return true;
 			}
 			validateFields(field, page);
@@ -711,7 +735,7 @@ public class SWTUIPlatform implements IPageController {
 			return false;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -732,7 +756,7 @@ public class SWTUIPlatform implements IPageController {
 		}
 		return abstratcObject;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -751,8 +775,9 @@ public class SWTUIPlatform implements IPageController {
 		if (error) {
 			return true;
 		}
-		
-		UIValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+
+		UIValidator[] listeners = this._listen.get(field
+				.getAttributeDefinition());
 		if (listeners != null) {
 			for (UIValidator v : listeners) {
 				try {
@@ -766,7 +791,7 @@ public class SWTUIPlatform implements IPageController {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -775,7 +800,7 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	public void log(String msg, Throwable e) {
-		Logger.getLogger("uiPlatform").log(Level.SEVERE, 	msg, e);
+		Logger.getLogger("uiPlatform").log(Level.SEVERE, msg, e);
 	}
 
 	@Override
@@ -790,14 +815,15 @@ public class SWTUIPlatform implements IPageController {
 	public boolean isModification() {
 		return pages.isModificationPages();
 	}
-	
+
 	Map<ItemType, Class<?>> itToClassImpl = new HashMap<ItemType, Class<?>>();
 	private LogicalWorkspaceTransaction copy;
 	private IActionPage action;
 	private FedeFormToolkit _toolkit;
 	private IPageSite _pageSite;
 
-	public <T extends RuningInteractionController> UIRunningField<T> createRunningField(UIField field) {
+	public <T extends RuningInteractionController> UIRunningField<T> createRunningField(
+			UIField field) {
 		ItemType it = field.getType();
 		Class<?> clazz = itToClassImpl.get(it);
 		if (clazz == null) {
@@ -836,9 +862,7 @@ public class SWTUIPlatform implements IPageController {
 		}
 		return null;
 	}
-	
-	
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -873,11 +897,12 @@ public class SWTUIPlatform implements IPageController {
 	public Object getVariable(String key) {
 		return _vars.get(key);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.ui.Pages#setItem(fr.imag.adele.cadse.core.Item)
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.Pages#setItem(fr.imag.adele.cadse.core.Item)
 	 */
 	public void setItem(Item item) {
 		String typeid = this.action.getTypeId();
@@ -887,14 +912,15 @@ public class SWTUIPlatform implements IPageController {
 	@Override
 	public void doNextPageAction(Object monitor, int currentPage)
 			throws Exception {
-		
+
 	}
 
 	@Override
 	public void doPrevPageAction(Object monitor, int currentPage)
 			throws Exception {
-		
+
 	}
+
 	@Override
 	public int getNextPageIndex(int currentPage) throws Exception {
 		if (pages.getPages().length == currentPage + 1) {
@@ -917,20 +943,20 @@ public class SWTUIPlatform implements IPageController {
 				init(afd);
 				wizardController.addPage(new FieldsWizardPage(this, afd));
 			} catch (CadseException e) {
-				log("Cannot create page "+afd.getLabel(),e);
+				log("Cannot create page " + afd.getLabel(), e);
 			}
-		}		
+		}
 		return wizardController.getPages();
 	}
 
 	private void init(IPage afd) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void dispose(IPage page) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public FedeFormToolkit getToolkit() {
@@ -943,13 +969,11 @@ public class SWTUIPlatform implements IPageController {
 
 	public void setFilterContext(FilterContext filterContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setSite(IPageSite site) {
 		_pageSite = site;
 	}
 
-	
-	
 }

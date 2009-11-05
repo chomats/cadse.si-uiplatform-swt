@@ -29,13 +29,14 @@ import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
-public class DTreeModelUI extends DAbstractField implements ISelectionChangedListener, SelectionListener,
-		ICheckStateListener, TreeListener {
+public class DTreeModelUI extends DAbstractField implements
+		ISelectionChangedListener, SelectionListener, ICheckStateListener,
+		TreeListener {
 
-	private boolean				_useCheckBox	= true;
-	private Tree				_treeControl;
-	private CheckboxTreeViewer	_treeViewer;
-	private FilteredItemNode	_rootNode;
+	private boolean _useCheckBox = true;
+	private Tree _treeControl;
+	private CheckboxTreeViewer _treeViewer;
+	private FilteredItemNode _rootNode;
 
 	@Override
 	public void dispose() {
@@ -45,8 +46,9 @@ public class DTreeModelUI extends DAbstractField implements ISelectionChangedLis
 		_rootNode = null;
 	}
 
-	public DTreeModelUI(CompactUUID uuid, String key, String label, EPosLabel poslabel, IModelController mc,
-			IC_TreeModel ic, boolean checkBox) {
+	public DTreeModelUI(CompactUUID uuid, String key, String label,
+			EPosLabel poslabel, IModelController mc, IC_TreeModel ic,
+			boolean checkBox) {
 		super(uuid, key, label, poslabel, mc, ic);
 		this._useCheckBox = checkBox;
 	}
@@ -56,7 +58,8 @@ public class DTreeModelUI extends DAbstractField implements ISelectionChangedLis
 		return (IC_TreeModel) super.getInteractionController();
 	}
 
-	public DTreeModelUI(String key, String label, EPosLabel poslabel, IModelController mc, RuningInteractionController ic,
+	public DTreeModelUI(String key, String label, EPosLabel poslabel,
+			IModelController mc, RuningInteractionController ic,
 			boolean checkBox) {
 		super(key, label, poslabel, mc, ic);
 		this._useCheckBox = checkBox;
@@ -67,8 +70,8 @@ public class DTreeModelUI extends DAbstractField implements ISelectionChangedLis
 	}
 
 	@Override
-	public Object createControl(IPageController globalUIController, IFedeFormToolkit toolkit, Object container,
-			int hspan) {
+	public Object createControl(IPageController globalUIController,
+			IFedeFormToolkit toolkit, Object container, int hspan) {
 
 		int style = SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL;
 		if (_useCheckBox) {
@@ -121,8 +124,10 @@ public class DTreeModelUI extends DAbstractField implements ISelectionChangedLis
 		_rootNode = getInteractionController().getOrCreateFilteredNode();
 		_rootNode.setTreeViewer(_treeViewer);
 
-		_treeViewer.setContentProvider(getInteractionController().getContentProvider());
-		_treeViewer.setLabelProvider(getInteractionController().getLabelProvider());
+		_treeViewer.setContentProvider(getInteractionController()
+				.getContentProvider());
+		_treeViewer.setLabelProvider(getInteractionController()
+				.getLabelProvider());
 		_treeViewer.setInput(_rootNode);
 
 		createContextMenu(_treeControl);

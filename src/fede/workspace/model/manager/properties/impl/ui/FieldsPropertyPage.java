@@ -39,7 +39,7 @@ import fr.imag.adele.cadse.core.ui.Pages;
 
 public class FieldsPropertyPage extends PropertyPage {
 
-	SWTUIPlatform	_swtuiplatform	= null;
+	SWTUIPlatform _swtuiplatform = null;
 
 	public FieldsPropertyPage() {
 	}
@@ -62,7 +62,8 @@ public class FieldsPropertyPage extends PropertyPage {
 		layout.verticalSpacing = 9;
 		Text t = new Text(container, SWT.NONE);
 		t.setText("No item selected.");
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER + GridData.VERTICAL_ALIGN_CENTER);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
+				+ GridData.VERTICAL_ALIGN_CENTER);
 		t.setLayoutData(gd);
 		return container;
 	}
@@ -77,7 +78,8 @@ public class FieldsPropertyPage extends PropertyPage {
 	}
 
 	public Item getParentItem() {
-		return (Item) (_swtuiplatform == null ? null : _swtuiplatform.getVariable(IFieldDescription.PARENT_CONTEXT));
+		return (Item) (_swtuiplatform == null ? null : _swtuiplatform
+				.getVariable(IFieldDescription.PARENT_CONTEXT));
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class FieldsPropertyPage extends PropertyPage {
 
 		IItemManager im = item.getType().getItemManager();
 		Pages pages = item.getInstanceModificationPages();
-		
+
 		this._swtuiplatform = new SWTUIPlatform(pages, null);
 		_swtuiplatform.setItem(item);
 		setController(pages);
@@ -100,7 +102,7 @@ public class FieldsPropertyPage extends PropertyPage {
 	}
 
 	private void setController(Pages desc) {
-		
+
 	}
 
 	@Override

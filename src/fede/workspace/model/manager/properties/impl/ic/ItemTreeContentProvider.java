@@ -36,8 +36,8 @@ import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.delta.ItemDelta;
 
 public class ItemTreeContentProvider implements ITreeContentProvider {
-	final private LinkType[]		links;
-	final private Comparator<Item>	comparator;
+	final private LinkType[] links;
+	final private Comparator<Item> comparator;
 
 	public ItemTreeContentProvider(Comparator<Item> comparator, LinkType... lt) {
 		this.links = lt;
@@ -58,7 +58,8 @@ public class ItemTreeContentProvider implements ITreeContentProvider {
 				for (int j = 0; j < links.length; j++) {
 					if (links[j] == type) {
 						final Item destination = l.getDestination();
-						if (destination instanceof ItemDelta && ((ItemDelta) destination).isAdded()) {
+						if (destination instanceof ItemDelta
+								&& ((ItemDelta) destination).isAdded()) {
 							continue;
 						}
 						outgoingItems.add(destination);

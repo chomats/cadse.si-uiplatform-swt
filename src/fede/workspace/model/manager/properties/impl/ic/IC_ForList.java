@@ -26,8 +26,6 @@ import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 
 public interface IC_ForList extends IC_TitleMessage {
 
-	
-
 	String canRemoveObject(Object[] object);
 
 	String canAddObject(Object[] object);

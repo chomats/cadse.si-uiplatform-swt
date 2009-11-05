@@ -54,19 +54,18 @@ import fr.imag.adele.cadse.core.util.ArraysUtil;
  * @author vega
  * 
  */
-public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<IC> implements SelectionListener, TreeListener {
+public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
+		DAbstractField<IC> implements SelectionListener, TreeListener {
 
-	
-	private boolean					_fillBoth			= false;
+	private boolean _fillBoth = false;
 
-	private boolean					_selectDelectButton	= true;
-	
-	private Object[]				_sources;
-	private Set<Object>				_sources_selected	= new HashSet<Object>();
+	private boolean _selectDelectButton = true;
 
-	private Map<Object, TreeItem[]>	_treeItems;
-	private Tree					_treeObjects;
+	private Object[] _sources;
+	private Set<Object> _sources_selected = new HashSet<Object>();
 
+	private Map<Object, TreeItem[]> _treeItems;
+	private Tree _treeObjects;
 
 	public void addNode(final Object item) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
@@ -125,7 +124,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 	public void createControl(Composite container, int hspan) {
 		GridData gd;
 
-		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER
+				| SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.addTreeListener(this);
 		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
@@ -150,7 +150,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		setSource(_ic.getSources());
 
 		if (_selectDelectButton) {
-			Button selectAll = _swtuiplatform.getToolkit().createButton(container, "Select All", SWT.PUSH);
+			Button selectAll = _swtuiplatform.getToolkit().createButton(
+					container, "Select All", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			selectAll.setLayoutData(gd);
 			selectAll.addSelectionListener(new SelectionListener() {
@@ -163,7 +164,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 			});
 			selectAll.setData(this);
 
-			Button deselectAll = _swtuiplatform.getToolkit().createButton(container, "Deselect All", SWT.PUSH);
+			Button deselectAll = _swtuiplatform.getToolkit().createButton(
+					container, "Deselect All", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			deselectAll.setLayoutData(gd);
 			deselectAll.addSelectionListener(new SelectionListener() {
@@ -177,7 +179,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 			deselectAll.setData(this);
 		}
 		if (_field.isEditable()) {
-			Button editButton = _swtuiplatform.getToolkit().createButton(container, "Edit", SWT.PUSH);
+			Button editButton = _swtuiplatform.getToolkit().createButton(
+					container, "Edit", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			editButton.setLayoutData(gd);
 			editButton.addSelectionListener(new SelectionListener() {
@@ -218,7 +221,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 			if (childobjects != null && childobjects.length != 0) {
 				Arrays.sort(childobjects, new Comparator<Object>() {
 					public int compare(Object o1, Object o2) {
-						return toStringFromObject(o1).compareTo(toStringFromObject(o2));
+						return toStringFromObject(o1).compareTo(
+								toStringFromObject(o2));
 					}
 				});
 				createItemFromObjects(childobjects, ti);
@@ -243,7 +247,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		ti.setData(obj);
 		ti.setImage(toImageFromObject(obj));
 
-		_treeItems.put(obj, ArraysUtil.add(TreeItem.class, _treeItems.get(obj), ti));
+		_treeItems.put(obj, ArraysUtil.add(TreeItem.class, _treeItems.get(obj),
+				ti));
 		return ti;
 	}
 
@@ -253,7 +258,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 				treeItem.setChecked(false);
 			}
 		}
-		_swtuiplatform.broadcastSubValueRemoved(_page, _field, getVisualValue());
+		_swtuiplatform
+				.broadcastSubValueRemoved(_page, _field, getVisualValue());
 		_sources_selected.clear();
 	}
 
@@ -298,7 +304,6 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		return dataselection;
 	}
 
-
 	@Override
 	public Control getMainControl() {
 		return this._treeObjects;
@@ -317,14 +322,13 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		return CadseGCST.DCHECKED_TREE;
 	}
 
-
 	@Override
 	public Object getVisualValue() {
 		return this._sources_selected.toArray();
 	}
 
 	@Override
-	public void  setEditable(boolean v) {
+	public void setEditable(boolean v) {
 		_treeObjects.setEnabled(v);
 	}
 
@@ -335,12 +339,12 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 
 	protected void objectDeselected(Object removed) {
 		_sources_selected.remove(removed);
-		_swtuiplatform.broadcastSubValueRemoved(_page,_field, removed);
+		_swtuiplatform.broadcastSubValueRemoved(_page, _field, removed);
 	}
 
 	protected void objectSelected(Object added) {
 		_sources_selected.add(added);
-		_swtuiplatform.broadcastSubValueAdded(_page,_field, added);
+		_swtuiplatform.broadcastSubValueAdded(_page, _field, added);
 	}
 
 	public void removeNode(final Object obj) {
@@ -369,7 +373,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 			}
 		}
 		_sources_selected.addAll(Arrays.asList(_sources));
-		_swtuiplatform.broadcastSubValueAdded(_page,_field, getVisualValue());
+		_swtuiplatform.broadcastSubValueAdded(_page, _field, getVisualValue());
 	}
 
 	public void selectObject(final Object obj, final boolean sel) {
@@ -413,7 +417,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 			return;
 		}
 
-		if ((oldSource != null) && (source != null) && (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
+		if ((oldSource != null) && (source != null)
+				&& (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
 			return;
 		}
 
@@ -441,7 +446,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 
 	}
 
-	public void setVisualValue(final Object visualValue, boolean sendNotification) {
+	public void setVisualValue(final Object visualValue,
+			boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				Object[] selectedObject = (Object[]) visualValue;

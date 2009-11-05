@@ -40,12 +40,9 @@ import fr.imag.adele.cadse.core.ui.UIField;
  */
 public class DCheckBoxUI extends DAbstractField<RuningInteractionController> {
 
+	private Button _control;
 
-	private Button	_control;
-
-	private Boolean	_value;
-
-	
+	private Boolean _value;
 
 	public Object __getVisualValue() {
 		_value = _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
@@ -58,15 +55,18 @@ public class DCheckBoxUI extends DAbstractField<RuningInteractionController> {
 		GridData gd;
 
 		String label = getLabel();
-		_control = _swtuiplatform.getToolkit().createButton(container, label, SWT.CHECK);
+		_control = _swtuiplatform.getToolkit().createButton(container, label,
+				SWT.CHECK);
 		_control.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field,
+						__getVisualValue());
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field,
+						__getVisualValue());
 			}
 
 		});
@@ -87,8 +87,6 @@ public class DCheckBoxUI extends DAbstractField<RuningInteractionController> {
 		_value = null;
 	}
 
-	
-
 	@Override
 	public Control getMainControl() {
 		return _control;
@@ -98,8 +96,6 @@ public class DCheckBoxUI extends DAbstractField<RuningInteractionController> {
 	public Object[] getSelectedObjects() {
 		return new Boolean[] { _value };
 	}
-
-	
 
 	@Override
 	public Object getVisualValue() {

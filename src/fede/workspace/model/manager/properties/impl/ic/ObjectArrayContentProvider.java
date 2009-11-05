@@ -24,7 +24,8 @@ package fede.workspace.model.manager.properties.impl.ic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
-public final class ObjectArrayContentProvider extends ArrayContentProvider implements ITreeContentProvider {
+public final class ObjectArrayContentProvider extends ArrayContentProvider
+		implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {
 		return getElements(parentElement);
@@ -37,5 +38,5 @@ public final class ObjectArrayContentProvider extends ArrayContentProvider imple
 	public boolean hasChildren(Object element) {
 		return false;
 	}
-	
+
 }

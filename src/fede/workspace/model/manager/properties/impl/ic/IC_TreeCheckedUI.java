@@ -18,21 +18,22 @@
  */
 package fede.workspace.model.manager.properties.impl.ic;
 
-
 public interface IC_TreeCheckedUI extends IC_ForCheckedViewer {
 
 	public Object[] getChildren(Object obj);
-	
+
 	/**
 	 * 
-	 * @param object l'object selectionne.
+	 * @param object
+	 *            l'object selectionne.
 	 * @return Un message d'erreur si impossible or null.
 	 */
-	String canObjectSelected(Object object) ;
-	
+	String canObjectSelected(Object object);
+
 	/**
 	 * 
-	 * @param object l'object deselectionne.
+	 * @param object
+	 *            l'object deselectionne.
 	 * @return Un message d'erreur si impossible or null.
 	 */
 	String canObjectDeselected(Object object);

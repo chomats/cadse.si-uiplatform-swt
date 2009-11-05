@@ -53,16 +53,13 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  * org.eclipse.core.resources.IResource }
  */
 
-public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeDialogForList_Browser_Combo implements
-		IC_ForList, ISelectionStatusValidator, IC_ForBrowserOrCombo {
+public class IC_ResourceTreeDialogForBrowser_Combo_List extends
+		IC_AbstractTreeDialogForList_Browser_Combo implements IC_ForList,
+		ISelectionStatusValidator, IC_ForBrowserOrCombo {
 
-	
-
-	protected static final String	REFRESH_LABEL	= "Re&fresh";
-	protected static final int		REFRESH_ID		= 1025;
-	private int						selectRoot;
-
-	
+	protected static final String REFRESH_LABEL = "Re&fresh";
+	protected static final int REFRESH_ID = 1025;
+	private int selectRoot;
 
 	@Override
 	public Object[] transAndAddObject(Object[] object) {
@@ -75,8 +72,8 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 
 	@Override
 	protected ElementTreeSelectionDialog newTreeDialog(Shell parentShell) {
-		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(parentShell, getLabelProvider(),
-				getTreeContentProvider()) {
+		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(
+				parentShell, getLabelProvider(), getTreeContentProvider()) {
 
 			@Override
 			protected void createButtonsForButtonBar(Composite parent) {
@@ -94,7 +91,9 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 						IStructuredSelection ssel = (IStructuredSelection) sel;
 						if (ssel.isEmpty()) {
 							try {
-								ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+								ResourcesPlugin.getWorkspace().getRoot()
+										.refreshLocal(IResource.DEPTH_INFINITE,
+												null);
 							} catch (CoreException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -103,7 +102,8 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 						for (Object v : ssel.toArray()) {
 							if (v instanceof IResource) {
 								try {
-									((IResource) v).refreshLocal(IResource.DEPTH_INFINITE, null);
+									((IResource) v).refreshLocal(
+											IResource.DEPTH_INFINITE, null);
 								} catch (CoreException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -135,7 +135,9 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 			Item theItem = _uiPlatform.getItem(getUIField());
 			IResource r = MelusineProjectManager.getResource(theItem);
 			if (r == null) {
-				throw new CadseIllegalArgumentException("Cannot find the resource form the item {0}.", theItem.getId());
+				throw new CadseIllegalArgumentException(
+						"Cannot find the resource form the item {0}.", theItem
+								.getId());
 			}
 			while (selectRoot-- > 1) {
 				r = r.getParent();

@@ -1,4 +1,5 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,8 +18,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -47,20 +46,18 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * 
  * @author chomats
  */
-public abstract class UIRunningField<IC extends RuningInteractionController>   {
-	public UIField						_field			= null;
+public abstract class UIRunningField<IC extends RuningInteractionController> {
+	public UIField _field = null;
 
 	/** The getPage(). */
-	public IPage						_page;
+	public IPage _page;
 	/** The global controller. */
-	public SWTUIPlatform			  	 _swtuiplatform;
-	
-	public UIRunningField<?>			 _next;
-	
-	public UIRunningField<?>[]			_children;
-	public IC _ic;
+	public SWTUIPlatform _swtuiplatform;
 
-	
+	public UIRunningField<?> _next;
+
+	public UIRunningField<?>[] _children;
+	public IC _ic;
 
 	/*
 	 * (non-Javadoc)
@@ -88,7 +85,6 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 	public void setLabel(String label) {
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -131,8 +127,6 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 		return _field.getModelController();
 	}
 
-	
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -146,7 +140,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 
 	protected void setVisualValue(Object visualValue, boolean notifie) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -156,10 +150,9 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 	 */
 	public void setValue(Object visualValue) {
 		setVisualValue(visualValue);
-		getModelController().notifieValueChanged(_swtuiplatform, _field, visualValue);
+		getModelController().notifieValueChanged(_swtuiplatform, _field,
+				visualValue);
 	}
-
-	
 
 	/*
 	 * (non-Javadoc)
@@ -169,8 +162,6 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 	public void thisFieldHasChanged() {
 		_swtuiplatform.broadcastThisFieldHasChanged(_field);
 	}
-
-
 
 	/*
 	 * (non-Javadoc)
@@ -193,11 +184,8 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 	 * @see fr.imag.adele.cadse.core.ui.UIField#setEditable(boolean)
 	 */
 	public void setEditable(boolean editable) {
-		
 
 	}
-
-	
 
 	/*
 	 * (non-Javadoc)
@@ -205,15 +193,16 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 	 * @see fr.imag.adele.cadse.core.ui.UIField#setVisible(boolean)
 	 */
 	public void setVisible(boolean v) {
-	
+
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse.core.ui.IPageController,
-	 *      fr.imag.adele.cadse.core.ui.IFedeFormToolkit, java.lang.Object, int)
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse
+	 * .core.ui.IPageController, fr.imag.adele.cadse.core.ui.IFedeFormToolkit,
+	 * java.lang.Object, int)
 	 */
 	public abstract void createControl(Composite container, int hspan);
 
@@ -267,15 +256,12 @@ public abstract class UIRunningField<IC extends RuningInteractionController>   {
 		}
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see fr.imag.adele.cadse.core.ui.UIField#updateValue()
 	 */
 	public abstract void updateValue();
-
-	
 
 	/*
 	 * (non-Javadoc)

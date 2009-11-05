@@ -23,14 +23,10 @@ import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
-
-public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowser_Combo  {
-
-	
+public class IC_StaticArrayOfObjectForBrowser_Combo extends
+		IC_AbstractForBrowser_Combo {
 
 	private Object[] values;
-	
-	
 
 	public Object[] getValues() {
 		return values;
@@ -40,13 +36,12 @@ public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowse
 	public String toString(Object value) {
 		return value.toString();
 	}
-	
 
 	@Override
 	protected Object[] getSelectableValues() {
 		return values;
 	}
-	
+
 	public ItemType getType() {
 		return CadseGCST.IC_STATIC_ARRAY_OF_OBJECT_FOR_BROWSER_COMBO;
 	}

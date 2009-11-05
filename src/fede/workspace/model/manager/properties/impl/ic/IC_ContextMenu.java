@@ -20,23 +20,25 @@ package fede.workspace.model.manager.properties.impl.ic;
 
 import org.eclipse.jface.action.IMenuManager;
 
-public interface IC_ContextMenu  {
-	
+public interface IC_ContextMenu {
+
 	boolean hasRemoveAllWhenShown();
-	
-    /**
-     * Notifies this listener that the menu is about to be hidden by
-     * the given menu manager.
-     *
-     * @param manager the menu manager
-     */
-    public void menuAboutToHide(Object[] selection, IMenuManager manager);
-    
-    /**
-     * Notifies this listener that the menu is about to be shown by
-     * the given menu manager.
-     *
-     * @param manager the menu manager
-     */
-    public void menuAboutToShow(Object[] selection, IMenuManager manager);
+
+	/**
+	 * Notifies this listener that the menu is about to be hidden by the given
+	 * menu manager.
+	 * 
+	 * @param manager
+	 *            the menu manager
+	 */
+	public void menuAboutToHide(Object[] selection, IMenuManager manager);
+
+	/**
+	 * Notifies this listener that the menu is about to be shown by the given
+	 * menu manager.
+	 * 
+	 * @param manager
+	 *            the menu manager
+	 */
+	public void menuAboutToShow(Object[] selection, IMenuManager manager);
 }

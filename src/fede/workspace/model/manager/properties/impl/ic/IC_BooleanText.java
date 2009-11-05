@@ -31,10 +31,9 @@ import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
-public final class IC_BooleanText extends ICRunningField implements RuningInteractionController, IFieldContenProposalProvider,
+public final class IC_BooleanText extends ICRunningField implements
+		RuningInteractionController, IFieldContenProposalProvider,
 		IContentProposalProvider {
-
-	
 
 	public char[] getAutoActivationCharacters() {
 		return new char[0];

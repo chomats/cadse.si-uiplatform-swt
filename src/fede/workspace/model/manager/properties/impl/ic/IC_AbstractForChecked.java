@@ -27,8 +27,8 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.view.WSPlugin;
 
-public abstract class IC_AbstractForChecked  extends ICRunningField implements IC_ForCheckedViewer {
-	
+public abstract class IC_AbstractForChecked extends ICRunningField implements
+		IC_ForCheckedViewer {
 
 	public Image toImageFromObject(Object obj) {
 		Item item = (Item) obj;
@@ -40,13 +40,10 @@ public abstract class IC_AbstractForChecked  extends ICRunningField implements I
 		return WSPlugin.getManager(item).getDisplayName(item);
 	}
 
-	
-	
 	public void edit(Object o) {
 	}
 
 	public void select(Object data) {
 	}
-
 
 }

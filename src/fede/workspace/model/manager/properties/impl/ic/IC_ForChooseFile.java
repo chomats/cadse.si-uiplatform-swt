@@ -43,40 +43,39 @@ import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
 public class IC_ForChooseFile extends ICRunningField {
-	
 
 	public static final int FOLDER_EXT = 1;
 	public static final int FILE_EXT = 2;
 	public static final int WORKSPACE = 4;
-	
+
 	public IPath selectExternalFolder(Shell shell, String msg, IPath currPath) {
-		
+
 		File file = getFileFrom(currPath);
-		
-		DirectoryDialog dialog= new DirectoryDialog(shell);
+
+		DirectoryDialog dialog = new DirectoryDialog(shell);
 		dialog.setMessage(msg);
-		//dialog.setText(this.choosetext); 
+		// dialog.setText(this.choosetext);
 		if (file != null)
 			dialog.setFilterPath(file.getAbsolutePath());
-		String res= dialog.open();
+		String res = dialog.open();
 		if (res != null) {
 			return Path.fromOSString(res).makeAbsolute();
 		}
 		return null;
 	}
-	
+
 	public IPath selectExternalFile(Shell shell, String msg, IPath currPath) {
-			
+
 		File file = getFileFrom(currPath);
-		
-		FileDialog dialog= new FileDialog(shell);
-		dialog.setText(msg); 
+
+		FileDialog dialog = new FileDialog(shell);
+		dialog.setText(msg);
 		String[] fileFilter = getFileFilter();
 		if (fileFilter != null)
 			dialog.setFilterExtensions(fileFilter); //$NON-NLS-1$
 		if (file != null)
 			dialog.setFilterPath(file.getAbsolutePath());
-		String res= dialog.open();
+		String res = dialog.open();
 		if (res != null) {
 			return Path.fromOSString(res).makeAbsolute();
 		}
@@ -84,42 +83,45 @@ public class IC_ForChooseFile extends ICRunningField {
 	}
 
 	private File getFileFrom(IPath currPath) {
-		if (currPath == null) return null;
-		File file= currPath.toFile();
-		IResource r= ResourcesPlugin.getWorkspace().getRoot().findMember(currPath);
+		if (currPath == null)
+			return null;
+		File file = currPath.toFile();
+		IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(
+				currPath);
 		if (r != null && r.getLocation() != null) {
-			file= r.getLocation().toFile();
+			file = r.getLocation().toFile();
 		}
 		if (file != null && file.isFile())
 			file = file.getParentFile();
 		return file;
 	}
-	
+
 	/*
 	 * Opens a dialog to choose an internal jar.
-	 */	
+	 */
 	public IPath selectWorkspaceFile(Shell shell, String msg, IPath currPath) {
-		//String initSelection= textWidget.getText();
-		
-		ViewerFilter filter= getViewerFilter();
+		// String initSelection= textWidget.getText();
 
-		ILabelProvider lp= new WorkbenchLabelProvider();
-		ITreeContentProvider cp= new WorkbenchContentProvider();
+		ViewerFilter filter = getViewerFilter();
+
+		ILabelProvider lp = new WorkbenchLabelProvider();
+		ITreeContentProvider cp = new WorkbenchContentProvider();
 
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IResource initSel= root.findMember(currPath);
-		
-		ElementTreeSelectionDialog dialog= createTreeSelectionDialog(shell, lp, cp);
+		IResource initSel = root.findMember(currPath);
+
+		ElementTreeSelectionDialog dialog = createTreeSelectionDialog(shell,
+				lp, cp);
 		dialog.setAllowMultiple(false);
 		if (filter != null)
 			dialog.addFilter(filter);
-		dialog.setTitle(msg); 
-	//	dialog.setMessage(NewWizardMessages.SourceAttachmentBlock_intjardialog_message); 
+		dialog.setTitle(msg);
+		// dialog.setMessage(NewWizardMessages.SourceAttachmentBlock_intjardialog_message);
 		dialog.setInput(root);
 		dialog.setValidator(getValidator());
 		dialog.setInitialSelection(initSel);
 		if (dialog.open() == Window.OK) {
-			IResource res= (IResource) dialog.getFirstResult();
+			IResource res = (IResource) dialog.getFirstResult();
 			return res.getFullPath();
 		}
 		return null;
@@ -129,7 +131,8 @@ public class IC_ForChooseFile extends ICRunningField {
 		return null;
 	}
 
-	protected ElementTreeSelectionDialog createTreeSelectionDialog(Shell shell, ILabelProvider lp, ITreeContentProvider cp) {
+	protected ElementTreeSelectionDialog createTreeSelectionDialog(Shell shell,
+			ILabelProvider lp, ITreeContentProvider cp) {
 		return new ElementTreeSelectionDialog(shell, lp, cp);
 	}
 
@@ -139,11 +142,11 @@ public class IC_ForChooseFile extends ICRunningField {
 	}
 
 	protected String[] getFileFilter() {
-		return null; //new String[] {"*.jar;*.zip"};
+		return null; // new String[] {"*.jar;*.zip"};
 	}
-	
+
 	public int getKind() {
-		return FILE_EXT +FOLDER_EXT+WORKSPACE;
+		return FILE_EXT + FOLDER_EXT + WORKSPACE;
 	}
 
 	public ItemType getType() {

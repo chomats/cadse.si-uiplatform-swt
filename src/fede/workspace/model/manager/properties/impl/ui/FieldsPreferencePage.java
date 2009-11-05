@@ -32,81 +32,82 @@ import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.ui.Pages;
 
 public class FieldsPreferencePage extends PropertyPage {
-  
+
 	protected SWTUIPlatform controller = null;
-  
+
 	public FieldsPreferencePage() {
-    }
-    
-    @Override
-    protected Control createContents(Composite parent) {
-    	
-    	if (controller != null) {
-    		try {
+	}
+
+	@Override
+	protected Control createContents(Composite parent) {
+
+		if (controller != null) {
+			try {
 				return controller.createControlPage(parent);
 			} catch (CadseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
-    	}
-        Composite container = new Composite(parent, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        container.setLayout(layout);
-        layout.verticalSpacing = 9;
-        Text t = new Text(container,SWT.NONE);
-        t.setText("No item selected.");
-        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER+ GridData.VERTICAL_ALIGN_CENTER);
-        t.setLayoutData(gd);
-        return container;
-    }
+		}
+		Composite container = new Composite(parent, SWT.NULL);
+		GridLayout layout = new GridLayout();
+		container.setLayout(layout);
+		layout.verticalSpacing = 9;
+		Text t = new Text(container, SWT.NONE);
+		t.setText("No item selected.");
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
+				+ GridData.VERTICAL_ALIGN_CENTER);
+		t.setLayoutData(gd);
+		return container;
+	}
 
-    
-    
-    protected void updateStatus(String message) {
-        setErrorMessage(message);
-        //setPageComplete(message == null);
-    }
+	protected void updateStatus(String message) {
+		setErrorMessage(message);
+		// setPageComplete(message == null);
+	}
 
-//    public Item getTheCurrentItem() {
-//        return (Item) (controller== null ? null : controller.getPages().getItem());
-//    }
-//
-//    public Item getParentItem() {
-//        return (Item) (controller== null ? null : controller.getPages().getLocal(IFieldDescription.PARENT_CONTEXT));
-//    }
-    
-    
-//    @Override
-//    public void setElement(IAdaptable element) {
-//        super.setElement(element);
-//        Item item = ((Item) element);
-//        
-//        IItemManager im = item.getType().getItemManager();
-//        Pages pages = null;
-//        if (im instanceof DefaultItemManager) {
-//        	pages = ((DefaultItemManager)im).createModificationPage(item);
-//        }
-//        if (pages == null)
-//        	pages = item.getType().getGoodModificationPage(item);
-//        pages.setItem(item);
-//        setController(pages);
-//        URL url = im.getImage(item);
-//		if (url != null)
-//			setImageDescriptor(ImageDescriptor.createFromURL(url));
-//		setTitle(im.getHumanTypeName());
-//        
-//        
-//   }
-//    
-    public void setController(Pages pages) {
-    	this.controller = new SWTUIPlatform(pages, null);
+	// public Item getTheCurrentItem() {
+	// return (Item) (controller== null ? null :
+	// controller.getPages().getItem());
+	// }
+	//
+	// public Item getParentItem() {
+	// return (Item) (controller== null ? null :
+	// controller.getPages().getLocal(IFieldDescription.PARENT_CONTEXT));
+	// }
+
+	// @Override
+	// public void setElement(IAdaptable element) {
+	// super.setElement(element);
+	// Item item = ((Item) element);
+	//        
+	// IItemManager im = item.getType().getItemManager();
+	// Pages pages = null;
+	// if (im instanceof DefaultItemManager) {
+	// pages = ((DefaultItemManager)im).createModificationPage(item);
+	// }
+	// if (pages == null)
+	// pages = item.getType().getGoodModificationPage(item);
+	// pages.setItem(item);
+	// setController(pages);
+	// URL url = im.getImage(item);
+	// if (url != null)
+	// setImageDescriptor(ImageDescriptor.createFromURL(url));
+	// setTitle(im.getHumanTypeName());
+	//        
+	//        
+	// }
+	//    
+	public void setController(Pages pages) {
+		this.controller = new SWTUIPlatform(pages, null);
 	}
 
 	@Override
-    public boolean performOk() {
+	public boolean performOk() {
 		try {
-			CadseCore.getCadseDomain().beginOperation("WizardController.performFinish");
+			CadseCore.getCadseDomain().beginOperation(
+					"WizardController.performFinish");
 			controller.doFinish(null);
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -116,12 +117,12 @@ public class FieldsPreferencePage extends PropertyPage {
 			CadseCore.getCadseDomain().endOperation();
 		}
 		return true;
-    }
-	
+	}
+
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (controller != null) 
+		if (controller != null)
 			controller.dispose();
 	}
 }

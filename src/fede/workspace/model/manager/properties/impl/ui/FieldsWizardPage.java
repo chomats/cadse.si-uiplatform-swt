@@ -30,20 +30,22 @@ import fr.imag.adele.cadse.core.ui.UIField;
 /**
  */
 
-public class FieldsWizardPage extends WizardPage  {
+public class FieldsWizardPage extends WizardPage {
 
-	IPage			page;
-	private boolean	init;
-	SWTUIPlatform	 _swtuiPlatform;
+	IPage page;
+	private boolean init;
+	SWTUIPlatform _swtuiPlatform;
 
 	/**
 	 * Constructor for FieldsWizardPage.
-	 * @param swtuiPlatform 
+	 * 
+	 * @param swtuiPlatform
 	 * 
 	 * @param theCurrentItem
 	 * @throws CadseException
 	 */
-	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page) throws CadseException {
+	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page)
+			throws CadseException {
 		super("wizardPage");
 		this.page = page;
 		// pageDesc.put("wizard-page",this);
@@ -58,7 +60,7 @@ public class FieldsWizardPage extends WizardPage  {
 	 */
 	public void createControl(Composite parent) {
 		this.init = true;
-		
+
 		try {
 			setControl(_swtuiPlatform.createPage(page, parent));
 			_swtuiPlatform.initAfterUI(page);

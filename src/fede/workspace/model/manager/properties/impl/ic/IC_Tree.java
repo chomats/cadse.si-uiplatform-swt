@@ -22,12 +22,11 @@ import org.eclipse.swt.graphics.Image;
 
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 
-
 public interface IC_Tree extends RuningInteractionController {
-	
+
 	public String getText(Object obj);
-	
+
 	public Image getImage(Object obj);
-	
+
 	public Object[] getChildren(Object obj);
 }

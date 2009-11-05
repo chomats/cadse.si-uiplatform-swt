@@ -34,59 +34,57 @@ import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
 import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
 
-
-
-
-
 /**
- * Model suivant FilteredItemNode qui dis ce que je doit afficher
- * Le link type qui dit la validiter : l'item est une instance du type de la destination
+ * Model suivant FilteredItemNode qui dis ce que je doit afficher Le link type
+ * qui dit la validiter : l'item est une instance du type de la destination
  * 
  * The Class IC_PartLinkForBrowser_Combo_List.
  * 
  * @generated
  */
-public class IC_FilteredNodeLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_List {
-	
+public class IC_FilteredNodeLinkForBrowser_Combo_List extends
+		IC_LinkForBrowser_Combo_List {
+
 	/** The error message. */
 	String errorMessage;
 
 	private FilteredItemNodeModel model;
-	
-	
-	
 
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#getTreeContentProvider()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #getTreeContentProvider()
 	 */
 	@Override
 	protected ITreeContentProvider getTreeContentProvider() {
 		return new SelfViewContentProvider();
 	}
 
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#getInputValues()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #getInputValues()
 	 */
 	@Override
 	protected Object getInputValues() {
 		return getOrCreateFilteredNode();
 	}
 
-	
-	
 	protected FilteredItemNode getOrCreateFilteredNode() {
-		
+
 		FilteredItemNodeModel treeModel = getTreeModel();
 		if (treeModel == null)
 			return new FilteredItemNode(null);
 		return new FilteredItemNode(null, treeModel);
 	}
 
-
 	protected FilteredItemNodeModel getTreeModel() {
 		return this.model;
 	}
-
 
 	/**
 	 * Gets the error message.
@@ -96,25 +94,30 @@ public class IC_FilteredNodeLinkForBrowser_Combo_List extends IC_LinkForBrowser_
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-	
+
 	public void setModel(FilteredItemNodeModel model) {
 		this.model = model;
 	}
 
-	
-	
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#validate(java.lang.Object[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #validate(java.lang.Object[])
 	 */
 	@Override
 	public IStatus validate(Object[] selection) {
 		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
+			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+					errorMessage, null);
 		Object o = selection[0];
-		if (o instanceof Item && ((Item)o).isInstanceOf(getLinkType().getDestination())) {
+		if (o instanceof Item
+				&& ((Item) o).isInstanceOf(getLinkType().getDestination())) {
 			return Status.OK_STATUS;
 		}
-		
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
+
+		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage,
+				null);
 	}
 }

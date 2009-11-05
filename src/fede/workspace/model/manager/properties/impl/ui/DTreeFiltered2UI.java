@@ -39,8 +39,7 @@ import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
- * value
- * <li>List&lt;Object&gt;<br>
+ * value <li>List&lt;Object&gt;<br>
  * </li>
  * 
  * @author chomats
@@ -48,17 +47,17 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  */
 public class DTreeFiltered2UI extends DAbstractField {
 
-	public DTreeFiltered2UI(String key, String label, EPosLabel poslabel, IModelController mc,
-			IC_ForList ic) {
+	public DTreeFiltered2UI(String key, String label, EPosLabel poslabel,
+			IModelController mc, IC_ForList ic) {
 		super(key, label, poslabel, mc, ic);
 		uiControler = ic;
 	}
 
-	List<Object>					fElements;
+	List<Object> fElements;
 
-	private FilteredTree			fFilteredTree;
+	private FilteredTree fFilteredTree;
 
-	IC_ForList	uiControler;
+	IC_ForList uiControler;
 
 	@Override
 	public Object getVisualValue() {
@@ -66,19 +65,20 @@ public class DTreeFiltered2UI extends DAbstractField {
 	}
 
 	@Override
-	public Object createControl(final IPageController fieldController, IFedeFormToolkit toolkit, Object container,
-			int hspan) {
+	public Object createControl(final IPageController fieldController,
+			IFedeFormToolkit toolkit, Object container, int hspan) {
 
 		GridData gd;
-		fFilteredTree = new FilteredTree((Composite) container, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL,
-				new PatternFilter());
+		fFilteredTree = new FilteredTree((Composite) container, SWT.BORDER
+				| SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = 100;
 		gd.verticalSpan = 2;
 		gd.horizontalSpan = hspan - 1;
 		fFilteredTree.setLayoutData(gd);
-		fFilteredTree.getViewer().setContentProvider(uiControler.getContentProvider());
+		fFilteredTree.getViewer().setContentProvider(
+				uiControler.getContentProvider());
 		fFilteredTree.setData(CADSE_MODEL_KEY, this);
 		return container;
 
@@ -99,7 +99,8 @@ public class DTreeFiltered2UI extends DAbstractField {
 	}
 
 	protected void handleAdd(IPageController fieldController) {
-		Object[] ret = uiControler.selectOrCreateValues(fFilteredTree.getShell());
+		Object[] ret = uiControler.selectOrCreateValues(fFilteredTree
+				.getShell());
 		if (ret != null) {
 			String error = uiControler.canAddObject(ret);
 			if (error != null) {
@@ -130,10 +131,10 @@ public class DTreeFiltered2UI extends DAbstractField {
 	@Override
 	public Object getUIObject(int index) {
 		switch (index) {
-			case 0:
-				return fFilteredTree;
-			default:
-				break;
+		case 0:
+			return fFilteredTree;
+		default:
+			break;
 		}
 		return null;
 	}
@@ -171,6 +172,7 @@ public class DTreeFiltered2UI extends DAbstractField {
 
 	@Override
 	public Object[] getSelectedObjects() {
-		return ((StructuredSelection) fFilteredTree.getViewer().getSelection()).toArray();
+		return ((StructuredSelection) fFilteredTree.getViewer().getSelection())
+				.toArray();
 	}
 }

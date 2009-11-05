@@ -47,18 +47,17 @@ import fr.imag.adele.cadse.core.util.Convert;
  * @author chomats
  * 
  */
-public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList, ILabelProvider {
+public class IC_DefaultForList extends IC_AbstractForList implements
+		IC_ForList, ILabelProvider {
 
 	@Override
 	public void init() throws CadseException {
-		_allowDuplicate = _ic.getAttribute(CadseGCST.IC_STRING_LIST_FOR_LIST_at_ALLOW_DUPLICATE_);
+		_allowDuplicate = _ic
+				.getAttribute(CadseGCST.IC_STRING_LIST_FOR_LIST_at_ALLOW_DUPLICATE_);
 
 	}
-	
 
-	private boolean	_allowDuplicate;
-
-	
+	private boolean _allowDuplicate;
 
 	public void addListener(ILabelProviderListener listener) {
 
@@ -78,7 +77,6 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 		}
 		return null;
 	}
-
 
 	public Image getImage(Object element) {
 		return null;
@@ -101,8 +99,6 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 		return null;
 	}
 
-	
-
 	protected boolean isEnable() {
 		return true;
 	}
@@ -121,8 +117,10 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 			return null;
 		}
 
-		ListAttributeType<?> att = (ListAttributeType<?>) getUIField().getAttributeDefinition();
-		final IAttributeType<?> subAtt = att == null ? null : att.getSubAttributeType();
+		ListAttributeType<?> att = (ListAttributeType<?>) getUIField()
+				.getAttributeDefinition();
+		final IAttributeType<?> subAtt = att == null ? null : att
+				.getSubAttributeType();
 		InputDialog dialog;
 		dialog = new InputDialog(parentShell, title, message,
 
@@ -130,7 +128,8 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 
 			public String isValid(String newText) {
 				if (subAtt != null) {
-					CheckStatus error = subAtt.check(_uiPlatform.getItem(getUIField()), newText);
+					CheckStatus error = subAtt.check(_uiPlatform
+							.getItem(getUIField()), newText);
 					if (error != null) {
 						return error.getFormatedMessage();
 					}

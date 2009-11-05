@@ -30,17 +30,15 @@ import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.CadseGCST;
 
-public class IC_EnumForList extends IC_AbstractForList  {
-
-	
+public class IC_EnumForList extends IC_AbstractForList {
 
 	private Class<?> values;
-	
-	
+
 	@Override
 	public Object[] getValues() {
 		if (values == null) {
-			EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
+			EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField()
+					.getAttributeDefinition();
 			values = enumAttribute.getAttributeType();
 		}
 		return values.getEnumConstants();
@@ -49,26 +47,25 @@ public class IC_EnumForList extends IC_AbstractForList  {
 	public ILabelProvider getLabelProvider() {
 		return new LabelProvider();
 	}
-	
+
 	@Override
 	public String canAddObject(Object[] object) {
 		Object visualValue = _uiPlatform.getVisualValue(getUIField());
-		
-		if (visualValue == null 
-				|| !(visualValue instanceof List) 
-				|| object == null) 
+
+		if (visualValue == null || !(visualValue instanceof List)
+				|| object == null)
 			return null;
-		
+
 		List<Object> fElements = (List<Object>) visualValue;
 		for (Object o : object) {
 			if (fElements.contains(o))
-				return "Already contains "+o.toString();
+				return "Already contains " + o.toString();
 		}
 		return null;
 	}
-	
+
 	public ItemType getType() {
 		return CadseGCST.IC_ENUM_FOR_LIST;
 	}
-	
+
 }

@@ -36,16 +36,19 @@ import fr.imag.adele.cadse.core.util.Convert;
 
 /** */
 
-public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends ICRunningField implements
-		IC_ForList, ISelectionStatusValidator, IC_ForBrowserOrCombo {
+public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends
+		ICRunningField implements IC_ForList, ISelectionStatusValidator,
+		IC_ForBrowserOrCombo {
 
-	private String	title;
-	private String	message;
+	private String title;
+	private String message;
 
 	@Override
 	public void init() throws CadseException {
-		title = _ic.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_TITLE_);
-		message = _ic.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_MESSAGE_);
+		title = _ic
+				.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_TITLE_);
+		message = _ic
+				.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_MESSAGE_);
 	}
 
 	public String canAddObject(Object[] object) {
@@ -84,8 +87,10 @@ public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends ICRunni
 		return null;
 	}
 
-	protected Object[] selectOrCreateValues(Shell parentShell, boolean allowMultipleSelection) {
-		ElementTreeSelectionDialog lsd = createTreeDialog(parentShell, allowMultipleSelection);
+	protected Object[] selectOrCreateValues(Shell parentShell,
+			boolean allowMultipleSelection) {
+		ElementTreeSelectionDialog lsd = createTreeDialog(parentShell,
+				allowMultipleSelection);
 		lsd.open();
 		if (lsd.getReturnCode() == Window.OK) {
 			return lsd.getResult(); // after call canAddObject and
@@ -94,7 +99,8 @@ public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends ICRunni
 		return null;
 	}
 
-	protected ElementTreeSelectionDialog createTreeDialog(Shell parentShell, boolean allowMultipleSelection) {
+	protected ElementTreeSelectionDialog createTreeDialog(Shell parentShell,
+			boolean allowMultipleSelection) {
 		ElementTreeSelectionDialog lsd = newTreeDialog(parentShell);
 		ViewerFilter filter = getFilter();
 		if (filter != null) {
@@ -109,8 +115,8 @@ public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends ICRunni
 	}
 
 	protected ElementTreeSelectionDialog newTreeDialog(Shell parentShell) {
-		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(parentShell, getLabelProvider(),
-				getTreeContentProvider());
+		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(
+				parentShell, getLabelProvider(), getTreeContentProvider());
 		return lsd;
 	}
 

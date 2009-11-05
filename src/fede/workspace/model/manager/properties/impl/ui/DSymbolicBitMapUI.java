@@ -44,15 +44,17 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  */
 public class DSymbolicBitMapUI extends DAbstractField {
 
-	SymbolicBitMapAttributeType	attributeDefinition;
-	String[]					labels;
-	Button[]					controls;
-	Object						value;
-	int							col;
-	private Group				g;
+	SymbolicBitMapAttributeType attributeDefinition;
+	String[] labels;
+	Button[] controls;
+	Object value;
+	int col;
+	private Group g;
 
-	public DSymbolicBitMapUI(String key, String label, EPosLabel poslabel, IModelController mc,
-			RuningInteractionController ic, SymbolicBitMapAttributeType attributeDefinition, String[] labels, int col) {
+	public DSymbolicBitMapUI(String key, String label, EPosLabel poslabel,
+			IModelController mc, RuningInteractionController ic,
+			SymbolicBitMapAttributeType attributeDefinition, String[] labels,
+			int col) {
 		super(key, label, poslabel, mc, ic);
 		this.attributeDefinition = attributeDefinition;
 		this.labels = labels;
@@ -83,8 +85,8 @@ public class DSymbolicBitMapUI extends DAbstractField {
 	}
 
 	@Override
-	public Composite createControl(final IPageController globalUIController, IFedeFormToolkit toolkit,
-			Object ocontainer, int hspan) {
+	public Composite createControl(final IPageController globalUIController,
+			IFedeFormToolkit toolkit, Object ocontainer, int hspan) {
 
 		GridData gd;
 
@@ -97,16 +99,19 @@ public class DSymbolicBitMapUI extends DAbstractField {
 				controls[i] = null;
 				continue; // reseved or private position
 			}
-			controls[i] = (Button) toolkit.createButton(g, labels[i], SWT.CHECK);
+			controls[i] = (Button) toolkit
+					.createButton(g, labels[i], SWT.CHECK);
 			controls[i].setData(i);
 			controls[i].setData(CADSE_MODEL_KEY, this);
 			controls[i].addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
-					globalUIController.broadcastValueChanged(DSymbolicBitMapUI.this, getVisualValue());
+					globalUIController.broadcastValueChanged(
+							DSymbolicBitMapUI.this, getVisualValue());
 				}
 
 				public void widgetDefaultSelected(SelectionEvent e) {
-					globalUIController.broadcastValueChanged(DSymbolicBitMapUI.this, getVisualValue());
+					globalUIController.broadcastValueChanged(
+							DSymbolicBitMapUI.this, getVisualValue());
 				}
 
 			});

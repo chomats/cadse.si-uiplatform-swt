@@ -32,28 +32,25 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
- * Attributes :
- * 		string link-type;
- * 		string title-select ;
+ * Attributes : string link-type; string title-select ;
  */
 
-
-public class IC_FileResourceForBrowser_Combo_List  extends IC_ResourceTreeDialogForBrowser_Combo_List {
-	
+public class IC_FileResourceForBrowser_Combo_List extends
+		IC_ResourceTreeDialogForBrowser_Combo_List {
 
 	private String pattern;
 	boolean selectfolder = false;
-	
 
 	@Override
 	protected ViewerFilter getFilter() {
 		return new FileFilter(pattern);
 	}
-	
+
 	@Override
 	public IStatus validate(Object[] selection) {
 		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, "Select one object only", null);
+			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+					"Select one object only", null);
 		Object o = selection[0];
 		if (o instanceof IFile) {
 			return Status.OK_STATUS;
@@ -61,40 +58,43 @@ public class IC_FileResourceForBrowser_Combo_List  extends IC_ResourceTreeDialog
 		if (selectfolder && o instanceof IFolder) {
 			return Status.OK_STATUS;
 		}
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, "Select an icon file", null);
+		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+				"Select an icon file", null);
 	}
-	
+
 	static class FileFilter extends ViewerFilter {
 
-		
 		private Pattern fIncludes;
 
 		/**
-		 * @param patternString Excluded files will not pass the filter.
-		 * <code>null</code> is allowed if no files should be excluded. 
+		 * @param patternString
+		 *            Excluded files will not pass the filter. <code>null</code>
+		 *            is allowed if no files should be excluded.
 		 * 
 		 */
-		
+
 		public FileFilter(String patternString) {
 			if (patternString != null) {
 				fIncludes = Pattern.compile(patternString);
 			}
 		}
-		
+
 		/*
 		 * @see ViewerFilter#select
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parent, Object element) {
 			if (element instanceof IFile) {
-				if (fIncludes == null || fIncludes.matcher(((IFile)element).getName()).matches()) {
+				if (fIncludes == null
+						|| fIncludes.matcher(((IFile) element).getName())
+								.matches()) {
 					return true;
 				}
 				return false;
-			} 
+			}
 			return true;
 		}
-		
+
 	}
 
 }

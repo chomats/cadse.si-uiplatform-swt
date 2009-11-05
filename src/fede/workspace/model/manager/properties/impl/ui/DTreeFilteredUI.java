@@ -44,8 +44,7 @@ import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
- * value
- * <li>List&lt;Object&gt;<br>
+ * value <li>List&lt;Object&gt;<br>
  * </li>
  * 
  * @author chomats
@@ -53,18 +52,18 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  */
 public class DTreeFilteredUI extends DAbstractField {
 
-	public DTreeFilteredUI(String key, String label, EPosLabel poslabel, IModelController mc,
-			IC_ForList ic) {
+	public DTreeFilteredUI(String key, String label, EPosLabel poslabel,
+			IModelController mc, IC_ForList ic) {
 		super(key, label, poslabel, mc, ic);
 		uiControler = ic;
 	}
 
-	List<Object>					fElements;
-	private FilteredTree			packageTable;
-	private Button					buttonAdd;
-	private Button					buttonRemove;
+	List<Object> fElements;
+	private FilteredTree packageTable;
+	private Button buttonAdd;
+	private Button buttonRemove;
 
-	IC_ForList	uiControler;
+	IC_ForList uiControler;
 
 	@Override
 	public Object getVisualValue() {
@@ -72,27 +71,29 @@ public class DTreeFilteredUI extends DAbstractField {
 	}
 
 	@Override
-	public Object createControl(final IPageController fieldController, IFedeFormToolkit toolkit, Object ocontainer,
-			int hspan) {
+	public Object createControl(final IPageController fieldController,
+			IFedeFormToolkit toolkit, Object ocontainer, int hspan) {
 
 		GridData gd;
 		Composite container = (Composite) ocontainer;
-		packageTable = new FilteredTree(container, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
+		packageTable = new FilteredTree(container, SWT.BORDER | SWT.SINGLE
+				| SWT.V_SCROLL, new PatternFilter());
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = 100;
 		gd.verticalSpan = 2;
 		gd.horizontalSpan = hspan - 1;
 		packageTable.setLayoutData(gd);
-		packageTable.getViewer().setContentProvider(uiControler.getContentProvider());
+		packageTable.getViewer().setContentProvider(
+				uiControler.getContentProvider());
 		packageTable.setData(CADSE_MODEL_KEY, this);
 
 		buttonAdd = new Button(container, SWT.PUSH);
 		buttonAdd.setText("Add...");
 		buttonAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(@SuppressWarnings("unused")
-			SelectionEvent e) {
+			public void widgetSelected(
+					@SuppressWarnings("unused") SelectionEvent e) {
 				handleAdd(fieldController);
 			}
 		});
@@ -102,8 +103,8 @@ public class DTreeFilteredUI extends DAbstractField {
 		buttonRemove.setText("Remove...");
 		buttonRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(@SuppressWarnings("unused")
-			SelectionEvent e) {
+			public void widgetSelected(
+					@SuppressWarnings("unused") SelectionEvent e) {
 				ISelection sel = packageTable.getViewer().getSelection();
 				if (sel == null) {
 					return;
@@ -138,7 +139,8 @@ public class DTreeFilteredUI extends DAbstractField {
 	}
 
 	protected void handleAdd(IPageController fieldController) {
-		Object[] ret = uiControler.selectOrCreateValues(packageTable.getShell());
+		Object[] ret = uiControler
+				.selectOrCreateValues(packageTable.getShell());
 		if (ret != null) {
 			String error = uiControler.canAddObject(ret);
 			if (error != null) {
@@ -169,15 +171,15 @@ public class DTreeFilteredUI extends DAbstractField {
 	@Override
 	public Object getUIObject(int index) {
 		switch (index) {
-			case 0:
-				return packageTable;
-			case 1:
-				return buttonAdd;
-			case 2:
-				return buttonRemove;
+		case 0:
+			return packageTable;
+		case 1:
+			return buttonAdd;
+		case 2:
+			return buttonRemove;
 
-			default:
-				break;
+		default:
+			break;
 		}
 		return null;
 	}
@@ -227,6 +229,7 @@ public class DTreeFilteredUI extends DAbstractField {
 
 	@Override
 	public Object[] getSelectedObjects() {
-		return ((StructuredSelection) this.packageTable.getViewer().getSelection()).toArray();
+		return ((StructuredSelection) this.packageTable.getViewer()
+				.getSelection()).toArray();
 	}
 }

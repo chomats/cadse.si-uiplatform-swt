@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class DetailWizardDialog extends WizardDialog {
 
-	private Button	finishButtonOverWrite;
+	private Button finishButtonOverWrite;
 
 	public DetailWizardDialog(Shell parentShell, WizardController newWizard) {
 		super(parentShell, newWizard);
@@ -34,7 +34,8 @@ public class DetailWizardDialog extends WizardDialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		finishButtonOverWrite = createButton(parent, IDialogConstants.FINISH_ID, IDialogConstants.CLOSE_LABEL, true);
+		finishButtonOverWrite = createButton(parent,
+				IDialogConstants.FINISH_ID, IDialogConstants.CLOSE_LABEL, true);
 	}
 
 	@Override

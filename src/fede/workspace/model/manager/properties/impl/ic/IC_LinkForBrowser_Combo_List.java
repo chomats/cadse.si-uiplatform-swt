@@ -60,22 +60,19 @@ import fr.imag.adele.fede.workspace.si.view.View;
  * workspace. suppose que la key est le nom du lien.
  */
 
-public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_Browser_Combo implements
-		IC_ForBrowserOrCombo, IFieldContenProposalProvider, IContentProposalProvider,
-		IC_ForList {
-	
-	
-	
+public class IC_LinkForBrowser_Combo_List extends
+		IC_AbstractTreeDialogForList_Browser_Combo implements
+		IC_ForBrowserOrCombo, IFieldContenProposalProvider,
+		IContentProposalProvider, IC_ForList {
 
-	LinkType	linkType;
-	boolean 	deleteExistingLink = true;
-	
+	LinkType linkType;
+	boolean deleteExistingLink = true;
+
 	@Override
 	public void init() throws CadseException {
 		super.init();
 		linkType = (LinkType) getUIField().getAttributeDefinition();
 	}
-	
 
 	public String toString(Object value) {
 		if (value == null) {
@@ -108,23 +105,22 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 			copy = getUIField().getLogicalWorkspace().createTransaction();
 		} else
 			copy = _uiPlatform.getCopy();
-		
+
 		ItemDelta deltaItem = copy.loadItem(item);
 		if (deleteExistingLink) {
 			List<Link> result = deltaItem.getOutgoingLinks(getLinkType());
 			if (result != null) {
 				for (Link l : result) {
-					((LinkDelta)l).delete();
+					((LinkDelta) l).delete();
 				}
 			}
 		}
 		LinkDelta linkDetla = deltaItem.createLink(getLinkType(), dest);
-		
+
 		if (_uiPlatform.isModification()) {
 			copy.commit();
 			return item.getOutgoingLink(getLinkType(), dest.getId());
-		}
-		else
+		} else
 			return linkDetla;
 	}
 
@@ -172,7 +168,8 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 			}
 		}
 
-		IContentProposal[] retarray = ret.toArray(new IContentProposal[ret.size()]);
+		IContentProposal[] retarray = ret.toArray(new IContentProposal[ret
+				.size()]);
 		Arrays.sort(retarray);
 		return retarray;
 	}
@@ -187,11 +184,13 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	 *            the current position
 	 * @return null or a proposal
 	 */
-	protected Proposal createProposal(Item item, String contents, int position, Object[] items) {
+	protected Proposal createProposal(Item item, String contents, int position,
+			Object[] items) {
 		if (contents != null && !item.getName().startsWith(contents)) {
 			return null;
 		}
-		return new Proposal(item.getName(), item.getName(), item.getName(), 0, item);
+		return new Proposal(item.getName(), item.getName(), item.getName(), 0,
+				item);
 	}
 
 	public int getProposalAcceptanceStyle() {
@@ -212,13 +211,15 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	}
 
 	protected Item getItemFromShortName(String newValue) {
-		Item item = View.getInstance().getWorkspaceDomain().getLogicalWorkspace().getItemByShortName(
-				getLinkType().getDestination(), newValue);
+		Item item = View.getInstance().getWorkspaceDomain()
+				.getLogicalWorkspace().getItemByShortName(
+						getLinkType().getDestination(), newValue);
 		return item;
 	}
 
 	public Object[] getValues() {
-		Collection<Item> values = this.getLinkType().getSelectingDestination(_uiPlatform.getItem(getUIField()));
+		Collection<Item> values = this.getLinkType().getSelectingDestination(
+				_uiPlatform.getItem(getUIField()));
 		return values.toArray();
 	}
 
@@ -280,12 +281,12 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	protected ViewerFilter getFilter() {
 		return null;
 	}
-	
 
 	@Override
 	public void initAfterUI() {
 		super.initAfterUI();
-		if (getUIField() != null && getUIField().getAttributeDefinition() != null) {
+		if (getUIField() != null
+				&& getUIField().getAttributeDefinition() != null) {
 			linkType = (LinkType) getUIField().getAttributeDefinition();
 		}
 	}
@@ -304,7 +305,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 		if (value == null) {
 			throw new CadseIllegalArgumentException("Argument value is null");
 		}
-		
+
 		if (value.equals("<none>")) {
 			if (v != null) {
 				try {
@@ -344,19 +345,22 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 			Item dest = (Item) o;
 			String msg = canCreateLink(source, dest, linkType);
 			if (msg != null) {
-				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, msg, null);
+				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, msg,
+						null);
 			}
 
 			Link l = source.getOutgoingLink(linkType, dest.getId());
 			if (l != null) {
-				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, "Allready exists", null);
+				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+						"Allready exists", null);
 			}
 
 			LinkType inv_lt = linkType.getInverse();
 			if (inv_lt != null) {
 				msg = canCreateLink(dest, source, inv_lt);
 				if (msg != null) {
-					return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, msg, null);
+					return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+							msg, null);
 				}
 			}
 
@@ -373,13 +377,15 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 		}
 
 		if (!source.canCreateLink(lt, dest.getId())) {
-			return "cannot create a link from " + source.getDisplayName() + " to " + dest.getDisplayName()
-					+ " of type " + lt.getDisplayName();
+			return "cannot create a link from " + source.getDisplayName()
+					+ " to " + dest.getDisplayName() + " of type "
+					+ lt.getDisplayName();
 		}
 
 		if (!deleteExistingLink && lt.getMax() != -1) {
 			if (source.getOutgoingItems(lt, false).size() >= lt.getMax()) {
-				return "error maximum cardinality is exceed of link type " + lt.getDisplayName();
+				return "error maximum cardinality is exceed of link type "
+						+ lt.getDisplayName();
 			}
 		}
 		return null;
@@ -390,7 +396,8 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	}
 
 	public boolean moveDown(Object[] object) {
-		List<Object> values = (List<Object>) _uiPlatform.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform
+				.getVisualValue(getUIField());
 		int end = values.size() - 1;
 		for (Object o : object) {
 			Link l = (Link) o;
@@ -400,7 +407,8 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 			}
 			Link l2 = (Link) values.get(index + 1);
 			try {
-				LogicalWorkspaceTransaction t = l.getSource().getLogicalWorkspace().createTransaction();
+				LogicalWorkspaceTransaction t = l.getSource()
+						.getLogicalWorkspace().createTransaction();
 				t.getLink(l).moveAfter(l2);
 				t.commit();
 			} catch (CadseException e) {
@@ -412,7 +420,8 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	}
 
 	public boolean moveUp(Object[] object) {
-		List<Object> values = (List<Object>)  _uiPlatform.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform
+				.getVisualValue(getUIField());
 		for (Object o : object) {
 			Link l = (Link) o;
 			int index = values.indexOf(o);
@@ -421,7 +430,8 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 			}
 			Link l2 = (Link) values.get(index - 1);
 			try {
-				LogicalWorkspaceTransaction t = l.getSource().getLogicalWorkspace().createTransaction();
+				LogicalWorkspaceTransaction t = l.getSource()
+						.getLogicalWorkspace().createTransaction();
 				t.getLink(l).moveBefore(l2);
 				t.commit();
 			} catch (CadseException e) {

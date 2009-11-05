@@ -53,10 +53,9 @@ import fr.imag.adele.cadse.core.ui.UIField;
 
 public class WizardController extends Wizard implements IWorkbenchWizard {
 
-	Pages			pages;
-	IWizardPage[]	copy_pages;
+	Pages pages;
+	IWizardPage[] copy_pages;
 	SWTUIPlatform _uiPlatform;
-	
 
 	public WizardController(SWTUIPlatform uiPlatform) {
 		super();
@@ -81,7 +80,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	@Override
 	public boolean performFinish() {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
 				try {
 					_uiPlatform.doFinish(monitor);
 				} catch (CoreException e) {
@@ -100,14 +100,16 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
 			if (realException instanceof NullPointerException) {
-				MessageDialog.openError(getShell(), "Error", "Null pointeur exception");
+				MessageDialog.openError(getShell(), "Error",
+						"Null pointeur exception");
 				realException.printStackTrace();
 				return false;
 			}
 			String message = realException.getMessage();
 			if (message == null || message.length() == 0) {
 				realException.printStackTrace();
-				message = realException.getClass().getName() + ":" + realException.getStackTrace()[0];
+				message = realException.getClass().getName() + ":"
+						+ realException.getStackTrace()[0];
 			}
 			MessageDialog.openError(getShell(), "Error", message);
 			return false;
@@ -118,7 +120,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	@Override
 	public boolean performCancel() {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException {
 				try {
 					_uiPlatform.doCancel(monitor);
 				} finally {
@@ -132,7 +135,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException
+					.getMessage());
 			return false;
 		}
 		return true;
@@ -157,7 +161,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 			}
 			return copy_pages[nextPage];
 		} catch (Exception realException) {
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException
+					.getMessage());
 			return null;
 		}
 	}
@@ -184,7 +189,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 			}
 			return copy_pages[prevPage];
 		} catch (Exception realException) {
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException
+					.getMessage());
 			return null;
 		}
 	}
@@ -196,7 +202,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	public boolean backPressed() {
 		final int currentPage = findIndex(getContainer().getCurrentPage());
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException {
 				try {
 					_uiPlatform.doPrevPageAction(monitor, currentPage);
 				} catch (Exception e) {
@@ -212,7 +219,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException
+					.getMessage());
 			return false;
 		}
 		return true;
@@ -221,7 +229,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	public boolean nextPressed() {
 		final int currentPage = findIndex(getContainer().getCurrentPage());
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException {
 				try {
 					_uiPlatform.doNextPageAction(monitor, currentPage);
 				} catch (Exception e) {
@@ -237,7 +246,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException
+					.getMessage());
 			return false;
 		}
 		return true;
@@ -251,8 +261,6 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 		}
 		return ((FieldsWizardPage) currentPage).getTitle();
 	}
-
-	
 
 	public String getMessage() {
 		IWizardPage currentPage = getContainer().getCurrentPage();
@@ -286,7 +294,8 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	public void showDetailDialog() {
 		if (getCopy() != null) {
 			try {
-				ShowDetailWLWCDialogPage.openDialog(getCopy(), "Operations detail", null, false);
+				ShowDetailWLWCDialogPage.openDialog(getCopy(),
+						"Operations detail", null, false);
 			} catch (CadseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -35,16 +35,16 @@ import fr.imag.adele.cadse.core.ui.IPageController;
 /** */
 // attribut
 // - string select-title;
-public abstract class IC_AbstractForList extends ICRunningField implements IC_ForList {
-	
-	protected String	title;
-	protected String	message;
+public abstract class IC_AbstractForList extends ICRunningField implements
+		IC_ForList {
 
-	
+	protected String title;
+	protected String message;
+
 	@Override
 	public void init() throws CadseException {
-		title ="TODO";
-		message ="TODO";
+		title = "TODO";
+		message = "TODO";
 	}
 
 	public String canAddObject(Object[] object) {
@@ -66,24 +66,25 @@ public abstract class IC_AbstractForList extends ICRunningField implements IC_Fo
 	protected abstract Object[] getValues();
 
 	public Object[] selectOrCreateValues(Shell parentShell) {
-		ListSelectionDialog lsd = new ListSelectionDialog(parentShell, getValues(), new IStructuredContentProvider() {
+		ListSelectionDialog lsd = new ListSelectionDialog(parentShell,
+				getValues(), new IStructuredContentProvider() {
 
-			public Object[] getElements(Object inputElement) {
-				if (inputElement instanceof Object[]) {
-					return (Object[]) inputElement;
-				}
-				return null;
-			}
+					public Object[] getElements(Object inputElement) {
+						if (inputElement instanceof Object[]) {
+							return (Object[]) inputElement;
+						}
+						return null;
+					}
 
-			public void dispose() {
-			}
+					public void dispose() {
+					}
 
-			public void inputChanged(@SuppressWarnings("unused")
-			Viewer viewer, @SuppressWarnings("unused")
-			Object oldInput, @SuppressWarnings("unused")
-			Object newInput) {
-			}
-		}, getLabelProvider(), message);
+					public void inputChanged(
+							@SuppressWarnings("unused") Viewer viewer,
+							@SuppressWarnings("unused") Object oldInput,
+							@SuppressWarnings("unused") Object newInput) {
+					}
+				}, getLabelProvider(), message);
 		if (title != null) {
 			lsd.setTitle(title);
 		}

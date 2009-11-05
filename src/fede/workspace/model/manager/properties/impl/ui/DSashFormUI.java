@@ -18,26 +18,26 @@ import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
-public class DSashFormUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
+public class DSashFormUI<IC extends RuningInteractionController> extends
+		DAbstractField<IC> {
 
-	
-
-	boolean		horizontal	= true;
-	SashForm	sashForm;
-	int			hone		= 50;
+	boolean horizontal = true;
+	SashForm sashForm;
+	int hone = 50;
 
 	@Override
-	public void createControl(Composite container,	int hspan) {
+	public void createControl(Composite container, int hspan) {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		sashForm = new SashForm((Composite) container, horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
+		sashForm = new SashForm((Composite) container,
+				horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
 		sashForm.setLayoutData(gridData);
 
 		GridLayout gridLayout = new GridLayout(hspan, false);
-		_swtuiplatform.createFieldsControl(_swtuiplatform, sashForm, children, hspan, gridLayout);
+		_swtuiplatform.createFieldsControl(_swtuiplatform, sashForm, children,
+				hspan, gridLayout);
 		sashForm.setWeights(new int[] { hone, 100 - hone });
 		sashForm.setData(UIField.CADSE_MODEL_KEY, _field);
 	}
-
 
 	@Override
 	public Object getVisualValue() {

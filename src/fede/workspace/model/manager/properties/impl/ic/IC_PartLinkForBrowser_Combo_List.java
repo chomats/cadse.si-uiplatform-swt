@@ -32,47 +32,56 @@ import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.view.WSPlugin;
 
-
-
-
-
 /**
  * The Class IC_PartLinkForBrowser_Combo_List.
  * 
  * @generated
  */
-public class IC_PartLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_List {
-	
-	
+public class IC_PartLinkForBrowser_Combo_List extends
+		IC_LinkForBrowser_Combo_List {
+
 	/** The part link type. */
-	LinkType partLinkType ;
-	
+	LinkType partLinkType;
+
 	/** The error message. */
 	String errorMessage;
-	
+
 	/**
 	 * The Constructor.
 	 * 
-	 * @param title the title
-	 * @param message the message
-	 * @param linkType the link type
-	 * @param partLinkType the part link type
-	 * @param errormessage the errormessage
+	 * @param title
+	 *            the title
+	 * @param message
+	 *            the message
+	 * @param linkType
+	 *            the link type
+	 * @param partLinkType
+	 *            the part link type
+	 * @param errormessage
+	 *            the errormessage
 	 * 
 	 * @generated
 	 */
-	
 
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#getTreeContentProvider()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #getTreeContentProvider()
 	 */
 	@Override
 	protected ITreeContentProvider getTreeContentProvider() {
-		return new PartContentProvider(partLinkType, getComparator(), getValues());
+		return new PartContentProvider(partLinkType, getComparator(),
+				getValues());
 	}
 
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#getInputValues()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #getInputValues()
 	 */
 	@Override
 	protected Object getInputValues() {
@@ -80,17 +89,16 @@ public class IC_PartLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_Li
 	}
 
 	/**
-	 * Gets the selectable part parent value. 
-	 * On peut retournner 
-	 * 	- un ItemType -> tous les items de ce type, 
-	 *  - Item[] -> tous ces items
+	 * Gets the selectable part parent value. On peut retournner - un ItemType
+	 * -> tous les items de ce type, - Item[] -> tous ces items
+	 * 
 	 * @see PartContentProvider#getElements(Object)
 	 * @return the selectable part parent value
 	 */
-	protected Object getSelectablePartParentValue(){
+	protected Object getSelectablePartParentValue() {
 		return partLinkType.getSource();
 	}
-	
+
 	/**
 	 * Gets the error message.
 	 * 
@@ -99,7 +107,7 @@ public class IC_PartLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_Li
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-	
+
 	/**
 	 * Gets the part link type.
 	 * 
@@ -117,26 +125,36 @@ public class IC_PartLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_Li
 	protected Comparator<Object> getComparator() {
 		return new Comparator<Object>() {
 			public int compare(Object arg0, Object arg1) {
-				return IC_PartLinkForBrowser_Combo_List.this.toString(arg0).compareTo(IC_PartLinkForBrowser_Combo_List.this.toString(arg1));
+				return IC_PartLinkForBrowser_Combo_List.this.toString(arg0)
+						.compareTo(
+								IC_PartLinkForBrowser_Combo_List.this
+										.toString(arg1));
 			}
 		};
 	}
-	
-	/* (non-Javadoc)
-	 * @see fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List#validate(java.lang.Object[])
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List
+	 * #validate(java.lang.Object[])
 	 */
 	@Override
 	public IStatus validate(Object[] selection) {
 		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
+			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+					errorMessage, null);
 		Object o = selection[0];
-		if (o instanceof Item && ((Item)o).isInstanceOf(partLinkType.getDestination())) {
+		if (o instanceof Item
+				&& ((Item) o).isInstanceOf(partLinkType.getDestination())) {
 			return Status.OK_STATUS;
 		}
-		
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
+
+		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage,
+				null);
 	}
-	
+
 	@Override
 	public ItemType getType() {
 		return CadseGCST.IC_PART_LINK_FOR_BROWSER_COMBO_LIST;

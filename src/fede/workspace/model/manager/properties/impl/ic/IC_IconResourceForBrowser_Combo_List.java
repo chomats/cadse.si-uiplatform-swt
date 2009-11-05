@@ -40,31 +40,32 @@ import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.eclipse.MelusineProjectManager;
 
 /**
- * Interaction Controller for select an icon.
- * The dialog shows the icons image. The icon is a file .gif or .png.
- * The default title and message is 'Select an icon';
- * @author &lt;a href=&quot;mailto:stephane.chomat@imag.fr&quot;&gt;Stephane Chomat&lt;/a&gt;
+ * Interaction Controller for select an icon. The dialog shows the icons image.
+ * The icon is a file .gif or .png. The default title and message is 'Select an
+ * icon';
+ * 
+ * @author &lt;a href=&quot;mailto:stephane.chomat@imag.fr&quot;&gt;Stephane
+ *         Chomat&lt;/a&gt;
  * @version 2.0
  */
-public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrowser_Combo_List {
-	
+public class IC_IconResourceForBrowser_Combo_List extends
+		IC_FileResourceForBrowser_Combo_List {
 
 	static class ImageFilter extends ViewerFilter {
 
-		
-		
 		private ImageLoader imageloader;
 
 		/**
-		 * @param patternString Excluded files will not pass the filter.
-		 * <code>null</code> is allowed if no files should be excluded. 
+		 * @param patternString
+		 *            Excluded files will not pass the filter. <code>null</code>
+		 *            is allowed if no files should be excluded.
 		 * 
 		 */
-		
+
 		public ImageFilter() {
 			imageloader = new ImageLoader();
 		}
-		
+
 		/*
 		 * @see ViewerFilter#select
 		 */
@@ -80,21 +81,22 @@ public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrow
 			}
 			if (element instanceof IFile) {
 				try {
-					imageloader.load(((IFile)element).getLocation().toOSString());
+					imageloader.load(((IFile) element).getLocation()
+							.toOSString());
 					return true;
 				} catch (SWTException e) {
 					return false;
 				} catch (Throwable e) {
 					return false;
 				}
-			} 
+			}
 			if (element instanceof IContainer) {
-				IContainer c  = (IContainer) element;
+				IContainer c = (IContainer) element;
 				try {
 					IResource[] m = c.members();
 					if (m != null)
 						for (IResource e : m) {
-							if (select(viewer,c,e))
+							if (select(viewer, c, e))
 								return true;
 						}
 				} catch (CoreException e) {
@@ -104,14 +106,12 @@ public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrow
 				}
 				return false;
 			}
-			
+
 			return true;
 		}
-		
+
 	}
 
-	
-	
 	@Override
 	protected ViewerFilter getFilter() {
 		return new ImageFilter();
@@ -119,26 +119,27 @@ public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrow
 
 	@Override
 	protected IResource getRootSelect() {
-		//Item manager = (Item) description.getContext();
-	//	Item model = ManagerManager._getWorkspaceModel(manager);
-		return MelusineProjectManager.getProject(_uiPlatform.getItem(getUIField()));
+		// Item manager = (Item) description.getContext();
+		// Item model = ManagerManager._getWorkspaceModel(manager);
+		return MelusineProjectManager.getProject(_uiPlatform
+				.getItem(getUIField()));
 	}
-	
-	
 
 	@Override
 	public ILabelProvider getLabelProvider() {
 		return new WorkbenchLabelProvider() {
 			@Override
-			protected ImageDescriptor decorateImage(ImageDescriptor input, Object element) {
+			protected ImageDescriptor decorateImage(ImageDescriptor input,
+					Object element) {
 				if (element instanceof IFile) {
 					IFile f = (IFile) element;
 					try {
-						return ImageDescriptor.createFromURL(f.getLocationURI().toURL());
+						return ImageDescriptor.createFromURL(f.getLocationURI()
+								.toURL());
 					} catch (MalformedURLException e) {
 					}
 				}
-				
+
 				return super.decorateImage(input, element);
 			}
 		};

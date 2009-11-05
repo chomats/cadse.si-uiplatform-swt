@@ -47,20 +47,19 @@ import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
- * value
- * <li>List&lt;Object&gt;<br>
+ * value <li>List&lt;Object&gt;<br>
  * </li>.
  * 
  * @author chomats
  */
 public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-
-	static boolean	_temp;
+	static boolean _temp;
 
 	private final class MyFilteredTree extends FilteredTree {
 
-		private MyFilteredTree(Composite parent, int style, PatternFilter filter, boolean showfilter) {
+		private MyFilteredTree(Composite parent, int style,
+				PatternFilter filter, boolean showfilter) {
 			super(parent, style, filter);
 		}
 
@@ -86,28 +85,27 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	}
 
 	/** The edit. */
-	private boolean	add_remove	= true;
-	private boolean	update;
-	private boolean	order;
-	private boolean	re_order;
-	private boolean	showfilter;
-
+	private boolean add_remove = true;
+	private boolean update;
+	private boolean order;
+	private boolean re_order;
+	private boolean showfilter;
 
 	/** The elements. */
-	List<Object>			fElements;
+	List<Object> fElements;
 
 	/** The package table. */
-	private FilteredTree	packageTable;
+	private FilteredTree packageTable;
 
 	/** The button add. */
-	private Button			buttonAdd;
+	private Button buttonAdd;
 
 	/** The button remove. */
-	private Button			buttonRemove;
-	private Button			buttonUp;
-	private Button			buttonDown;
-	private Button			buttonReOrder;
-	private Button			buttonEdit;
+	private Button buttonRemove;
+	private Button buttonUp;
+	private Button buttonDown;
+	private Button buttonReOrder;
+	private Button buttonEdit;
 
 	/*
 	 * (non-Javadoc)
@@ -119,12 +117,13 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		return fElements;
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse.core.ui.IPageController,
-	 *      fr.imag.adele.cadse.core.ui.IFedeFormToolkit, java.lang.Object, int)
+	 * @see
+	 * fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse
+	 * .core.ui.IPageController, fr.imag.adele.cadse.core.ui.IFedeFormToolkit,
+	 * java.lang.Object, int)
 	 */
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
@@ -140,8 +139,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		// car la methode create control est appeler dans le contructreur du
 		// parent...
 		_temp = showfilter;
-		packageTable = new MyFilteredTree(container, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL, createPatternFilter(),
-				showfilter);
+		packageTable = new MyFilteredTree(container, SWT.BORDER | SWT.SINGLE
+				| SWT.V_SCROLL, createPatternFilter(), showfilter);
 
 		if (getPage().isLast(_field.getAttributeDefinition())) {
 			gd = new GridData(GridData.FILL_BOTH);
@@ -162,7 +161,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonAdd.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonAdd = null;
@@ -177,7 +176,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 				buttonRemove.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ISelection sel = packageTable.getViewer().getSelection();
+						ISelection sel = packageTable.getViewer()
+								.getSelection();
 						if (sel == null) {
 							return;
 						}
@@ -185,7 +185,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonRemove.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonRemove = null;
@@ -202,7 +202,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 				buttonUp.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ISelection sel = packageTable.getViewer().getSelection();
+						ISelection sel = packageTable.getViewer()
+								.getSelection();
 						if (sel == null) {
 							return;
 						}
@@ -210,7 +211,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonUp.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonUp = null;
@@ -225,7 +226,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 				buttonDown.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ISelection sel = packageTable.getViewer().getSelection();
+						ISelection sel = packageTable.getViewer()
+								.getSelection();
 						if (sel == null) {
 							return;
 						}
@@ -233,7 +235,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonDown.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonDown = null;
@@ -249,7 +251,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 				buttonReOrder.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ISelection sel = packageTable.getViewer().getSelection();
+						ISelection sel = packageTable.getViewer()
+								.getSelection();
 						if (sel == null) {
 							return;
 						}
@@ -257,7 +260,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonReOrder.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonReOrder = null;
@@ -272,7 +275,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 				buttonEdit.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ISelection sel = packageTable.getViewer().getSelection();
+						ISelection sel = packageTable.getViewer()
+								.getSelection();
 						if (sel == null) {
 							return;
 						}
@@ -280,7 +284,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 					}
 				});
 				buttonEdit.addDisposeListener(new DisposeListener() {
-					
+
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						buttonEdit = null;
@@ -319,7 +323,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 			if (value != null) {
 				fElements.set(index, value);
 				updateValue();
-				_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field,
+						getVisualValue());
 			}
 		}
 
@@ -379,7 +384,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 			}
 			fElements.addAll(Arrays.asList(ret));
 			setVisualValue(fElements);
-			_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
+			_swtuiplatform.broadcastValueChanged(_page, _field,
+					getVisualValue());
 		}
 	}
 
@@ -399,7 +405,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	@Override
 	public void updateValue() {
-		ITreeSelection sel = (ITreeSelection) packageTable.getViewer().getSelection();
+		ITreeSelection sel = (ITreeSelection) packageTable.getViewer()
+				.getSelection();
 		super.updateValue();
 		packageTable.getViewer().setSelection(sel, true);
 	}
@@ -455,7 +462,6 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		}
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -502,7 +508,9 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fede.workspace.model.manager.properties.impl.ui.DAbstractField#setVisible(boolean)
+	 * @see
+	 * fede.workspace.model.manager.properties.impl.ui.DAbstractField#setVisible
+	 * (boolean)
 	 */
 	@Override
 	public void setVisible(boolean v) {
@@ -520,18 +528,16 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 			buttonUp.setEnabled(v);
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		super.dispose();
 	}
 
-
 	public ItemType getType() {
 		return CadseGCST.DLIST;
 	}
-
 
 	@Override
 	public Control getMainControl() {
@@ -540,8 +546,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	@Override
 	public Object[] getSelectedObjects() {
-		return ((StructuredSelection) this.packageTable.getViewer().getSelection()).toArray();
+		return ((StructuredSelection) this.packageTable.getViewer()
+				.getSelection()).toArray();
 	}
-
 
 }
