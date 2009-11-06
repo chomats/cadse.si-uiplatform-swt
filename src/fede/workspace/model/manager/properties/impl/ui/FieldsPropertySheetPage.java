@@ -18,14 +18,9 @@
  */
 package fede.workspace.model.manager.properties.impl.ui;
 
-import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -41,8 +36,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ChangeID;
-import fr.imag.adele.cadse.core.DefaultItemManager;
-import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.Link;
@@ -50,14 +43,12 @@ import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.WorkspaceListener;
 import fr.imag.adele.cadse.core.delta.ImmutableItemDelta;
 import fr.imag.adele.cadse.core.delta.ImmutableWorkspaceDelta;
+import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.ui.IFieldDescription;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
-import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseView;
-import fr.imag.adele.fede.workspace.si.view.View;
 
 /**
  * The standard implementation of property sheet page which presents a table of
@@ -130,14 +121,12 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		if (_initListener) {
 			return;
 		}
-		if (View.getInstance() == null) {
+		if (CadseCore.getLogicalWorkspace() == null) {
 			return;
 		}
-		if (View.getInstance().getWorkspaceLogique() == null) {
-			return;
-		}
-		View.getInstance().getWorkspaceLogique().addListener(_listener,
+		CadseCore.getLogicalWorkspace().addListener(_listener,
 				ChangeID.toFilter(ChangeID.DELETE_ITEM));
+		_initListener = true;
 	}
 
 	protected Composite createEmptyComposite(Composite parent) {
@@ -262,8 +251,8 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		pageBook.dispose();
 
 		_swtuiPlatform.dispose();
-		View.getInstance().getWorkspaceDomain().getLogicalWorkspace()
-				.removeListener(_listener);
+		if (CadseCore.getLogicalWorkspace() != null)
+			CadseCore.getLogicalWorkspace().removeListener(_listener);
 	}
 
 }

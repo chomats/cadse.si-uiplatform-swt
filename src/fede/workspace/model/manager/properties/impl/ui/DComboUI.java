@@ -28,13 +28,7 @@ import org.eclipse.swt.widgets.Control;
 
 import fede.workspace.model.manager.properties.impl.ic.IC_ForBrowserOrCombo;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
@@ -53,7 +47,7 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
 		GridData gd;
-		Composite container = (Composite) ocontainer;
+		Composite container = ocontainer;
 		attributWidget = new CCombo(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
@@ -92,6 +86,7 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends
 		return values[index];
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
 			return;

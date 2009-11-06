@@ -39,12 +39,10 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import fede.workspace.eclipse.MelusineProjectManager;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.impl.CadseIllegalArgumentException;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
  * ic IInteractiveListController DefaultResourceListInteractiveController {
@@ -133,7 +131,7 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends
 	protected IResource getRootSelect() {
 		if (selectRoot >= 1) {
 			Item theItem = _uiPlatform.getItem(getUIField());
-			IResource r = MelusineProjectManager.getResource(theItem);
+			IResource r = theItem.getMainMappingContent(IResource.class);
 			if (r == null) {
 				throw new CadseIllegalArgumentException(
 						"Cannot find the resource form the item {0}.", theItem

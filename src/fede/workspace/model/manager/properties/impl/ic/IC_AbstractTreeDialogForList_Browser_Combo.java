@@ -28,11 +28,6 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.util.Convert;
 
 /** */
 

@@ -22,6 +22,7 @@ package fede.workspace.model.manager.properties.impl.ui;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 

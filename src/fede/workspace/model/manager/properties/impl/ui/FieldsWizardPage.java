@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
  */

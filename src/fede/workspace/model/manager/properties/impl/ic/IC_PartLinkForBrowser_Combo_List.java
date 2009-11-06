@@ -25,12 +25,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fede.workspace.tool.view.WSPlugin;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
 
 /**
  * The Class IC_PartLinkForBrowser_Combo_List.
@@ -143,7 +141,7 @@ public class IC_PartLinkForBrowser_Combo_List extends
 	@Override
 	public IStatus validate(Object[] selection) {
 		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					errorMessage, null);
 		Object o = selection[0];
 		if (o instanceof Item
@@ -151,7 +149,7 @@ public class IC_PartLinkForBrowser_Combo_List extends
 			return Status.OK_STATUS;
 		}
 
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage,
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, errorMessage,
 				null);
 	}
 

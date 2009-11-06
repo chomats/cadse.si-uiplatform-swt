@@ -27,9 +27,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import fede.workspace.tool.view.WSPlugin;
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
 
 /**
  * Attributes : string link-type; string title-select ;
@@ -49,7 +47,7 @@ public class IC_FileResourceForBrowser_Combo_List extends
 	@Override
 	public IStatus validate(Object[] selection) {
 		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					"Select one object only", null);
 		Object o = selection[0];
 		if (o instanceof IFile) {
@@ -58,7 +56,7 @@ public class IC_FileResourceForBrowser_Combo_List extends
 		if (selectfolder && o instanceof IFolder) {
 			return Status.OK_STATUS;
 		}
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 				"Select an icon file", null);
 	}
 

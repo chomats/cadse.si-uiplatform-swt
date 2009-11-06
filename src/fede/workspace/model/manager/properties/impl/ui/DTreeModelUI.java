@@ -19,19 +19,13 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import fede.workspace.model.manager.properties.impl.ic.IC_TreeModel;
 import fede.workspace.tool.view.node.FilteredItemNode;
-import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.IItemNode;
-import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIField;
 
-public class DTreeModelUI extends DAbstractField implements
-		ISelectionChangedListener, SelectionListener, ICheckStateListener,
-		TreeListener {
+public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC>
+		implements ISelectionChangedListener, SelectionListener,
+		ICheckStateListener, TreeListener {
 
 	private boolean _useCheckBox = true;
 	private Tree _treeControl;
@@ -46,41 +40,17 @@ public class DTreeModelUI extends DAbstractField implements
 		_rootNode = null;
 	}
 
-	public DTreeModelUI(CompactUUID uuid, String key, String label,
-			EPosLabel poslabel, IModelController mc, IC_TreeModel ic,
-			boolean checkBox) {
-		super(uuid, key, label, poslabel, mc, ic);
-		this._useCheckBox = checkBox;
-	}
-
 	@Override
-	public IC_TreeModel getInteractionController() {
-		return (IC_TreeModel) super.getInteractionController();
-	}
-
-	public DTreeModelUI(String key, String label, EPosLabel poslabel,
-			IModelController mc, RuningInteractionController ic,
-			boolean checkBox) {
-		super(key, label, poslabel, mc, ic);
-		this._useCheckBox = checkBox;
-	}
-
-	public DTreeModelUI(CompactUUID uuid, String key) {
-		super(uuid, key);
-	}
-
-	@Override
-	public Object createControl(IPageController globalUIController,
-			IFedeFormToolkit toolkit, Object container, int hspan) {
+	public void createControl(Composite container, int hspan) {
 
 		int style = SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL;
 		if (_useCheckBox) {
 			style |= SWT.CHECK;
 		}
-		_treeControl = new Tree((Composite) container, style);
+		_treeControl = new Tree(container, style);
 		_treeControl.addSelectionListener(this);
 		_treeControl.addTreeListener(this);
-		_treeControl.setData(CADSE_MODEL_KEY, this);
+		_treeControl.setData(UIField.CADSE_MODEL_KEY, _field);
 		int fillkind = GridData.FILL_BOTH;
 		// /if (fillBoth)
 		// fillkind = GridData.FILL_BOTH;
@@ -121,22 +91,14 @@ public class DTreeModelUI extends DAbstractField implements
 		_treeViewer.setUseHashlookup(true);
 
 		_treeViewer.addSelectionChangedListener(this);
-		_rootNode = getInteractionController().getOrCreateFilteredNode();
+		_rootNode = _ic.getOrCreateFilteredNode();
 		_rootNode.setTreeViewer(_treeViewer);
 
-		_treeViewer.setContentProvider(getInteractionController()
-				.getContentProvider());
-		_treeViewer.setLabelProvider(getInteractionController()
-				.getLabelProvider());
+		_treeViewer.setContentProvider(_ic.getContentProvider());
+		_treeViewer.setLabelProvider(_ic.getLabelProvider());
 		_treeViewer.setInput(_rootNode);
 
 		createContextMenu(_treeControl);
-		return container;
-	}
-
-	@Override
-	public Object getUIObject(int index) {
-		return _treeControl;
 	}
 
 	@Override
@@ -175,7 +137,7 @@ public class DTreeModelUI extends DAbstractField implements
 		}
 		TreeItem item = (TreeItem) event.item;
 		if (item != null) {
-			getInteractionController().select(item.getData());
+			_ic.select(item.getData());
 		}
 	}
 
@@ -186,7 +148,7 @@ public class DTreeModelUI extends DAbstractField implements
 	 * @return Un message d'erreur si impossible or null.
 	 */
 	protected String canObjectSelected(Object object) {
-		return getInteractionController().canObjectSelected(object);
+		return _ic.canObjectSelected(object);
 	}
 
 	/**
@@ -196,23 +158,18 @@ public class DTreeModelUI extends DAbstractField implements
 	 * @return Un message d'erreur si impossible or null.
 	 */
 	protected String canObjectDeselected(Object object) {
-		return getInteractionController().canObjectDeselected(object);
+		return _ic.canObjectDeselected(object);
 	}
 
 	protected void objectSelected(Object added) {
-		_swtuiplatform.broadcastSubValueAdded(this, added);
+		_swtuiplatform.broadcastSubValueAdded(_page, _field, added);
 	}
 
 	protected void objectDeselected(Object removed) {
-		_swtuiplatform.broadcastSubValueRemoved(this, removed);
+		_swtuiplatform.broadcastSubValueRemoved(_page, _field, removed);
 	}
 
 	@Override
-	public void internalSetEditable(boolean v) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue instanceof FilteredItemNode) {
 			_rootNode = (FilteredItemNode) visualValue;
@@ -221,18 +178,10 @@ public class DTreeModelUI extends DAbstractField implements
 		}
 	}
 
-	public ItemType getType() {
-		return CadseGCST.DISPLAY;
-	}
-
 	public void selectionChanged(SelectionChangedEvent event) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void checkStateChanged(CheckStateChangedEvent event) {
@@ -246,14 +195,12 @@ public class DTreeModelUI extends DAbstractField implements
 
 	public void treeCollapsed(TreeEvent e) {
 		if (e.item.getData() != null) {
-			getInteractionController().treeCollapsed(e.item.getData());
+			_ic.treeCollapsed(e.item.getData());
 		}
 
 	}
 
 	public void treeExpanded(TreeEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void selectNode(IItemNode n) {

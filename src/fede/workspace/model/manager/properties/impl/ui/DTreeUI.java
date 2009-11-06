@@ -50,7 +50,7 @@ public class DTreeUI extends DAbstractField<IC_Tree> {
 
 	@Override
 	public void createControl(Composite container, int hspan) {
-		_treeControl = new Tree((Composite) container, SWT.H_SCROLL
+		_treeControl = new Tree(container, SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
@@ -172,6 +172,7 @@ public class DTreeUI extends DAbstractField<IC_Tree> {
 		this._treeControl.setEnabled(v);
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		_rootNodes = (Object[]) visualValue;
 		_treeControl.removeAll();

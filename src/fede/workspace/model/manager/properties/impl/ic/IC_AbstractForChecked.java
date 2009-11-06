@@ -23,9 +23,8 @@ package fede.workspace.model.manager.properties.impl.ic;
 
 import org.eclipse.swt.graphics.Image;
 
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.view.WSPlugin;
+import fr.imag.adele.cadse.core.Item;
 
 public abstract class IC_AbstractForChecked extends ICRunningField implements
 		IC_ForCheckedViewer {
@@ -37,7 +36,7 @@ public abstract class IC_AbstractForChecked extends ICRunningField implements
 
 	public String toStringFromObject(Object obj) {
 		Item item = (Item) obj;
-		return WSPlugin.getManager(item).getDisplayName(item);
+		return item.getDisplayName();
 	}
 
 	public void edit(Object o) {

@@ -22,14 +22,11 @@ import java.text.MessageFormat;
 
 import org.eclipse.swt.graphics.Image;
 
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.LinkType;
-import fr.imag.adele.cadse.core.CadseDomain;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.Messages;
 import fede.workspace.tool.view.WSPlugin;
-import fede.workspace.tool.view.dialog.create.InteractifTreeController;
+import fr.imag.adele.cadse.core.CadseDomain;
+import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.core.LinkType;
 
 public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 

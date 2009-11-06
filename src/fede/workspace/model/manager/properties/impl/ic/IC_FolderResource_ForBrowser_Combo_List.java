@@ -26,9 +26,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ui.IPageController;
-
 /**
  * Attributes : string link-type; string title-select ;
  */

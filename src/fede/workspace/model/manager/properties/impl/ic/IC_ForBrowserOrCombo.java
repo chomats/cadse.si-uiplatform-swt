@@ -20,8 +20,6 @@ package fede.workspace.model.manager.properties.impl.ic;
 
 import org.eclipse.swt.widgets.Shell;
 
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-
 /**
  * This interface is used by the DBrowserUI to get the values to show, display a
  * dialogue to select or create a new value, to transform object in string

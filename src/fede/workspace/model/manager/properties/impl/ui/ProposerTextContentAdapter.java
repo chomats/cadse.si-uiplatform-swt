@@ -25,7 +25,6 @@ import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.swt.widgets.Control;
 
 import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 final class ProposerTextContentAdapter extends TextContentAdapter {

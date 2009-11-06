@@ -133,7 +133,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		add_remove = _field.getAttribute(CadseGCST.DLIST_at_EDITABLE_BUTTON_);
 		update = _field.getAttribute(CadseGCST.DLIST_at_UPDATE_BUTTON_);
 		GridData gd;
-		Composite container = (Composite) ocontainer;
+		Composite container = ocontainer;
 		// IMPORTANT : impossible sinon de changer la valeur de
 		// showFilterControls dans un constructeur.
 		// car la methode create control est appeler dans le contructreur du
@@ -442,6 +442,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		return _ic.getLabelProvider();
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
 			visualValue = new ArrayList<Object>();

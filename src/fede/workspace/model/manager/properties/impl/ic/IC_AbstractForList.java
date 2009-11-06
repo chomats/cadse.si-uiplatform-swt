@@ -26,11 +26,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.impl.ui.ic.IC_Abstract;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 /** */
 // attribut

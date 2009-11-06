@@ -37,23 +37,19 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 import fede.workspace.model.manager.properties.impl.ui.IFieldContenProposalProvider;
 import fede.workspace.model.manager.properties.impl.ui.Proposal;
-import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ItemState;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.delta.ItemDelta;
 import fr.imag.adele.cadse.core.delta.LinkDelta;
+import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.impl.CadseIllegalArgumentException;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.ui.Pages;
-import fr.imag.adele.fede.workspace.si.view.View;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
 
 /**
  * String link-browser-item-type, nom du type d'item � selection dans le
@@ -90,6 +86,7 @@ public class IC_LinkForBrowser_Combo_List extends
 		return ((Item) value).getName();
 	}
 
+	@Override
 	protected Object createGoodObject(Object object) {
 		try {
 			return createLink(_uiPlatform.getItem(getUIField()), (Item) object);
@@ -211,9 +208,8 @@ public class IC_LinkForBrowser_Combo_List extends
 	}
 
 	protected Item getItemFromShortName(String newValue) {
-		Item item = View.getInstance().getWorkspaceDomain()
-				.getLogicalWorkspace().getItemByShortName(
-						getLinkType().getDestination(), newValue);
+		Item item = CadseCore.getLogicalWorkspace().getItemByShortName(
+				getLinkType().getDestination(), newValue);
 		return item;
 	}
 
@@ -345,13 +341,13 @@ public class IC_LinkForBrowser_Combo_List extends
 			Item dest = (Item) o;
 			String msg = canCreateLink(source, dest, linkType);
 			if (msg != null) {
-				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, msg,
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, msg,
 						null);
 			}
 
 			Link l = source.getOutgoingLink(linkType, dest.getId());
 			if (l != null) {
-				return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 						"Allready exists", null);
 			}
 
@@ -359,7 +355,7 @@ public class IC_LinkForBrowser_Combo_List extends
 			if (inv_lt != null) {
 				msg = canCreateLink(dest, source, inv_lt);
 				if (msg != null) {
-					return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 							msg, null);
 				}
 			}
@@ -395,6 +391,7 @@ public class IC_LinkForBrowser_Combo_List extends
 		return CadseGCST.IC_LINK_FOR_BROWSER_COMBO_LIST;
 	}
 
+	@Override
 	public boolean moveDown(Object[] object) {
 		List<Object> values = (List<Object>) _uiPlatform
 				.getVisualValue(getUIField());
@@ -419,6 +416,7 @@ public class IC_LinkForBrowser_Combo_List extends
 		return true;
 	}
 
+	@Override
 	public boolean moveUp(Object[] object) {
 		List<Object> values = (List<Object>) _uiPlatform
 				.getVisualValue(getUIField());

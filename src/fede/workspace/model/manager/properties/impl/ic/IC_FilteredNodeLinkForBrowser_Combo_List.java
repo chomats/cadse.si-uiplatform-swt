@@ -18,20 +18,14 @@
  */
 package fede.workspace.model.manager.properties.impl.ic;
 
-import java.util.Comparator;
-import java.util.HashMap;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
 
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.LinkType;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fede.workspace.tool.view.WSPlugin;
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
+import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
 
 /**

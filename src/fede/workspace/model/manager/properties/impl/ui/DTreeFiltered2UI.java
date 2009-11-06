@@ -19,7 +19,6 @@
 package fede.workspace.model.manager.properties.impl.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -33,10 +32,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 
 import fede.workspace.model.manager.properties.impl.ic.IC_ForList;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
  * value <li>List&lt;Object&gt;<br>
@@ -45,19 +41,11 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  * @author chomats
  * 
  */
-public class DTreeFiltered2UI extends DAbstractField {
-
-	public DTreeFiltered2UI(String key, String label, EPosLabel poslabel,
-			IModelController mc, IC_ForList ic) {
-		super(key, label, poslabel, mc, ic);
-		uiControler = ic;
-	}
+public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	List<Object> fElements;
 
 	private FilteredTree fFilteredTree;
-
-	IC_ForList uiControler;
 
 	@Override
 	public Object getVisualValue() {
@@ -65,11 +53,10 @@ public class DTreeFiltered2UI extends DAbstractField {
 	}
 
 	@Override
-	public Object createControl(final IPageController fieldController,
-			IFedeFormToolkit toolkit, Object container, int hspan) {
+	public void createControl(Composite container, int hspan) {
 
 		GridData gd;
-		fFilteredTree = new FilteredTree((Composite) container, SWT.BORDER
+		fFilteredTree = new FilteredTree(container, SWT.BORDER
 				| SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -77,47 +64,16 @@ public class DTreeFiltered2UI extends DAbstractField {
 		gd.verticalSpan = 2;
 		gd.horizontalSpan = hspan - 1;
 		fFilteredTree.setLayoutData(gd);
-		fFilteredTree.getViewer().setContentProvider(
-				uiControler.getContentProvider());
-		fFilteredTree.setData(CADSE_MODEL_KEY, this);
-		return container;
+		fFilteredTree.getViewer().setContentProvider(_ic.getContentProvider());
+		fFilteredTree.setData(UIField.CADSE_MODEL_KEY, _field);
 
-	}
-
-	protected void handleRemove(Object[] sel, IPageController fieldController) {
-		String error = uiControler.canRemoveObject(sel);
-		if (error != null) {
-			fieldController.setMessage(error, IPageController.ERROR);
-			return;
-		}
-		Object[] removedObj = uiControler.removeObject(sel);
-		for (Object obj : removedObj) {
-			fElements.remove(obj);
-		}
-		setVisualValue(fElements);
-		fieldController.broadcastValueChanged(this, getVisualValue());
-	}
-
-	protected void handleAdd(IPageController fieldController) {
-		Object[] ret = uiControler.selectOrCreateValues(fFilteredTree
-				.getShell());
-		if (ret != null) {
-			String error = uiControler.canAddObject(ret);
-			if (error != null) {
-				fieldController.setMessage(error, IPageController.ERROR);
-				return;
-			}
-			ret = uiControler.transAndAddObject(ret);
-			fElements.addAll(Arrays.asList(ret));
-			setVisualValue(fElements);
-			fieldController.broadcastValueChanged(this, getVisualValue());
-		}
 	}
 
 	protected ILabelProvider getLabelProvider() {
-		return uiControler.getLabelProvider();
+		return _ic.getLabelProvider();
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
 			visualValue = new ArrayList<Object>();
@@ -129,35 +85,19 @@ public class DTreeFiltered2UI extends DAbstractField {
 	}
 
 	@Override
-	public Object getUIObject(int index) {
-		switch (index) {
-		case 0:
-			return fFilteredTree;
-		default:
-			break;
-		}
-		return null;
-	}
-
-	@Override
 	public void setEnabled(boolean v) {
 		fFilteredTree.setEnabled(v);
 	}
 
 	@Override
-	public void internalSetEditable(boolean v) {
+	public void setEditable(boolean v) {
 		fFilteredTree.setEnabled(v);
 	}
 
 	@Override
-	public void internalSetVisible(boolean v) {
-		super.internalSetVisible(v);
+	public void setVisible(boolean v) {
+		super.setVisible(v);
 		fFilteredTree.setVisible(v);
-	}
-
-	@Override
-	public int getHSpan() {
-		return 2;
 	}
 
 	public ItemType getType() {

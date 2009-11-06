@@ -19,7 +19,6 @@
 package fede.workspace.model.manager.properties.impl.ic;
 
 import java.io.File;
-import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -38,9 +37,7 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 public class IC_ForChooseFile extends ICRunningField {
 
@@ -72,7 +69,7 @@ public class IC_ForChooseFile extends ICRunningField {
 		dialog.setText(msg);
 		String[] fileFilter = getFileFilter();
 		if (fileFilter != null)
-			dialog.setFilterExtensions(fileFilter); //$NON-NLS-1$
+			dialog.setFilterExtensions(fileFilter); 
 		if (file != null)
 			dialog.setFilterPath(file.getAbsolutePath());
 		String res = dialog.open();

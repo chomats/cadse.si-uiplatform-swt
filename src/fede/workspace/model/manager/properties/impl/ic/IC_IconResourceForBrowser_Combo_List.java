@@ -35,10 +35,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fede.workspace.eclipse.MelusineProjectManager;
-
 /**
  * Interaction Controller for select an icon. The dialog shows the icons image.
  * The icon is a file .gif or .png. The default title and message is 'Select an
@@ -121,8 +117,8 @@ public class IC_IconResourceForBrowser_Combo_List extends
 	protected IResource getRootSelect() {
 		// Item manager = (Item) description.getContext();
 		// Item model = ManagerManager._getWorkspaceModel(manager);
-		return MelusineProjectManager.getProject(_uiPlatform
-				.getItem(getUIField()));
+		return _uiPlatform.getItem(getUIField()).getMainMappingContent(
+				IResource.class);
 	}
 
 	@Override

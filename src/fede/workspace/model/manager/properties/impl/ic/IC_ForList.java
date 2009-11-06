@@ -22,8 +22,6 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Shell;
 
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-
 public interface IC_ForList extends IC_TitleMessage {
 
 	String canRemoveObject(Object[] object);

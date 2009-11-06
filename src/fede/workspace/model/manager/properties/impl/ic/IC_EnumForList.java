@@ -23,12 +23,9 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 
-import fr.imag.adele.cadse.core.CompactUUID;
-import fr.imag.adele.cadse.core.Item;
+import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.CadseGCST;
 
 public class IC_EnumForList extends IC_AbstractForList {
 

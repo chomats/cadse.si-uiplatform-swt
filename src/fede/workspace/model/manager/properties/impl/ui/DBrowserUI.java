@@ -18,6 +18,7 @@
  */
 package fede.workspace.model.manager.properties.impl.ui;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
@@ -41,15 +42,13 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistField;
 
 import fede.workspace.model.manager.properties.impl.ic.IC_ForBrowserOrCombo;
-import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.util.Convert;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
 
 /**
  * Display a browser field which has a text field and a button "...".
@@ -266,6 +265,7 @@ public class DBrowserUI extends DAbstractField implements
 		_textControl.setEnabled(v);
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		_value = visualValue;
 		if (_textControl == null || _textControl.isDisposed())
@@ -297,8 +297,9 @@ public class DBrowserUI extends DAbstractField implements
 			_swtuiplatform.setMessage("Internal error "
 					+ e.getClass().getCanonicalName() + ": " + e.getMessage(),
 					IPageController.ERROR);
-			WSPlugin.log(new Status(Status.ERROR, WSPlugin.PLUGIN_ID,
-					"Internal error in DBrowwserUI.toString", e));
+			Activator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+							"Internal error in DBrowwserUI.toString", e));
 		}
 		return ret;
 	}

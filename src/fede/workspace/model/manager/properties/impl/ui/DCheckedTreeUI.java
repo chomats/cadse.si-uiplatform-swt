@@ -446,6 +446,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 
 	}
 
+	@Override
 	public void setVisualValue(final Object visualValue,
 			boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {

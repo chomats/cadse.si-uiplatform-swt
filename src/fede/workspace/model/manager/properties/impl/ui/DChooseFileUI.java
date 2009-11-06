@@ -80,7 +80,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends
 	@Override
 	public void createControl(Composite parent, int hspan) {
 
-		Composite composite = (Composite) parent;
+		Composite composite = parent;
 		GridData gd = new GridData(GridData.FILL, GridData.CENTER, false,
 				false, hspan - 1, getVSpan());
 		gd.grabExcessHorizontalSpace = true;
@@ -261,6 +261,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends
 		}
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		setFilePath((IPath) visualValue);
 

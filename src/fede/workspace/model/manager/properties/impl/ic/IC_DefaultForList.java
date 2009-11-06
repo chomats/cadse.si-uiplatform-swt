@@ -31,15 +31,10 @@ import org.eclipse.swt.widgets.Shell;
 
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
-import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.CheckStatus;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.attribute.ListAttributeType;
-import fr.imag.adele.cadse.core.impl.ui.ic.IC_Abstract;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.util.Convert;
 
 /**
  * manage a list of string
@@ -151,6 +146,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements
 		return null;
 	}
 
+	@Override
 	public Object edit(Shell shell, Object value, int index) {
 		return null;
 	}

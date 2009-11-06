@@ -21,16 +21,14 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 
 import org.eclipse.swt.widgets.Composite;
 
-import fede.workspace.model.manager.properties.impl.ic.ICRunningField;
 import fede.workspace.model.manager.properties.impl.ui.SWTUIPlatform;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
 /**

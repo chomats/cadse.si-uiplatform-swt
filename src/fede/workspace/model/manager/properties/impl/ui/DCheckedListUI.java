@@ -87,7 +87,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 	public void createControl(Composite container, int hspan) {
 		GridData gd;
 
-		_treeObjects = new Tree((Composite) container, SWT.CHECK | SWT.BORDER
+		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER
 				| SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
@@ -105,7 +105,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 		setSource(_ic.getSources());
 
 		Button selectAll = _swtuiplatform.getToolkit().createButton(
-				(Composite) container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
+				container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		selectAll.setLayoutData(gd);
 		selectAll.addSelectionListener(new SelectionListener() {
@@ -119,7 +119,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 		selectAll.setData(UIField.CADSE_MODEL_KEY, _field);
 
 		Button deselectAll = _swtuiplatform.getToolkit().createButton(
-				(Composite) container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
+				container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		deselectAll.setLayoutData(gd);
 		deselectAll.addSelectionListener(new SelectionListener() {
@@ -134,7 +134,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 
 		if (edit) {
 			Button editButton = _swtuiplatform.getToolkit().createButton(
-					(Composite) container, UIField.EDIT_BUTTON, SWT.PUSH);
+					container, UIField.EDIT_BUTTON, SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			editButton.setLayoutData(gd);
 			editButton.addSelectionListener(new SelectionListener() {
@@ -320,6 +320,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 
 	}
 
+	@Override
 	public void setVisualValue(final Object visualValue,
 			boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {

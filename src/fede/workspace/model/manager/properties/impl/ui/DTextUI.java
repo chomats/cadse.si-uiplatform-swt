@@ -36,18 +36,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
-import fr.imag.adele.cadse.core.util.Convert;
 
 public class DTextUI extends DAbstractField implements IContentProposalListener {
 
@@ -81,7 +73,7 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 			style |= SWT.READ_ONLY;
 		}
 
-		_textControl = (Text) _swtuiplatform.getToolkit().createText(
+		_textControl = _swtuiplatform.getToolkit().createText(
 				ocontainer, "", style);
 		_textControl.setData(UIField.CADSE_MODEL_KEY, _field);
 		if (_field.isEditable() && proposer != null) {
@@ -240,6 +232,7 @@ public class DTextUI extends DAbstractField implements IContentProposalListener 
 		sendModificationIfNeed(_currentValueToSend, false);
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (!_swtuiplatform.isDisposed()) {
 			return;

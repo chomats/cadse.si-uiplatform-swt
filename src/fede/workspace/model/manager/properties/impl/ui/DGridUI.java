@@ -6,17 +6,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 public class DGridUI extends DAbstractField {
 
@@ -49,6 +41,7 @@ public class DGridUI extends DAbstractField {
 	public void setEditable(boolean v) {
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 	}
 

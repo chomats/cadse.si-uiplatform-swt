@@ -49,12 +49,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import fede.workspace.tool.view.dialog.create.InteractifTreeController;
+import fede.workspace.model.manager.properties.impl.ic.IC_Tree;
+import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -62,20 +59,12 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  * OR with the extension that matches the expected one (f).
  */
 
-public class DTableUI extends DAbstractField {
+public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 	private String[] columns;
-
-	public DTableUI(String key, String label, EPosLabel poslabel,
-			IModelController mc, IC_Tree ic, String[] columns) {
-		super(key, label, poslabel, mc, ic);
-		action = ic;
-		this.columns = columns;
-	}
 
 	public static final String TABLE_COLUMNS = "table-columns";
 	private Table table;
 	private Object[] root;
-	IC_Tree action;
 	TableViewer viewer;
 	Map<String, String> values = new HashMap<String, String>();
 	int newValueIndex = 0;
@@ -83,9 +72,13 @@ public class DTableUI extends DAbstractField {
 
 	ITableUserController uctable;
 
-	public Object createControl(final IPageController globalUIController,
-			IFedeFormToolkit toolkit, Object container, int hspan) {
-		table = new Table((Composite) container, SWT.H_SCROLL | SWT.V_SCROLL
+	@Override
+	public void init() throws CadseException {
+	}
+
+	@Override
+	public void createControl(Composite container, int hspan) {
+		table = new Table(container, SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.BORDER | SWT.VIRTUAL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
@@ -295,8 +288,6 @@ public class DTableUI extends DAbstractField {
 		viewer.setInput(values);
 		viewer.setCellEditors(uctable.getCellsEditor());
 		viewer.setCellModifier(uctable.getCellModifier());
-
-		return container;
 	}
 
 	IStructuredContentProvider getContentProvider() {
@@ -357,10 +348,12 @@ public class DTableUI extends DAbstractField {
 		return selection.size() == 1 ? selection.getFirstElement() : null;
 	}
 
+	@Override
 	public Object getVisualValue() {
 		return root;
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		// root = (Object[]) visualValue;
 		// table.removeAll();
@@ -368,30 +361,32 @@ public class DTableUI extends DAbstractField {
 	}
 
 	private String getText(Object obj) {
-		return action.getText(obj);
+		return _ic.getText(obj);
 	}
 
 	private Image getImage(Object obj) {
-		return action.getImage(obj);
+		return _ic.getImage(obj);
 	}
 
 	private Object[] getChildren(Object obj) {
-		return action.getChildren(obj);
+		return _ic.getChildren(obj);
 	}
 
 	public int getHSpan() {
 		return 1;
 	}
 
+	@Override
 	public void setEnabled(boolean v) {
 		this.table.setEnabled(v);
 	}
 
-	public void internalSetEditable(boolean v) {
+	@Override
+	public void setEditable(boolean v) {
 	}
 
-	public void internalSetVisible(boolean v) {
-		super.internalSetVisible(v);
+	@Override
+	public void setVisible(boolean v) {
 		this.table.setVisible(v);
 	}
 

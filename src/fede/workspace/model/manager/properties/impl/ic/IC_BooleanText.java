@@ -26,10 +26,8 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import fede.workspace.model.manager.properties.impl.ui.IFieldContenProposalProvider;
 import fede.workspace.model.manager.properties.impl.ui.Proposal;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 public final class IC_BooleanText extends ICRunningField implements
 		RuningInteractionController, IFieldContenProposalProvider,

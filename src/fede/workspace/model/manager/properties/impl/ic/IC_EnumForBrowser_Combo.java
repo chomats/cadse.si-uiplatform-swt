@@ -18,11 +18,9 @@
  */
 package fede.workspace.model.manager.properties.impl.ic;
 
-import fr.imag.adele.cadse.core.Item;
+import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fr.imag.adele.cadse.core.CadseGCST;
 
 public class IC_EnumForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 

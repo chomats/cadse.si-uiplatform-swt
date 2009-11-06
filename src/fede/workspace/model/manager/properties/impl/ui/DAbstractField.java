@@ -70,24 +70,28 @@ public abstract class DAbstractField<IC extends RuningInteractionController>
 
 	public abstract Object[] getSelectedObjects();
 
+	@Override
 	public void setEditable(boolean v) {
 		if (this._labelWidget != null) {
 			this._labelWidget.setEnabled(v);
 		}
 	}
 
+	@Override
 	public void setVisible(boolean v) {
 		if (_labelWidget != null) {
 			_labelWidget.setVisible(v);
 		}
 	}
 
+	@Override
 	public void setEnabled(boolean v) {
 		if (this._labelWidget != null) {
 			this._labelWidget.setEnabled(v);
 		}
 	}
 
+	@Override
 	public void setLabel(String label) {
 		if (_labelWidget != null) {
 			_labelWidget.setText(label);
@@ -128,6 +132,7 @@ public abstract class DAbstractField<IC extends RuningInteractionController>
 		});
 	}
 
+	@Override
 	public Object getVisualValue() {
 		return null;
 	}

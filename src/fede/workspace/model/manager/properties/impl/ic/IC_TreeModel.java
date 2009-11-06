@@ -7,9 +7,7 @@ import fede.workspace.tool.view.node.AbstractCadseViewNode;
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
 import fr.imag.adele.cadse.core.IItemNode;
-import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
 import fr.imag.adele.cadse.eclipse.view.SelfViewLabelProvider;
 

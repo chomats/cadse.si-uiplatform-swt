@@ -26,7 +26,6 @@ import fr.imag.adele.cadse.core.ItemState;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.ui.IFieldDescription;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
 /**
  * String link-browser-item-type, nom du type d'item � selection dans le

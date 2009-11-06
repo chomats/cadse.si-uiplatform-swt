@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
+import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.SymbolicBitMapAttributeType;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
@@ -35,6 +36,7 @@ import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
  * attribut : check-label : string value : Boolean
@@ -42,7 +44,7 @@ import fr.imag.adele.cadse.core.ui.IPageController;
  * @author chomats
  * 
  */
-public class DSymbolicBitMapUI extends DAbstractField {
+public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
 	SymbolicBitMapAttributeType attributeDefinition;
 	String[] labels;
@@ -51,13 +53,13 @@ public class DSymbolicBitMapUI extends DAbstractField {
 	int col;
 	private Group g;
 
-	public DSymbolicBitMapUI(String key, String label, EPosLabel poslabel,
-			IModelController mc, RuningInteractionController ic,
-			SymbolicBitMapAttributeType attributeDefinition, String[] labels,
-			int col) {
-		super(key, label, poslabel, mc, ic);
-		this.attributeDefinition = attributeDefinition;
-		this.labels = labels;
+	
+	@Override
+	public void init() throws CadseException {
+		assert _field.getAttributeDefinition() instanceof SymbolicBitMapAttributeType;
+		
+		this.attributeDefinition = (SymbolicBitMapAttributeType) _field.getAttributeDefinition();
+		this.labels = this.attributeDefinition.getLabels();
 		value = attributeDefinition.getDefaultValue();
 		if (col == -1) {
 			col = 3;
@@ -85,13 +87,12 @@ public class DSymbolicBitMapUI extends DAbstractField {
 	}
 
 	@Override
-	public Composite createControl(final IPageController globalUIController,
-			IFedeFormToolkit toolkit, Object ocontainer, int hspan) {
+	public void createControl(Composite container, int hspan) {
 
 		GridData gd;
 
-		g = (Group) toolkit.createGroup(ocontainer, getLabel());
-		g.setData(CADSE_MODEL_KEY, this);
+		g = (Group) _swtuiplatform.getToolkit().createGroup(container, getLabel());
+		g.setData(UIField.CADSE_MODEL_KEY, _field);
 		g.setLayout(new GridLayout(col, false));
 		controls = new Button[labels.length];
 		for (int i = 0; i < labels.length; i++) {
@@ -99,31 +100,30 @@ public class DSymbolicBitMapUI extends DAbstractField {
 				controls[i] = null;
 				continue; // reseved or private position
 			}
-			controls[i] = (Button) toolkit
+			controls[i] = (Button) _swtuiplatform.getToolkit()
 					.createButton(g, labels[i], SWT.CHECK);
 			controls[i].setData(i);
-			controls[i].setData(CADSE_MODEL_KEY, this);
+			controls[i].setData(UIField.CADSE_MODEL_KEY, _field);
 			controls[i].addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
-					globalUIController.broadcastValueChanged(
-							DSymbolicBitMapUI.this, getVisualValue());
+					_swtuiplatform.broadcastValueChanged(
+							_page, _field, getVisualValue());
 				}
 
 				public void widgetDefaultSelected(SelectionEvent e) {
-					globalUIController.broadcastValueChanged(
-							DSymbolicBitMapUI.this, getVisualValue());
+					_swtuiplatform.broadcastValueChanged(
+							_page, _field, getVisualValue());
 				}
 
 			});
 		}
-		if (!isEditable()) {
+		if (!_field.isEditable()) {
 			setEnabled(false);
 		}
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
 		g.setLayoutData(gd);
-		return (Composite) ocontainer;
 	}
 
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
@@ -140,10 +140,6 @@ public class DSymbolicBitMapUI extends DAbstractField {
 		this.value = visualValue;
 	}
 
-	@Override
-	public Object getUIObject(int index) {
-		return controls;
-	}
 
 	@Override
 	public void setEnabled(boolean v) {
@@ -155,7 +151,7 @@ public class DSymbolicBitMapUI extends DAbstractField {
 	}
 
 	@Override
-	public void internalSetEditable(boolean v) {
+	public void setEditable(boolean v) {
 		for (int i = 0; i < controls.length; i++) {
 			if (controls[i] != null) {
 				controls[i].setEnabled(v);
@@ -164,18 +160,12 @@ public class DSymbolicBitMapUI extends DAbstractField {
 	}
 
 	@Override
-	public void internalSetVisible(boolean v) {
-		super.internalSetVisible(v);
+	public void setVisible(boolean v) {
 		for (int i = 0; i < controls.length; i++) {
 			if (controls[i] != null) {
 				controls[i].setVisible(v);
 			}
 		}
-	}
-
-	public ItemType getType() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

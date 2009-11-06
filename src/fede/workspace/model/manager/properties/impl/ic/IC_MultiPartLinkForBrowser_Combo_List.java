@@ -20,10 +20,9 @@ package fede.workspace.model.manager.properties.impl.ic;
 
 import java.util.Comparator;
 
+import fede.workspace.tool.view.node.FilteredItemNodeModel;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.LinkType;
-import fr.imag.adele.cadse.core.ui.IPageController;
-import fede.workspace.tool.view.node.FilteredItemNodeModel;
 
 /**
  * The Class IC_PartLinkForBrowser_Combo_List.

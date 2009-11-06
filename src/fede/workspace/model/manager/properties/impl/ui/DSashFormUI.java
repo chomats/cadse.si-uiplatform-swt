@@ -7,16 +7,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
+import fr.imag.adele.cadse.core.util.Assert;
 
 public class DSashFormUI<IC extends RuningInteractionController> extends
 		DAbstractField<IC> {
@@ -28,15 +22,16 @@ public class DSashFormUI<IC extends RuningInteractionController> extends
 	@Override
 	public void createControl(Composite container, int hspan) {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		sashForm = new SashForm((Composite) container,
+		sashForm = new SashForm(container,
 				horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
 		sashForm.setLayoutData(gridData);
-
-		GridLayout gridLayout = new GridLayout(hspan, false);
-		_swtuiplatform.createFieldsControl(_swtuiplatform, sashForm, children,
-				hspan, gridLayout);
 		sashForm.setWeights(new int[] { hone, 100 - hone });
 		sashForm.setData(UIField.CADSE_MODEL_KEY, _field);
+
+		GridLayout gridLayout = new GridLayout(hspan, false);
+		_swtuiplatform.createChildrenControl(this, sashForm, gridLayout);
+		Assert.isNotNull(_children);
+		Assert.isTrue(_children.length == 2);
 	}
 
 	@Override
@@ -48,6 +43,7 @@ public class DSashFormUI<IC extends RuningInteractionController> extends
 	public void setEditable(boolean v) {
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 	}
 

@@ -26,19 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPageController;
 
-public class DTextViewerUI extends DAbstractField {
-
-	public DTextViewerUI(String key, String label, EPosLabel poslabel,
-			IModelController mc, RuningInteractionController ic) {
-		super(key, label, poslabel, mc, ic);
-		// TODO Auto-generated constructor stub
-	}
+public class DTextViewerUI<IC extends RuningInteractionController> extends
+		DAbstractField<IC> {
 
 	public static final String FLAGS = "flags";
 
@@ -49,10 +40,9 @@ public class DTextViewerUI extends DAbstractField {
 	private int style = SWT.SINGLE;
 
 	@Override
-	public Object createControl(IPageController globalUIController,
-			IFedeFormToolkit toolkit, Object container, int hspan) {
+	public void createControl(Composite container, int hspan) {
 
-		fTextViewer = createTextViewer((Composite) container);
+		fTextViewer = createTextViewer(container);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
 		gd.verticalSpan = this.vspan;
@@ -70,7 +60,6 @@ public class DTextViewerUI extends DAbstractField {
 		// return Character.isDigit(c) || c == '}';
 		// }
 		// });
-		return null;
 	}
 
 	protected ITextViewer createTextViewer(Composite parent) {
@@ -88,6 +77,7 @@ public class DTextViewerUI extends DAbstractField {
 		return style; // getDescription().getLocal(FLAGS, SWT.SINGLE);
 	}
 
+	@Override
 	public void forceChange() {
 		// TODO Auto-generated method stub
 
@@ -98,17 +88,12 @@ public class DTextViewerUI extends DAbstractField {
 	}
 
 	@Override
-	public Object getUIObject(int index) {
-		return fTextViewer;
-	}
-
-	@Override
 	public Object getVisualValue() {
 		return fTextViewer.getDocument().get();
 	}
 
 	@Override
-	public void internalSetEditable(boolean v) {
+	public void setEditable(boolean v) {
 		fTextViewer.setEditable(v);
 	}
 
@@ -118,11 +103,11 @@ public class DTextViewerUI extends DAbstractField {
 	}
 
 	@Override
-	public void internalSetVisible(boolean v) {
-		super.internalSetVisible(v);
+	public void setVisible(boolean v) {
 		fTextViewer.getTextWidget().setVisible(v);
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		fTextViewer.getDocument().set((String) visualValue);
 	}
