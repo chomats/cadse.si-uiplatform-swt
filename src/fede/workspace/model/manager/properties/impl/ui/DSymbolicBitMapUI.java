@@ -29,13 +29,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
 import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.SymbolicBitMapAttributeType;
-import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IFedeFormToolkit;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
 /**
@@ -44,7 +39,8 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * @author chomats
  * 
  */
-public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
+public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends
+		DAbstractField<IC> {
 
 	SymbolicBitMapAttributeType attributeDefinition;
 	String[] labels;
@@ -53,17 +49,15 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 	int col;
 	private Group g;
 
-	
 	@Override
 	public void init() throws CadseException {
 		assert _field.getAttributeDefinition() instanceof SymbolicBitMapAttributeType;
-		
-		this.attributeDefinition = (SymbolicBitMapAttributeType) _field.getAttributeDefinition();
+
+		this.attributeDefinition = (SymbolicBitMapAttributeType) _field
+				.getAttributeDefinition();
 		this.labels = this.attributeDefinition.getLabels();
 		value = attributeDefinition.getDefaultValue();
-		if (col == -1) {
-			col = 3;
-		}
+		col = 3;
 	}
 
 	@Override
@@ -91,7 +85,8 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 
 		GridData gd;
 
-		g = (Group) _swtuiplatform.getToolkit().createGroup(container, getLabel());
+		g = _swtuiplatform.getToolkit().createGroup(container,
+				getLabel());
 		g.setData(UIField.CADSE_MODEL_KEY, _field);
 		g.setLayout(new GridLayout(col, false));
 		controls = new Button[labels.length];
@@ -100,19 +95,19 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 				controls[i] = null;
 				continue; // reseved or private position
 			}
-			controls[i] = (Button) _swtuiplatform.getToolkit()
-					.createButton(g, labels[i], SWT.CHECK);
+			controls[i] = _swtuiplatform.getToolkit().createButton(g,
+					labels[i], SWT.CHECK);
 			controls[i].setData(i);
 			controls[i].setData(UIField.CADSE_MODEL_KEY, _field);
 			controls[i].addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
-					_swtuiplatform.broadcastValueChanged(
-							_page, _field, getVisualValue());
+					_swtuiplatform.broadcastValueChanged(_page, _field,
+							getVisualValue());
 				}
 
 				public void widgetDefaultSelected(SelectionEvent e) {
-					_swtuiplatform.broadcastValueChanged(
-							_page, _field, getVisualValue());
+					_swtuiplatform.broadcastValueChanged(_page, _field,
+							getVisualValue());
 				}
 
 			});
@@ -126,6 +121,7 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 		g.setLayoutData(gd);
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
 			visualValue = attributeDefinition.getDefaultValue();
@@ -139,7 +135,6 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 		}
 		this.value = visualValue;
 	}
-
 
 	@Override
 	public void setEnabled(boolean v) {

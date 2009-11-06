@@ -56,7 +56,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
  * @author chomats
  * 
  */
-public class DBrowserUI extends DAbstractField implements
+public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> implements
 		IContentProposalListener {
 	private Button _buttonBrowser;
 	private ContentAssistField _contentAssistField;
@@ -106,7 +106,7 @@ public class DBrowserUI extends DAbstractField implements
 		gd.horizontalSpan = hspan - 1;
 		swtControl.setLayoutData(gd);
 
-		if (getInteractionController().hasDeleteFunction()) {
+		if (_ic.hasDeleteFunction()) {
 			_textControl.addKeyListener(new KeyListener() {
 
 				public void keyPressed(KeyEvent e) {
@@ -197,20 +197,17 @@ public class DBrowserUI extends DAbstractField implements
 	}
 
 	protected Object fromString(String value2) {
-		return getInteractionController().fromString(value2);
+		return _ic.fromString(value2);
 	}
 
 	protected IFieldContenProposalProvider getContentAssistant() {
-		RuningInteractionController uc = getInteractionController();
+		RuningInteractionController uc = _ic;
 		if (uc instanceof IFieldContenProposalProvider) {
 			return (IFieldContenProposalProvider) uc;
 		}
 		return null;
 	}
 
-	public IC_ForBrowserOrCombo getInteractionController() {
-		return (IC_ForBrowserOrCombo) _ic;
-	}
 
 	@Override
 	public Control getMainControl() {
@@ -232,7 +229,7 @@ public class DBrowserUI extends DAbstractField implements
 	}
 
 	protected void handleSelect() {
-		Object ret = getInteractionController().selectOrCreateValue(
+		Object ret = _ic.selectOrCreateValue(
 				this._buttonBrowser.getShell());
 
 		if (ret != null) {
@@ -288,7 +285,7 @@ public class DBrowserUI extends DAbstractField implements
 	public String toString(Object object) {
 		String ret;
 		try {
-			ret = getInteractionController().toString(object);
+			ret = _ic.toString(object);
 			if (ret == null) {
 				ret = "";
 			}

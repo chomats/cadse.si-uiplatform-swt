@@ -31,16 +31,10 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
-import fede.workspace.tool.view.actions.delete.ShowDetailWLWCDialogPage;
 import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
-import fr.imag.adele.cadse.core.ui.IFieldDescription;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
-import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.ShowDetailWLWCDialog;
 
 /**
  * This is a sample new wizard. Its role is to create a new file resource in the
@@ -294,7 +288,7 @@ public class WizardController extends Wizard implements IWorkbenchWizard {
 	public void showDetailDialog() {
 		if (getCopy() != null) {
 			try {
-				ShowDetailWLWCDialogPage.openDialog(getCopy(),
+				ShowDetailWLWCDialog.openDialog(new SWTUIPlatform(), getShell(), getCopy(),
 						"Operations detail", null, false);
 			} catch (CadseException e) {
 				// TODO Auto-generated catch block

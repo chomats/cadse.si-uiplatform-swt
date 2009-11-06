@@ -87,7 +87,7 @@ public class FieldsPropertyPage extends PropertyPage {
 		Item item = ((Item) element);
 
 		IItemManager im = item.getType().getItemManager();
-		Pages pages = item.getInstanceModificationPages();
+		Pages pages = item.getInstanceModificationPages(item);
 
 		this._swtuiplatform = new SWTUIPlatform(pages, null);
 		_swtuiplatform.setItem(item);

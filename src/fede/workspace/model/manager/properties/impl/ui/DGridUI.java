@@ -8,9 +8,10 @@ import org.eclipse.swt.widgets.Control;
 
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
-public class DGridUI extends DAbstractField {
+public class DGridUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
 	Composite composite;
 	boolean makeColumnsEqualWidth = false;

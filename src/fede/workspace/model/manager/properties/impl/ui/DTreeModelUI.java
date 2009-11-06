@@ -27,7 +27,7 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC>
 		implements ISelectionChangedListener, SelectionListener,
 		ICheckStateListener, TreeListener {
 
-	private boolean _useCheckBox = true;
+	public boolean _useCheckBox = true;
 	private Tree _treeControl;
 	private CheckboxTreeViewer _treeViewer;
 	private FilteredItemNode _rootNode;

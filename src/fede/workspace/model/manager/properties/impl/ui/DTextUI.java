@@ -39,16 +39,17 @@ import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
-public class DTextUI extends DAbstractField implements IContentProposalListener {
+public class DTextUI<IC extends RuningInteractionController> extends DAbstractField<IC> implements IContentProposalListener {
 
 	private ContentAssistCommandAdapter _contentAssistField;
 	private String _currentValue;
 	private String _currentValueToSend;
 	private Text _textControl;
 	private String _toolTips = null;
-	private int _vspan = 1;
+	int _vspan = 1;
 	private boolean _sendNotification = true;
 
 	public String __getVisualValue() {
