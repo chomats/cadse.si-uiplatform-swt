@@ -6,12 +6,13 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import fede.workspace.tool.view.node.AbstractCadseViewNode;
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
+import fede.workspace.tool.view.node.ItemNodeIsSelected;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
 import fr.imag.adele.cadse.eclipse.view.SelfViewLabelProvider;
 
-public class IC_TreeModel extends ICRunningField implements IC_NodeIsSelected {
+public class IC_TreeModel extends ICRunningField implements ItemNodeIsSelected {
 
 	protected FilteredItemNodeModel model;
 	protected FilteredItemNode rootNode = null;
