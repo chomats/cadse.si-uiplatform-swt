@@ -57,13 +57,16 @@ import org.eclipse.ui.part.IPageSite;
 
 import fede.workspace.model.manager.properties.impl.ParentPartGetAndSet;
 import fede.workspace.model.manager.properties.impl.ic.ICRunningField;
+import fede.workspace.model.manager.properties.impl.ic.IC_AllItemTypeForTreeUI;
 import fede.workspace.model.manager.properties.impl.ic.IC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.ic.IC_FileResourceForBrowser_Combo_List;
 import fede.workspace.model.manager.properties.impl.ic.IC_FolderResource_ForBrowser_Combo_List;
 import fede.workspace.model.manager.properties.impl.ic.IC_IconResourceForBrowser_Combo_List;
 import fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List;
 import fede.workspace.model.manager.properties.impl.ic.IC_PartParentForBrowser_Combo;
+import fede.workspace.model.manager.properties.impl.ic.IC_Tree;
 import fede.workspace.model.manager.properties.impl.ic.IC_TreeModel;
+import fede.workspace.model.manager.properties.impl.mc.MC_AllItemType;
 import fede.workspace.model.manager.properties.impl.mc.MC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.mc.MC_DisplayNameItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_IDItemProperty;
@@ -213,18 +216,18 @@ public class SWTUIPlatform implements IPageController {
 		return dialog;
 	}
 	
-	public void open(Shell parentShell, IPage page, IActionPage dialogAction, boolean showDetail) {
+	public int open(Shell parentShell, IPage page, IActionPage dialogAction, boolean openDetailDialog) {
 		init();
 		parent = parentShell;
 		pages = new PagesImpl(false, dialogAction, null, new IPage[] { page},  Collections.EMPTY_LIST);
-		if (showDetail) {
+		if (openDetailDialog) {
 			dialog = new DetailWizardDialog(parentShell, new WizardController(this));
 			
 		} else {
 			dialog = new WizardDialog(parentShell, new WizardController(this));
 		}
 		dialog.setPageSize(800, 500);
-		dialog.open();
+		return dialog.open();
 	}
 
 	public Composite createPage(IPage page, Composite parentPage) {
@@ -1352,6 +1355,15 @@ public class SWTUIPlatform implements IPageController {
 
 	public IPage createPageDescription(String title, String label) {
 		return new PageImpl("p1", label, title, title, true);
+	}
+
+	public <IC extends IC_Tree> DTreeUI<IC> createTreeUI(
+			IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, IModelController mc,
+			IC ic) {
+		DTreeUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTreeUI<IC>());
+		return ret;
 	}
 
 	

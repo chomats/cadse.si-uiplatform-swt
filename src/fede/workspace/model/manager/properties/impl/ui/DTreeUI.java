@@ -43,7 +43,7 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * OR with the extension that matches the expected one (f).
  */
 
-public class DTreeUI extends DAbstractField<IC_Tree> {
+public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
 	private Object[] _rootNodes;
 	private Object[] _selectedObjects;
 	private Tree _treeControl;
