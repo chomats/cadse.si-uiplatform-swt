@@ -62,7 +62,6 @@ public class ChangeTypeAction implements IViewActionDelegate {
 	protected ItemType	selectedItemType;
 	private SWTUIPlatform _swtuiPlatform;
 	private IPage _page;
-	private IAttributeType<?> _selectorAtt;
 	private DTreeUI<IC_AllItemTypeForTreeUI> _treeUI;
 	private ChangeTypeActionPage _action;
 
@@ -115,11 +114,10 @@ public class ChangeTypeAction implements IViewActionDelegate {
 	void createCreateItemWizard() {
 		_swtuiPlatform = new SWTUIPlatform();
 		_page = _swtuiPlatform.createPageDescription("Select an item type", "Select an item type");
-		_selectorAtt = _swtuiPlatform.createFictifAttributte("selector");
-		
-		_treeUI =_swtuiPlatform.createTreeUI(_page, _selectorAtt, null, EPosLabel.none, new MC_AllItemType(),
+				
+		_treeUI =_swtuiPlatform.createTreeUI(_page, "selector", null, EPosLabel.none, new MC_AllItemType(),
 				new IC_AllItemTypeForTreeUI());
-		_page.addLast(_selectorAtt);
+		_page.addLast(_treeUI.getAttributeDefinition());
 		_action = new ChangeTypeActionPage(_treeUI);
 	}
 

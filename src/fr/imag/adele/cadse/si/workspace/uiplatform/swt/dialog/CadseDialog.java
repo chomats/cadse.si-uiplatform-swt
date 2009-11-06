@@ -100,7 +100,7 @@ public class CadseDialog {
 	public class MyActionPage extends AbstractActionPage {
 
 		@Override
-		public void doFinish(Object monitor) throws Exception {
+		public void doFinish(IPageController ui, Object monitor) throws Exception {
 			Object[] array = fieldExtends.getSelectedObjects();
 			HashSet<CadseRuntime> selection = new HashSet<CadseRuntime>();
 			for (int i = 0; i < array.length; i++) {
@@ -394,13 +394,11 @@ public class CadseDialog {
 				"#edit",
 				"", EPosLabel.none, defaultMc, null, this.fieldTWVersion, this.fieldDescription);
 		
-		IAttributeType<?> rootAttr = _swtuiPlatforms.createFictifAttributte("#sash", 
-				treeGrild._field.getAttributeDefinition(), crFieldsGrild._field.getAttributeDefinition());
 		this.fieldsShash = _swtuiPlatforms.createDSashFormUI(_page, 
-				rootAttr, 
+				"#sash", 
 				"", EPosLabel.none, defaultMc, null,treeGrild, crFieldsGrild);
 		// add main field
-		_page.addLast(rootAttr);
+		_page.addLast(fieldsShash.getAttributeDefinition());
 
 		registerListener();
 	}
@@ -429,8 +427,7 @@ public class CadseDialog {
 	 * Create a tree field to show CadseModel tree
 	 */
 	public DTreeModelUI createFieldExtends(boolean checkBox) {
-		return _swtuiPlatforms.createTreeModelUI(_page, 
-				_swtuiPlatforms.createFictifAttributte("#list"), "Cadse", EPosLabel.top, new MC_CDtree(), new IC_ItemTypeForTreeUI(), checkBox);
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list", "Cadse", EPosLabel.top, new MC_CDtree(null), new IC_ItemTypeForTreeUI(), checkBox);
 	}
 
 	/**

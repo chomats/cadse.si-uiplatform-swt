@@ -323,10 +323,10 @@ public class ShowDetailWLWCDialog {
 
 		@Override
 		public Object getValue() {
-			if (uiPlatform.getItem(getUIField()) == null) {
+			if (_uiPlatform.getItem(getUIField()) == null) {
 				return "";
 			}
-			Object _ret = super.getValue(uiPlatform);
+			Object _ret = super.getValue();
 			if (_ret == null) {
 				return "";
 			}
@@ -633,32 +633,32 @@ public class ShowDetailWLWCDialog {
 	public class MC_CommitTree extends AbstractModelController {
 
 
+		public MC_CommitTree() {
+			super(null);
+		}
+
 		public ItemType getType() {
 			return null;
 		}
 
 		@Override
-		public void notifieSubValueAdded(IPageController uiPlatform, UIField field, Object added) {
+		public void notifieSubValueAdded(UIField field, Object added) {
 
 		}
 
 		@Override
-		public void notifieSubValueRemoved(IPageController uiPlatform, UIField field, Object removed) {
+		public void notifieSubValueRemoved( UIField field, Object removed) {
 
 		}
 
 		@Override
-		public Object getValue(IPageController uiPlatform) {
+		public Object getValue() {
 			return null;
 		}
 
-		@Override
-		public void init() throws CadseException {
-		}
 
 		@Override
-		public void notifieValueChanged(IPageController uiPlatform,
-				UIField field, Object value) {
+		public void notifieValueChanged(UIField field, Object value) {
 		}
 
 	}
@@ -692,7 +692,7 @@ public class ShowDetailWLWCDialog {
 
 		// // create part with editors for selected node
 		DGridUI selectDependentFieldsGrild = _swtuiPlatform.createDGridUI(_page, 
-				_swtuiPlatform.createFictifAttributte("#selectEdit", _textField._field.getAttributeDefinition()), "", EPosLabel.none, defaultMc, null, _textField);
+				"#selectEdit", "", EPosLabel.none, defaultMc, null, _textField);
 		
 		
 		//
@@ -700,9 +700,7 @@ public class ShowDetailWLWCDialog {
 		// * Selection part
 		// */
 		_selectSashField = _swtuiPlatform.createDSashFormUI(_page, 
-				_swtuiPlatform.createFictifAttributte("#selectSash", 
-						_treeFieldInItem._field.getAttributeDefinition(), 
-						selectDependentFieldsGrild._field.getAttributeDefinition()),
+				"#selectSash",
 				"", EPosLabel.none, defaultMc, null, _treeFieldInItem, selectDependentFieldsGrild);
 		//
 		// // create selection part containing a tree
@@ -710,12 +708,8 @@ public class ShowDetailWLWCDialog {
 		_selectSashField.setHorizontal(false);
 		//
 		
-
-		IAttributeType<?> attRootSash = _swtuiPlatform.createFictifAttributte("#rootSash", _treeField._field.getAttributeDefinition(),
-				_selectSashField._field.getAttributeDefinition());
-		
 		_rootSashField = _swtuiPlatform.createDSashFormUI(_page,
-				attRootSash, label, label == null ? EPosLabel.none : EPosLabel.top, defaultMc,
+				"#rootSash", label, label == null ? EPosLabel.none : EPosLabel.top, defaultMc,
 				null, _treeField, _selectSashField);
 		_rootSashField.setHorizontal(true);
 		// // 50%
@@ -723,7 +717,7 @@ public class ShowDetailWLWCDialog {
 		_rootSashField.setWeight(50);
 		
 		// add main field
-		_page.addLast(attRootSash);
+		_page.addLast(_rootSashField.getAttributeDefinition());
 
 
 		// add listeners
@@ -740,7 +734,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedItemTreeIC> createTreeField(boolean checkBox) {
-		return _swtuiPlatform.createTreeModelUI(_page, _swtuiPlatform.createFictifAttributte("#list"), 
+		return _swtuiPlatform.createTreeModelUI(_page, "#list", 
 				"", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedItemTreeIC(), checkBox);
 	}
@@ -749,7 +743,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedInItemTreeIC> createTreeFieldInItem(boolean checkBox) {
-		return _swtuiPlatform.createTreeModelUI(_page, _swtuiPlatform.createFictifAttributte("#list-in"), 
+		return _swtuiPlatform.createTreeModelUI(_page, "#list-in", 
 				"", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedInItemTreeIC(), checkBox);
 	}
@@ -758,7 +752,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a text field to display the errors related to selected item.
 	 */
 	public DTextUI<ICRunningField> createTextField() {
-		return _swtuiPlatform.createTextUI(_page, _swtuiPlatform.createFictifAttributte("#textField"), 
+		return _swtuiPlatform.createTextUI(_page, "#textField", 
 				"Description", EPosLabel.top, new MyMC_AttributesItem(),
 				null, 1, true, false, true, false,true);
 	}
