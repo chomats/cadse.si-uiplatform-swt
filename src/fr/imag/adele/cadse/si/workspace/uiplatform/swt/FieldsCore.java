@@ -21,12 +21,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 import org.eclipse.swt.SWT;
 
 import fede.workspace.model.manager.properties.impl.ParentPartGetAndSet;
-import fede.workspace.model.manager.properties.impl.ic.IC_FileResourceForBrowser_Combo_List;
-import fede.workspace.model.manager.properties.impl.ic.IC_FolderResource_ForBrowser_Combo_List;
-import fede.workspace.model.manager.properties.impl.ic.IC_IconResourceForBrowser_Combo_List;
-import fede.workspace.model.manager.properties.impl.ic.IC_LinkForBrowser_Combo_List;
-import fede.workspace.model.manager.properties.impl.ic.IC_PartParentForBrowser_Combo;
-import fede.workspace.model.manager.properties.impl.ic.IC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.mc.MC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.mc.MC_DisplayNameItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_IDItemProperty;
@@ -34,12 +28,6 @@ import fede.workspace.model.manager.properties.impl.mc.MC_ShortNameItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.StringToOneResourceModelController;
 import fede.workspace.model.manager.properties.impl.mc.StringToResourceListModelController;
 import fede.workspace.model.manager.properties.impl.mc.StringToResourceSimpleModelController;
-import fede.workspace.model.manager.properties.impl.ui.DBrowserUI;
-import fede.workspace.model.manager.properties.impl.ui.DCheckBoxUI;
-import fede.workspace.model.manager.properties.impl.ui.DCheckedListUI;
-import fede.workspace.model.manager.properties.impl.ui.DComboUI;
-import fede.workspace.model.manager.properties.impl.ui.DListUI;
-import fede.workspace.model.manager.properties.impl.ui.DTextUI;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
@@ -56,6 +44,18 @@ import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FileResourceForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FolderResource_ForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_IconResourceForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowser_Combo;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DBrowserUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedListUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DComboUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DListUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 
 public class FieldsCore {
 

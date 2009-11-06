@@ -27,7 +27,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 
-import fede.workspace.model.manager.properties.impl.ui.SWTUIPlatform;
 import fede.workspace.tool.view.actions.AbstractEclipseMenuAction;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
@@ -36,6 +35,7 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.delta.ItemDelta;
 import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.ShowDetailWLWCDialog;
 
 public class RenameAction extends AbstractEclipseMenuAction implements IInputValidator {

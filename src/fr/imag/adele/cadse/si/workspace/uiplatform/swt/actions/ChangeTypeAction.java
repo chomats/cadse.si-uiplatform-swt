@@ -25,10 +25,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import fede.workspace.model.manager.properties.impl.ic.IC_AllItemTypeForTreeUI;
 import fede.workspace.model.manager.properties.impl.mc.MC_AllItemType;
-import fede.workspace.model.manager.properties.impl.ui.DTreeUI;
-import fede.workspace.model.manager.properties.impl.ui.SWTUIPlatform;
 import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
@@ -37,6 +34,9 @@ import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_AllItemTypeForTreeUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeUI;
 
 // TODO is disable.
 public class ChangeTypeAction implements IViewActionDelegate {

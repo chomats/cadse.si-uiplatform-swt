@@ -21,7 +21,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 
 import org.eclipse.swt.widgets.Composite;
 
-import fede.workspace.model.manager.properties.impl.ui.SWTUIPlatform;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IModelController;

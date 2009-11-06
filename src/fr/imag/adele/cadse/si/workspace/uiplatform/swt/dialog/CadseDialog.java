@@ -34,13 +34,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import fede.workspace.model.manager.properties.impl.ic.IC_TreeModel;
-import fede.workspace.model.manager.properties.impl.ui.DGridUI;
-import fede.workspace.model.manager.properties.impl.ui.DSashFormUI;
-import fede.workspace.model.manager.properties.impl.ui.DTextUI;
-import fede.workspace.model.manager.properties.impl.ui.DTreeModelUI;
-import fede.workspace.model.manager.properties.impl.ui.SWTUIPlatform;
-import fede.workspace.model.manager.properties.impl.ui.WizardController;
 import fede.workspace.tool.view.node.CategoryNode;
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
@@ -67,6 +60,13 @@ import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSashFormUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeModelUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 public class CadseDialog {
 	
