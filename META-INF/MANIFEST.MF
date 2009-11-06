@@ -2,12 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: UI platform Swt
 Bundle-SymbolicName: fr.imag.adele.cadse.si.workspace.uiplatform.swt
-Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
-Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Version: 1.0.0.qualifier
+Export-Package: fr.imag.adele.cadse.si.workspace.uiplatform.swt,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.actions,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui
 Import-Package: fede.plugin.workspace.filters,
  fede.workspace.model.manager.properties.impl,
  fede.workspace.model.manager.properties.impl.mc,
@@ -32,11 +33,53 @@ Import-Package: fede.plugin.workspace.filters,
  fr.imag.adele.cadse.core.ui.view,
  fr.imag.adele.cadse.core.util,
  fr.imag.adele.cadse.eclipse.view,
+ fr.imag.adele.fede.workspace.as.eclipse,
  fr.imag.adele.fede.workspace.as.initmodel,
+ org.apache.felix.ipojo;version="1.2.0",
+ org.apache.felix.ipojo.architecture;version="1.2.0",
  org.eclipse.core.resources,
  org.eclipse.jface.text,
  org.eclipse.ui.forms,
  org.eclipse.ui.forms.widgets,
  org.eclipse.ui.model,
  org.eclipse.ui.texteditor,
- org.eclipse.ui.views.properties
+ org.eclipse.ui.views.properties,
+ org.osgi.service.cm;version="1.2",
+ org.osgi.service.log;version="1.3"
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Created-By: iPOJO  1.2.0
+iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
+ le.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $factory="fr.imag
+ .adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $architecture
+ ="true" provides { $specification="fr.imag.adele.fede.workspace.as.ecl
+ ipse.SWTService" }manipulation { field { $name="__MshowCreateWizardWit
+ hError$org_eclipse_swt_widgets_Shell$fr_imag_adele_cadse_core_Item$fr_
+ imag_adele_cadse_core_LinkType$fr_imag_adele_cadse_core_ItemType" $typ
+ e="boolean" }field { $name="__MshowCreateWizard$org_eclipse_swt_widget
+ s_Shell$fr_imag_adele_cadse_core_Item$fr_imag_adele_cadse_core_LinkTyp
+ e$fr_imag_adele_cadse_core_ItemType" $type="boolean" }field { $name="_
+ _MopenDialog$boolean" $type="boolean" }field { $name="__IM" $type="org
+ .apache.felix.ipojo.InstanceManager" }method { $name="$init" }method {
+  $arguments="{org.apache.felix.ipojo.InstanceManager}" $name="$init" }
+ method { $arguments="{boolean}" $name="openDialog" $return="fr.imag.ad
+ ele.cadse.core.CadseRuntime[]" }method { $arguments="{boolean}" $name=
+ "__openDialog" $return="fr.imag.adele.cadse.core.CadseRuntime[]" }meth
+ od { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.co
+ re.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.Ite
+ mType}" $name="showCreateWizard" $return="boolean" }method { $argument
+ s="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.ima
+ g.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name=
+ "__showCreateWizard" $return="boolean" }method { $arguments="{org.ecli
+ pse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.cads
+ e.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name="showCreateW
+ izardWithError" }method { $arguments="{org.eclipse.swt.widgets.Shell,f
+ r.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag
+ .adele.cadse.core.ItemType}" $name="__showCreateWizardWithError" }inte
+ rface { $name="fr.imag.adele.fede.workspace.as.eclipse.SWTService" }}}
+ instance { $component="fr.imag.adele.cadse.si.workspace.uiplatform.swt
+ .SWTServiceImpl" $name="fr.imag.adele.fede.workspace.as.eclipse.SWTSer
+ vice.instance" }
+

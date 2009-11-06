@@ -45,10 +45,21 @@ import fr.imag.adele.cadse.core.attribute.ListAttributeType;
 public class IC_DefaultForList extends IC_AbstractForList implements
 		IC_ForList, ILabelProvider {
 
+	public IC_DefaultForList() {}
+	public IC_DefaultForList(String title, String message,
+			boolean allowDuplicate) {
+		_allowDuplicate = allowDuplicate;
+		this.message = message;
+		this.title = title;		
+	}
+
 	@Override
 	public void init() throws CadseException {
-		_allowDuplicate = _ic
+		super.init();
+		if (_ic != null) {
+			_allowDuplicate = _ic
 				.getAttribute(CadseGCST.IC_STRING_LIST_FOR_LIST_at_ALLOW_DUPLICATE_);
+		}
 
 	}
 

@@ -51,8 +51,8 @@ import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
-import fr.imag.adele.cadse.core.impl.ui.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.PageImpl;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
@@ -80,11 +80,11 @@ public class CadseDialog {
 
 		
 		@Override
-		public Object getValue(IPageController uiPlatform) {
-			if (uiPlatform.getItem(getUIField()) == null) {
+		public Object getValue() {
+			if (getItem() == null) {
 				return "";
 			}
-			Object _ret = super.getValue(uiPlatform);
+			Object _ret = super.getValue();
 			if (_ret == null) {
 				return "";
 			}
@@ -92,7 +92,7 @@ public class CadseDialog {
 		}
 
 		@Override
-		public void notifieValueChanged(IPageController uiPlatform, UIField field, Object value) {
+		public void notifieValueChanged(UIField field, Object value) {
 			// read only value
 		}
 	}
@@ -100,7 +100,7 @@ public class CadseDialog {
 	public class MyActionPage extends AbstractActionPage {
 
 		@Override
-		public void doFinish(IPageController uiPlatform, Object monitor) throws Exception {
+		public void doFinish(Object monitor) throws Exception {
 			Object[] array = fieldExtends.getSelectedObjects();
 			HashSet<CadseRuntime> selection = new HashSet<CadseRuntime>();
 			for (int i = 0; i < array.length; i++) {
@@ -267,8 +267,12 @@ public class CadseDialog {
 	public class MC_CDtree extends AbstractModelController {
 
 		
+		public MC_CDtree(Item desc) {
+			super(desc);
+		}
+
 		@Override
-		public Object getValue(IPageController uiPlatform) {
+		public Object getValue() {
 			ArrayList<CadseRuntime> executedCadse = new ArrayList<CadseRuntime>();
 			for (CadseRuntime cadseRuntime : CadseCore.getLogicalWorkspace().getCadseRuntime()) {
 				if (cadseRuntime.isExecuted()) {
@@ -281,11 +285,11 @@ public class CadseDialog {
 		}
 
 		@Override
-		public void notifieValueChanged(IPageController uiPlatform, UIField field, Object value) {
+		public void notifieValueChanged(UIField field, Object value) {
 		}
 		
 		@Override
-		public void init(IPageController uiPlatform, UIField field) {
+		public void initAfterUI(UIField field) {
 			TreeViewer viewer = ((DTreeModelUI) field).getTreeViewer();
 			viewer.addFilter(new ViewerFilter() {
 				
@@ -298,15 +302,9 @@ public class CadseDialog {
 				}
 			});
 		}
-		
-		
-
-		public ItemType getType() {
-			return null;
-		}
 
 		@Override
-		public void notifieSubValueAdded(IPageController uiPlatform, UIField field, Object added) {
+		public void notifieSubValueAdded(UIField field, Object added) {
 			if (added instanceof CategoryNode) {
 				for (IItemNode n : ((CategoryNode) added).getChildren()) {
 					if (n.getItem() != null && n.getItem().getType() == CadseGCST.CADSE) {
@@ -325,7 +323,7 @@ public class CadseDialog {
 								if (nnc.getItem() != null && n.getItem().getType() == CadseGCST.CADSE) {
 									if (selected.add((CadseRuntime) nnc.getItem())) {
 										((DTreeModelUI) field).selectNode(nnc);
-										notifieSubValueAdded(uiPlatform, field, nnc);
+										notifieSubValueAdded(field, nnc);
 									}
 								}
 							}
@@ -336,7 +334,7 @@ public class CadseDialog {
 		}
 
 		@Override
-		public void notifieSubValueRemoved(IPageController uiPlatform, UIField field, Object removed) {
+		public void notifieSubValueRemoved(UIField field, Object removed) {
 			if (removed instanceof IItemNode) {
 				IItemNode n = (IItemNode) removed;
 				if (n.getItem() != null && n.getItem().getType() == CadseGCST.CADSE) {
@@ -389,14 +387,11 @@ public class CadseDialog {
 		
 		
 		DGridUI treeGrild = _swtuiPlatforms.createDGridUI(_page, 
-				_swtuiPlatforms.createFictifAttributte("#tree", fieldExtends._field.getAttributeDefinition()),
-				"", EPosLabel.none, defaultMc, null, fieldExtends);
+				"#tree", "", EPosLabel.none, defaultMc, null, fieldExtends);
 		fieldsShash.setWeight(60); // 60% , 40%
 		
 		DGridUI crFieldsGrild = _swtuiPlatforms.createDGridUI(_page, 
-				_swtuiPlatforms.createFictifAttributte("#edit", 
-						this.fieldTWVersion._field.getAttributeDefinition(), 
-						this.fieldDescription._field.getAttributeDefinition()),
+				"#edit",
 				"", EPosLabel.none, defaultMc, null, this.fieldTWVersion, this.fieldDescription);
 		
 		IAttributeType<?> rootAttr = _swtuiPlatforms.createFictifAttributte("#sash", 

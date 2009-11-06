@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipojo>
+	<component immediate="true" classname="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" factory="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" architecture="true">
+		<provides specification="fr.imag.adele.fede.workspace.as.eclipse.SWTService"/>
+	</component>
+	<instance component="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" name="fr.imag.adele.fede.workspace.as.eclipse.SWTService.instance"/>
+</ipojo>

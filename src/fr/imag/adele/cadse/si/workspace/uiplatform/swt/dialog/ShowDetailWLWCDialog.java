@@ -65,8 +65,8 @@ import fr.imag.adele.cadse.core.delta.LinkDelta;
 import fr.imag.adele.cadse.core.delta.SetAttributeOperation;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
-import fr.imag.adele.cadse.core.impl.ui.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.PageImpl;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
@@ -322,7 +322,7 @@ public class ShowDetailWLWCDialog {
 		
 
 		@Override
-		public Object getValue(IPageController uiPlatform) {
+		public Object getValue() {
 			if (uiPlatform.getItem(getUIField()) == null) {
 				return "";
 			}
@@ -334,7 +334,7 @@ public class ShowDetailWLWCDialog {
 		}
 
 		@Override
-		public void notifieValueChanged(IPageController uiPlatform, UIField field, Object value) {
+		public void notifieValueChanged(UIField field, Object value) {
 			// read only value
 		}
 	}

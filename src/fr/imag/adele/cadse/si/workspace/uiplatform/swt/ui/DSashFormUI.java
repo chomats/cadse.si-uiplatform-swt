@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.util.Assert;
@@ -69,5 +70,7 @@ public class DSashFormUI<IC extends RuningInteractionController> extends
 	public Object[] getSelectedObjects() {
 		return null;
 	}
+
+	
 
 }

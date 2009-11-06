@@ -19,6 +19,7 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +53,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IPageSite;
 
 import fede.workspace.model.manager.properties.impl.ParentPartGetAndSet;
-import fede.workspace.model.manager.properties.impl.mc.MC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.mc.MC_DisplayNameItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_IDItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_ShortNameItemProperty;
@@ -73,30 +73,36 @@ import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.impl.attribute.AttributeType;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
+import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
 import fr.imag.adele.cadse.core.impl.ui.CreationAction;
-import fr.imag.adele.cadse.core.impl.ui.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.PageImpl;
 import fr.imag.adele.cadse.core.impl.ui.UIFieldImpl;
 import fr.imag.adele.cadse.core.impl.ui.mc.LinkModelController;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_DefaultForList;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransactionListener;
+import fr.imag.adele.cadse.core.ui.AbstractUIRunningValidator;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.HierarchyPage;
 import fr.imag.adele.cadse.core.ui.IActionPage;
-import fr.imag.adele.cadse.core.ui.IModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIRunningValidator;
 import fr.imag.adele.cadse.core.ui.UIValidator;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
+import fr.imag.adele.cadse.core.util.CreatedObjectManager;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FileResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FolderResource_ForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_IconResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowser_Combo;
@@ -116,6 +122,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DetailWizardDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FedeFormToolkit;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FieldsWizardPage;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.RemoveListener;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.UIWizardDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 /**
  */
@@ -123,11 +130,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 public class SWTUIPlatform implements IPageController {
 
 	private final class FictifAttribute<T> extends AttributeType implements IAttributeType<T>{
-		private IAttributeType<?>[] _children;
+		private IAttributeType<?>[] _children = null;
 
-		private FictifAttribute(CompactUUID id, String name, int flag, IAttributeType<?>[] chrildren) {
+		private FictifAttribute(CompactUUID id, String name, int flag) {
 			super(id, name, flag);
-			_children = chrildren;
 		}
 
 		@Override
@@ -157,7 +163,7 @@ public class SWTUIPlatform implements IPageController {
 
 	private Map<UIField, Label> labels = new HashMap<UIField, Label>();
 	private Pages pages;
-	private Map<IAttributeType<?>, UIValidator[]> _listen = new HashMap<IAttributeType<?>, UIValidator[]>();
+	private Map<IAttributeType<?>, UIRunningValidator[]> _listen = new HashMap<IAttributeType<?>, UIRunningValidator[]>();
 	private Map<UIField, UIRunningField> runningField = new HashMap<UIField, UIRunningField>();
 	private Composite parent;
 
@@ -186,7 +192,7 @@ public class SWTUIPlatform implements IPageController {
 	public WizardDialog createCreationWizard(Shell parentShell)
 			throws CadseException {
 		parent = parentShell;
-		dialog = new WizardDialog(parentShell, new WizardController(this));
+		dialog = new UIWizardDialog(parentShell, new WizardController(this));
 		init();
 		dialog.addPageChangedListener(new IPageChangedListener() {
 
@@ -365,20 +371,23 @@ public class SWTUIPlatform implements IPageController {
 		if (action != null) {
 			action.init(this);
 		}
-		for (UIValidator v : pages.getUIValidators()) {
-			IAttributeType<?>[] attr = v.getListenAttributeType();
-			if (attr != null) {
-				for (IAttributeType<?> a : attr) {
-					addListener(a, v);
+		for (UIRunningValidator v : pages.getUIValidators()) {
+			UIValidator desc = (UIValidator) v.getDescriptor();
+			if (desc != null) {
+				IAttributeType<?>[] attr = desc.getListenAttributeType();
+				if (attr != null) {
+					for (IAttributeType<?> a : attr) {
+						addListener(a, v);
+					}
 				}
 			}
 			v.init(this);
 		}
 	}
 
-	public void addListener(IAttributeType<?> attr, UIValidator v) {
-		UIValidator[] l = _listen.get(attr);
-		l = ArraysUtil.add(UIValidator.class, l, v);
+	public void addListener(IAttributeType<?> attr, UIRunningValidator v) {
+		UIRunningValidator[] l = _listen.get(attr);
+		l = ArraysUtil.add(UIRunningValidator.class, l, v);
 		if (l.length == 1)
 			_listen.put(attr, l);
 	}
@@ -414,11 +423,19 @@ public class SWTUIPlatform implements IPageController {
 				ric._uiPlatform = this;
 				rf._ic = (T) ric;
 			}
+			
+			RunningModelController rmc = createMC(field.getModelController());
+			if (rmc == null) {
+				rmc = getDefaultModelController();
+			}
+			rf._mc = rmc;
 		}
 		
 		rf.createControl(container, hspan_label);
 		return rf;
 	}
+
+	
 
 	private <T extends RuningInteractionController> UIRunningField<T> find(IPage page, UIField field) {
 		UIRunningField<?> rf = runningField.get(field);
@@ -472,26 +489,26 @@ public class SWTUIPlatform implements IPageController {
 			Object added) {
 		try {
 			boolean error;
-			error = field.getModelController().validSubValueAdded(this, field,
+			error = getModelController(field).validSubValueAdded(field,
 					added);
 			if (error) {
 				return true;
 			}
-			UIValidator[] listeners = this._listen.get(field
+			UIRunningValidator[] listeners = this._listen.get(field
 					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
-					error = listeners[i].validSubValueAdded(this, field, added);
+					error = listeners[i].validSubValueAdded(field, added);
 					if (error) {
 						return true;
 					}
 				}
 			}
-			field.getModelController().notifieSubValueAdded(this, field, added);
+			getModelController(field).notifieSubValueAdded(field, added);
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
-						listeners[i].notifieSubValueAdded(this, field, added);
+						listeners[i].notifieSubValueAdded(field, added);
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
@@ -505,32 +522,36 @@ public class SWTUIPlatform implements IPageController {
 		}
 	}
 
+	private RunningModelController getModelController(UIField field) {
+		return runningField.get(field)._mc;
+	}
+
 	public boolean broadcastSubValueRemoved(IPage page, UIField field,
 			Object removed) {
 		try {
 			boolean error;
-			error = field.getModelController().validSubValueRemoved(this,
+			error = getModelController(field).validSubValueRemoved(
 					field, removed);
 			if (error) {
 				return true;
 			}
-			UIValidator[] listeners = this._listen.get(field
+			UIRunningValidator[] listeners = this._listen.get(field
 					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
-					error = listeners[i].validSubValueRemoved(this, field,
+					error = listeners[i].validSubValueRemoved( field,
 							removed);
 					if (error) {
 						return true;
 					}
 				}
 			}
-			field.getModelController().notifieSubValueRemoved(this, field,
+			getModelController(field).notifieSubValueRemoved( field,
 					removed);
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
-						listeners[i].notifieSubValueRemoved(this, field,
+						listeners[i].notifieSubValueRemoved( field,
 								removed);
 					} catch (Throwable e) {
 						e.printStackTrace();
@@ -570,30 +591,30 @@ public class SWTUIPlatform implements IPageController {
 	public boolean broadcastValueDeleted(IPage page, UIField field,
 			Object oldvalue) {
 		try {
-			boolean error = field.getModelController().validValueDeleted(this,
+			boolean error = getModelController(field).validValueDeleted(
 					field, oldvalue);
 			if (error) {
 				return true;
 			}
 
-			UIValidator[] listeners = this._listen.get(field
+			UIRunningValidator[] listeners = this._listen.get(field
 					.getAttributeDefinition());
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
-						listeners[i].validValueDeleted(this, field, oldvalue);
+						listeners[i].validValueDeleted( field, oldvalue);
 					} catch (Throwable e) {
 						e.printStackTrace();
 						listeners[i].incrementError();
 					}
 				}
 			}
-			field.getModelController().notifieValueDeleted(this, field,
+			getModelController(field).notifieValueDeleted( field,
 					oldvalue);
 			if (listeners != null) {
 				for (int i = 0; i < listeners.length; i++) {
 					try {
-						listeners[i].notifieValueDeleted(this, field, oldvalue);
+						listeners[i].notifieValueDeleted( field, oldvalue);
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
@@ -756,14 +777,13 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	public void sendChangedValue(UIField field, Object visualValue) {
-		field.getModelController()
-				.notifieValueChanged(this, field, visualValue);
-		UIValidator[] listeners = this._listen.get(field
+		getModelController(field).notifieValueChanged(field, visualValue);
+		UIRunningValidator[] listeners = this._listen.get(field
 				.getAttributeDefinition());
 		if (listeners != null) {
 			for (int i = 0; i < listeners.length; i++) {
 				try {
-					listeners[i].notifieValueChanged(this, field, visualValue);
+					listeners[i].notifieValueChanged(field, visualValue);
 				} catch (Throwable e) {
 					e.printStackTrace();
 					listeners[i].incrementError();
@@ -784,17 +804,17 @@ public class SWTUIPlatform implements IPageController {
 
 	public boolean validateValueChanged(UIField field, Object visualValue) {
 		boolean error;
-		error = field.getModelController().validValueChanged(this, field,
+		error = getModelController(field).validValueChanged(field,
 				visualValue);
 		if (error) {
 			return true;
 		}
-		UIValidator[] listeners = this._listen.get(field
+		UIRunningValidator[] listeners = this._listen.get(field
 				.getAttributeDefinition());
 		if (listeners != null) {
-			for (UIValidator v : listeners) {
+			for (UIRunningValidator v : listeners) {
 				try {
-					error = v.validValueChanged(this, field, visualValue);
+					error = v.validValueChanged(field, visualValue);
 					if (error) {
 						return true;
 					}
@@ -843,15 +863,15 @@ public class SWTUIPlatform implements IPageController {
 	 * @see fr.imag.adele.cadse.core.ui.UIField#getValueForVisual()
 	 */
 	public Object getValueForVisual(UIField field) {
-		IModelController getFct = field.getModelController();
+		RunningModelController getFct = getModelController(field);
 		if (getFct == null) {
 			return null;
 		}
-		Object abstratcObject = getFct.getValue(this);
+		Object abstratcObject = getFct.getValue();
 		if (abstratcObject == null) {
 			Object defaultValue = getFct.defaultValue();
 			if (defaultValue != null) {
-				getFct.notifieValueChanged(this, field, defaultValue);
+				getFct.notifieValueChanged(field, defaultValue);
 			}
 			return defaultValue;
 		}
@@ -869,20 +889,20 @@ public class SWTUIPlatform implements IPageController {
 		}
 
 		boolean error = false;
-		IModelController getFct = field.getModelController();
+		RunningModelController getFct = getModelController(field);
 		if (getFct != null) {
-			error = getFct.validValue(this, field, visualValue);
+			error = getFct.validValue(field, visualValue);
 		}
 		if (error) {
 			return true;
 		}
 
-		UIValidator[] listeners = this._listen.get(field
+		UIRunningValidator[] listeners = this._listen.get(field
 				.getAttributeDefinition());
 		if (listeners != null) {
-			for (UIValidator v : listeners) {
+			for (UIRunningValidator v : listeners) {
 				try {
-					error = v.validValue(this, field, visualValue);
+					error = v.validValue(field, visualValue);
 					if (error) {
 						return true;
 					}
@@ -922,7 +942,7 @@ public class SWTUIPlatform implements IPageController {
 	private IActionPage action;
 	private FedeFormToolkit _toolkit;
 	private IPageSite _pageSite;
-	private IModelController _defaultModelController;
+	private RunningModelController _defaultModelController;
 
 	public <T extends RuningInteractionController> UIRunningField<T> createRunningField(
 			UIField field) {
@@ -963,6 +983,11 @@ public class SWTUIPlatform implements IPageController {
 			log("Cannot create instance of " + clazz, e);
 		}
 		return null;
+	}
+	
+	private RunningModelController createMC(Item modelController) {
+		CreatedObjectManager<RunningModelController> manager = CreatedObjectManager.getManager(modelController, RunningModelController.class);
+		return manager.create(modelController);
 	}
 
 	/*
@@ -1078,15 +1103,12 @@ public class SWTUIPlatform implements IPageController {
 		_pageSite = site;
 	}
 	
-	static public Pages createWizard(AbstractActionPage action, IPage... pages) {
-
-		return new PagesImpl(false, action, pages);
-	}
+	
 
 	static public DBrowserUI createOneFolderOrFileField(String key, String label, String title, String message,
 			boolean selectFolder, String filter, int kindroot) {
 
-		IModelController mc = new StringToOneResourceModelController();
+		RunningModelController mc = new StringToOneResourceModelController();
 		IC_FileResourceForBrowser_Combo_List ic = new IC_FileResourceForBrowser_Combo_List(title, message, kindroot,
 				filter, selectFolder);
 		DBrowserUI ui = new DBrowserUI(key, label, EPosLabel.top, mc, ic, SWT.BORDER | SWT.SINGLE);
@@ -1141,12 +1163,12 @@ public class SWTUIPlatform implements IPageController {
 	// LinkViewerController.LINKS_TRANSITIVES, linksTransitives);
 	// }
 	public DCheckedListUI createCheckBoxList(String key, String label, IC_ForCheckedViewer ic,
-			IModelController mc) {
+			RunningModelController mc) {
 		return new DCheckedListUI(key, label, label == null ? EPosLabel.none : EPosLabel.top, mc, ic);
 	}
 
-	public DCheckBoxUI createCheckBox(String key, String label) {
-		return createCheckBox(key, label, null);
+	public  <IC extends RuningInteractionController> DCheckBoxUI<IC> createCheckBox(IPage page, BooleanAttributeType key, String label) {
+		return createCheckBox(page, key, label, null);
 	}
 
 	public IntegerAttributeType createIntegerAttribute(String name, Integer min, Integer max, int defaultValue) {
@@ -1161,31 +1183,29 @@ public class SWTUIPlatform implements IPageController {
 		return CompactUUID.randomUUID();
 	}
 
-	public DCheckBoxUI createCheckBox(IPage page, BooleanAttributeType key, String label, RuningInteractionController ic) {
-		return initDefaultRunningField(page, key, null, ic, new DCheckBoxUI());
+	public <IC extends RuningInteractionController> DCheckBoxUI<IC> createCheckBox(IPage page, BooleanAttributeType key, String label, IC ic) {
+		return initDefaultRunningField(page, key, null, ic, new DCheckBoxUI<IC>());
 	}
 
 	private <IC extends RuningInteractionController, T extends UIRunningField<IC>> T initDefaultRunningField(IPage page, IAttributeType<?> key,
-			IModelController defaultMC, IC ic,  T ret) {
-		ret._field = createDefaultField(key, defaultMC);
+			RunningModelController defaultMC, IC ic,  T ret) {
+		ret._field = createDefaultField(key);
 		ret._ic = ic;
 		ret._page = page;
 		ret._swtuiplatform = this;
+		ret._mc = defaultMC;
+		if (ret._mc == null)
+			ret._mc = getDefaultModelController();
 		this.runningField.put(ret._field, ret);
 		this.pages.setUIField(key, ret._field);
 		return ret;
 	}
 
-	private UIField createDefaultField(IAttributeType<?> key, IModelController defaultMC) {
-		UIField defaultField = key.generateDefaultField();
-		if (defaultField.getModelController() == null) {
-			defaultField.setModelController(defaultMC == null ? getDefaultModelController() : defaultMC);
-		}
-		
-		return defaultField;
+	protected UIField createDefaultField(IAttributeType<?> key) {
+		return key.generateDefaultField();;
 	}
 
-	public IModelController getDefaultModelController() {
+	public RunningModelController getDefaultModelController() {
 		return _defaultModelController;
 	}
 
@@ -1215,7 +1235,7 @@ public class SWTUIPlatform implements IPageController {
 		return initDefaultRunningField(page, key,  null, ic, new DTextUI<IC>());
 	}
 
-	public static DTextUI createIntField( key, String label, IModelController mc) {
+	public static DTextUI createIntField( key, String label, RunningModelController mc) {
 		return new DTextUI(key, label, EPosLabel.left, mc, null);
 	}
 
@@ -1225,12 +1245,12 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	public static DBrowserUI createBrowserField(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, IModelController mc) {
+			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc) {
 		return new DBrowserUI(key, label, poslabel, mc, ic, SWT.BORDER | SWT.SINGLE);
 	}
 
 	public static DComboUI createComboBox(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, IModelController mc, boolean edit) {
+			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc, boolean edit) {
 		if (mc == null) {
 			mc = new MC_AttributesItem();
 		}
@@ -1254,7 +1274,7 @@ public class SWTUIPlatform implements IPageController {
 		return createTextField(key, label, 1, tooltip, null, null);
 	}
 
-	public DTextUI createTextField(String key, String label, IModelController mc) {
+	public DTextUI createTextField(String key, String label, RunningModelController mc) {
 		return createTextField(key, label, 1, null, null, mc);
 	}
 
@@ -1263,7 +1283,7 @@ public class SWTUIPlatform implements IPageController {
 	}
 
 	public DTextUI createTextField(String key, String label, int vspan, String tooltip,
-			RuningInteractionController ic, IModelController mc) {
+			RuningInteractionController ic, RunningModelController mc) {
 		if (mc == null) {
 			mc = new MC_AttributesItem();
 		}
@@ -1274,40 +1294,42 @@ public class SWTUIPlatform implements IPageController {
 	UIField createField(IAttributeType<?> att) {
 		new UIfield
 	}
-	public static DListUI createList_ListOfString(String key, String label, String title, String message,
-			boolean allowDuplicate, int min, int max) {
-		return createList(key, label, new MC_DefaultForList(min, max), new IC_DefaultForList(title,
-				message, allowDuplicate));
-	}
+	
+	
+	
 
-	public static DListUI createList_ListOfString(String key, String label, MC_DefaultForList mc,
-			IC_DefaultForList ic) {
-		return createList(key, label, mc, ic);
-	}
-
-	public static DListUI createList(String key, String label, IModelController mc, IInteractionControllerForList ic,
-			Object... objects) {
-		return new DListUI(key, label, EPosLabel.top, mc, ic, true, true);
-
-	}
-
-	public IAttributeType<?> createFictifAttributte(String name, IAttributeType<?> ...attributeTypes) {
-		return new FictifAttribute(newID(), name, 0, attributeTypes);
+	protected IAttributeType<?> createFictifAttributte(String name) {
+		return new FictifAttribute(newID(), name, 0);
 	}
 
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean checkBox) {
+		return createTreeModelUI(page, createFictifAttributte(attributte), label, none, mc, ic, checkBox);
+	}
+	
+	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, IModelController mc,
+			EPosLabel none, RunningModelController mc,
 			IC ic, boolean checkBox) {
 		DTreeModelUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTreeModelUI<IC>());
 		ret._useCheckBox = checkBox;
 		return ret;
 	}
+	
+	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
+			IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll) {
+		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll);
+	}
 
 	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, IModelController mc,
+			EPosLabel none, RunningModelController mc,
 			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll) {
 		DTextUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTextUI<IC>());
 		ret._field.setType(CadseGCST.DTEXT);
@@ -1323,38 +1345,135 @@ public class SWTUIPlatform implements IPageController {
 		
 		return ret;
 	}
+	
+	public <IC extends ICRunningField> DSashFormUI<IC> createDSashFormUI(
+			IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, UIRunningField<?> child1, UIRunningField<?> child2) {
+		
+		return createDSashFormUI(page, createFictifAttributte(attributte), label, none, mc, ic, child1, child2);
+	}
 
 	public <IC extends ICRunningField> DSashFormUI<IC> createDSashFormUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, IModelController mc,
+			EPosLabel none, RunningModelController mc,
 			IC ic, UIRunningField<?> child1, UIRunningField<?> child2) {
 		DSashFormUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DSashFormUI<IC>());
 		ret._children = new UIRunningField<?>[] { child1, child2 };
+		completeFictifAtt(attributte, ret._children);
 		return ret;
 	}
 
 	public <IC extends ICRunningField> DGridUI<IC> createDGridUI(
 			IPage page,
+			String attributte, String label,
+			EPosLabel poslabel, RunningModelController mc,
+			IC ic, UIRunningField<?>... children) {
+		return createDGridUI(page, createFictifAttributte(attributte), label, poslabel, mc, ic, children);
+	}
+	
+	public <IC extends ICRunningField> DGridUI<IC> createDGridUI(
+			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, IModelController mc,
+			EPosLabel none, RunningModelController mc,
 			IC ic, UIRunningField<?>... children) {
 		DGridUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DGridUI<IC>());
 		ret._children = children;
+		completeFictifAtt(attributte, children);
 		return ret;
+	}
+
+	private void completeFictifAtt(IAttributeType<?> attributte,
+			UIRunningField<?>... children) {
+		if (attributte instanceof FictifAttribute<?>) {
+			FictifAttribute<?> fa = (FictifAttribute<?>) attributte;
+			if (fa._children == null) {
+				fa._children = new IAttributeType<?>[children.length];
+				for (int i = 0; i < children.length; i++) {
+					fa._children[i] = children[i]._field.getAttributeDefinition();
+				}
+			}				
+		}
 	}
 
 	public IPage createPageDescription(String title, String label) {
 		return new PageImpl("p1", label, title, title, true);
 	}
+	
+	public <IC extends IC_Tree> DTreeUI<IC> createTreeUI(
+			IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic) {
+		return createTreeUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+	}
 
 	public <IC extends IC_Tree> DTreeUI<IC> createTreeUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, IModelController mc,
+			EPosLabel none, RunningModelController mc,
 			IC ic) {
 		DTreeUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTreeUI<IC>());
 		return ret;
+	}
+	
+	public <IC extends IC_ForList> DListUI<IC> createDListUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean edit, boolean showfilter, boolean order, boolean update) {
+		return createDListUI(page, createFictifAttributte(attributte), label, none, mc, ic, edit, showfilter, order, update);
+	}
+
+	public DListUI<IC_DefaultForList> createList_ListOfString(IPage page, String key, String label, String title, String message,
+			boolean allowDuplicate, int min, int max) {
+		return createList(page, key, label, new MC_DefaultForList(min, max), new IC_DefaultForList(title,
+				message, allowDuplicate));
+	}
+
+	public  <IC extends IC_DefaultForList> DListUI<IC> createList_ListOfString(IPage page, String key, String label, MC_DefaultForList mc,
+			IC ic) {
+		return createList(page, key, label, mc, ic);
+	}
+
+	public  <IC extends IC_ForList> DListUI<IC> createList(IPage page, String key, String label, RunningModelController mc, IC ic,
+			Object... objects) {
+		DListUI<IC> ret = createDListUI(page, createFictifAttributte(key), label, EPosLabel.defaultpos, mc, ic, false, false, false, false);
+		return ret;
+	}
+	
+	public <IC extends IC_ForList> DListUI<IC> createDListUI(IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean edit, boolean showfilter, boolean order, boolean update) {
+		DListUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DListUI<IC>());
+		ret._field.setAttribute(CadseGCST.DLIST_at_ORDER_BUTTON_, order);
+		ret._field.setAttribute(CadseGCST.DLIST_at_SHOW_FILTER_, showfilter);
+		ret._field.setAttribute(CadseGCST.DLIST_at_EDITABLE_BUTTON_, edit);
+		ret._field.setAttribute(CadseGCST.DLIST_at_UPDATE_BUTTON_, update);
+		return ret;
+	}
+	
+	public <IC extends ICRunningField> DCheckBoxUI<IC> createCheckBoxUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic) {
+		return createCheckBoxUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+	}
+
+	public <IC extends ICRunningField> DCheckBoxUI<IC> createCheckBoxUI(IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic) {
+		DCheckBoxUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DCheckBoxUI<IC>());
+		return ret;
+	}
+
+	public PagesImpl createPages(IActionPage newAction, IPage page,
+			UIRunningValidator abstractUIValidator) {
+		return new PagesImpl(false, action, null, new IPage[] { page }, Arrays.asList(abstractUIValidator));
+
 	}
 
 	

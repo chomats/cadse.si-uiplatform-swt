@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
@@ -135,6 +136,10 @@ public abstract class DAbstractField<IC extends RuningInteractionController>
 	@Override
 	public Object getVisualValue() {
 		return null;
+	}
+	
+	public IAttributeType<?> getAttributeDefinition() {
+		return _field.getAttributeDefinition();
 	}
 
 }

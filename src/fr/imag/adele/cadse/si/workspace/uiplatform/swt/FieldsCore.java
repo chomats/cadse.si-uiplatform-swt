@@ -21,7 +21,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 import org.eclipse.swt.SWT;
 
 import fede.workspace.model.manager.properties.impl.ParentPartGetAndSet;
-import fede.workspace.model.manager.properties.impl.mc.MC_DefaultForList;
 import fede.workspace.model.manager.properties.impl.mc.MC_DisplayNameItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_IDItemProperty;
 import fede.workspace.model.manager.properties.impl.mc.MC_ShortNameItemProperty;
@@ -33,14 +32,15 @@ import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.CreationAction;
-import fr.imag.adele.cadse.core.impl.ui.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.PageImpl;
 import fr.imag.adele.cadse.core.impl.ui.mc.LinkModelController;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_DefaultForList;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_StringToBoolean;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.IModelController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
@@ -81,7 +81,7 @@ public class FieldsCore {
 	static public DBrowserUI createOneFolderOrFileField(String key, String label, String title, String message,
 			boolean selectFolder, String filter, int kindroot) {
 
-		IModelController mc = new StringToOneResourceModelController();
+		RunningModelController mc = new StringToOneResourceModelController();
 		IC_FileResourceForBrowser_Combo_List ic = new IC_FileResourceForBrowser_Combo_List(title, message, kindroot,
 				filter, selectFolder);
 		DBrowserUI ui = new DBrowserUI(key, label, EPosLabel.top, mc, ic, SWT.BORDER | SWT.SINGLE);
@@ -136,7 +136,7 @@ public class FieldsCore {
 	// LinkViewerController.LINKS_TRANSITIVES, linksTransitives);
 	// }
 	public static DCheckedListUI createCheckBoxList(String key, String label, IC_ForCheckedViewer ic,
-			IModelController mc) {
+			RunningModelController mc) {
 		return new DCheckedListUI(key, label, label == null ? EPosLabel.none : EPosLabel.top, mc, ic);
 	}
 
@@ -166,11 +166,11 @@ public class FieldsCore {
 				selectTitle, selectMessage), SWT.BORDER | SWT.SINGLE);
 	}
 
-	public static DTextUI createIntField(String key, String label, IModelController mc, RuningInteractionController ic) {
+	public static DTextUI createIntField(String key, String label, RunningModelController mc, RuningInteractionController ic) {
 		return new DTextUI(key, label, EPosLabel.left, mc, ic);
 	}
 
-	public static DTextUI createIntField(String key, String label, IModelController mc) {
+	public static DTextUI createIntField(String key, String label, RunningModelController mc) {
 		return new DTextUI(key, label, EPosLabel.left, mc, null);
 	}
 
@@ -180,12 +180,12 @@ public class FieldsCore {
 	}
 
 	public static DBrowserUI createBrowserField(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, IModelController mc) {
+			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc) {
 		return new DBrowserUI(key, label, poslabel, mc, ic, SWT.BORDER | SWT.SINGLE);
 	}
 
 	public static DComboUI createComboBox(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, IModelController mc, boolean edit) {
+			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc, boolean edit) {
 		if (mc == null) {
 			mc = new MC_AttributesItem();
 		}
@@ -209,7 +209,7 @@ public class FieldsCore {
 		return createTextField(key, label, 1, tooltip, null, null);
 	}
 
-	public static DTextUI createTextField(String key, String label, IModelController mc) {
+	public static DTextUI createTextField(String key, String label, RunningModelController mc) {
 		return createTextField(key, label, 1, null, null, mc);
 	}
 
@@ -218,7 +218,7 @@ public class FieldsCore {
 	}
 
 	public static DTextUI createTextField(String key, String label, int vspan, String tooltip,
-			RuningInteractionController ic, IModelController mc) {
+			RuningInteractionController ic, RunningModelController mc) {
 		if (mc == null) {
 			mc = new MC_AttributesItem();
 		}
@@ -236,7 +236,7 @@ public class FieldsCore {
 		return createList(key, label, mc, ic);
 	}
 
-	public static DListUI createList(String key, String label, IModelController mc, IInteractionControllerForList ic,
+	public static DListUI createList(String key, String label, RunningModelController mc, IInteractionControllerForList ic,
 			Object... objects) {
 		return new DListUI(key, label, EPosLabel.top, mc, ic, true, true);
 

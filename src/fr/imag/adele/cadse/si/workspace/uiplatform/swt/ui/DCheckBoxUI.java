@@ -35,7 +35,7 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * @author chomats
  * 
  */
-public class DCheckBoxUI extends DAbstractField<RuningInteractionController> {
+public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
 	private Button _control;
 

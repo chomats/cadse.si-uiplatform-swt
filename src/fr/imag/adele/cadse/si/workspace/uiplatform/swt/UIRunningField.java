@@ -22,8 +22,9 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 import org.eclipse.swt.widgets.Composite;
 
 import fr.imag.adele.cadse.core.CadseException;
+import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.IModelController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
@@ -55,6 +56,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 
 	public UIRunningField<?>[] _children;
 	public IC _ic;
+	public RunningModelController _mc;
 
 	/*
 	 * (non-Javadoc)
@@ -120,8 +122,8 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 * 
 	 * @see fr.imag.adele.cadse.core.ui.UIField#getModelController()
 	 */
-	public IModelController getModelController() {
-		return _field.getModelController();
+	public RunningModelController getModelController() {
+		return _mc;
 	}
 
 	/*
@@ -147,7 +149,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 */
 	public void setValue(Object visualValue) {
 		setVisualValue(visualValue);
-		getModelController().notifieValueChanged(_swtuiplatform, _field,
+		getModelController().notifieValueChanged( _field,
 				visualValue);
 	}
 
@@ -239,7 +241,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 		}
 
 		if (getModelController() != null) {
-			getModelController().initAfterUI(_swtuiplatform);
+			getModelController().initAfterUI(this._field);
 		}
 
 		if (_ic != null) {
@@ -309,6 +311,10 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 
 	public UIField getUIField() {
 		return _field;
+	}
+
+	public IAttributeType<?> getAttributeDefinition() {
+		return _field == null ? null : _field.getAttributeDefinition();
 	}
 
 }

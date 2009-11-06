@@ -34,17 +34,18 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 public class FieldsPreferencePage extends PropertyPage {
 
-	protected SWTUIPlatform controller = null;
+	protected SWTUIPlatform _swtPlatform = null;
 
 	public FieldsPreferencePage() {
+		this._swtPlatform = new SWTUIPlatform();
 	}
 
 	@Override
 	protected Control createContents(Composite parent) {
 
-		if (controller != null) {
+		if (_swtPlatform != null && _swtPlatform.getPages() != null) {
 			try {
-				return controller.createControlPage(parent);
+				return _swtPlatform.createControlPage(parent);
 			} catch (CadseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,43 +66,10 @@ public class FieldsPreferencePage extends PropertyPage {
 
 	protected void updateStatus(String message) {
 		setErrorMessage(message);
-		// setPageComplete(message == null);
 	}
-
-	// public Item getTheCurrentItem() {
-	// return (Item) (controller== null ? null :
-	// controller.getPages().getItem());
-	// }
-	//
-	// public Item getParentItem() {
-	// return (Item) (controller== null ? null :
-	// controller.getPages().getLocal(IFieldDescription.PARENT_CONTEXT));
-	// }
-
-	// @Override
-	// public void setElement(IAdaptable element) {
-	// super.setElement(element);
-	// Item item = ((Item) element);
-	//        
-	// IItemManager im = item.getType().getItemManager();
-	// Pages pages = null;
-	// if (im instanceof DefaultItemManager) {
-	// pages = ((DefaultItemManager)im).createModificationPage(item);
-	// }
-	// if (pages == null)
-	// pages = item.getType().getGoodModificationPage(item);
-	// pages.setItem(item);
-	// setController(pages);
-	// URL url = im.getImage(item);
-	// if (url != null)
-	// setImageDescriptor(ImageDescriptor.createFromURL(url));
-	// setTitle(im.getHumanTypeName());
-	//        
-	//        
-	// }
-	//    
+	
 	public void setController(Pages pages) {
-		this.controller = new SWTUIPlatform(pages, null);
+		_swtPlatform.setPages(pages);
 	}
 
 	@Override
@@ -109,7 +77,7 @@ public class FieldsPreferencePage extends PropertyPage {
 		try {
 			CadseCore.getCadseDomain().beginOperation(
 					"WizardController.performFinish");
-			controller.doFinish(null);
+			_swtPlatform.doFinish(null);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		} catch (Throwable e) {
@@ -123,7 +91,7 @@ public class FieldsPreferencePage extends PropertyPage {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (controller != null)
-			controller.dispose();
+		if (_swtPlatform != null)
+			_swtPlatform.dispose();
 	}
 }
