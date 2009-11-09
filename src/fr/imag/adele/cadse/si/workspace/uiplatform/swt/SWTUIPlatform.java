@@ -97,20 +97,24 @@ import fr.imag.adele.cadse.core.ui.UIValidator;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.core.util.CreatedObjectManager;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ActionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FileResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FolderResource_ForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_IconResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowser_Combo;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_StaticArrayOfObjectForBrowser_Combo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DBrowserUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DButtonUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedListUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedTreeUI;
@@ -1417,6 +1421,44 @@ public class SWTUIPlatform implements UIPlatform {
 		ret._selectDelectButton = selectDelectButton;
 		ret._fillBoth = fillBoth;
 		return ret;
+	}
+	
+	public  <IC extends IC_ForBrowserOrCombo> DComboUI<IC> createDComboUI(
+			IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean edit) {
+		return createDComboUI(page, createFictifAttributte(attributte), label, none, mc, ic, edit);
+	}
+	
+	public  <IC extends IC_ForBrowserOrCombo> DComboUI<IC> createDComboUI(
+			IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean edit) {
+		DComboUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DComboUI<IC>());
+		ret._field.setEditable(edit);
+		return ret;
+	}
+	
+	public <IC extends ActionController> DButtonUI<IC> createDButtonUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic) {
+		return createDButtonUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+	}
+
+	public <IC extends ActionController> DButtonUI<IC> createDButtonUI(IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic) {
+		DButtonUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DButtonUI<IC>());
+		return ret;
+	}
+
+	public Shell getShell() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

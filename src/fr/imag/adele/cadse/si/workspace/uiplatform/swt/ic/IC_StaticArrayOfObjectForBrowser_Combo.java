@@ -25,6 +25,14 @@ public class IC_StaticArrayOfObjectForBrowser_Combo extends
 		IC_AbstractForBrowser_Combo {
 
 	private Object[] values;
+	public IC_StaticArrayOfObjectForBrowser_Combo() {
+	}
+	public IC_StaticArrayOfObjectForBrowser_Combo(String title,
+			String message, String[] lastCommitMsgTab) {
+		this._title = title;
+		this._message = message;
+		values = lastCommitMsgTab;
+	}
 
 	public Object[] getValues() {
 		return values;

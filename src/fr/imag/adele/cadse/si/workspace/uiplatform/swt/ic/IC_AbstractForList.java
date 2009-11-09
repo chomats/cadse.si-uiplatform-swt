@@ -30,16 +30,16 @@ import fr.imag.adele.cadse.core.CadseException;
 /** */
 // attribut
 // - string select-title;
-public abstract class IC_AbstractForList extends ICRunningField implements
+public abstract class IC_AbstractForList extends IC_WithDialogAction implements
 		IC_ForList {
 
-	protected String title;
-	protected String message;
 
-	@Override
-	public void init() throws CadseException {
-		title = "TODO";
-		message = "TODO";
+	public IC_AbstractForList() {
+		super();
+	}
+
+	public IC_AbstractForList(String title2, String message2) {
+		super(title2, message2);
 	}
 
 	public String canAddObject(Object[] object) {
@@ -79,9 +79,9 @@ public abstract class IC_AbstractForList extends ICRunningField implements
 							@SuppressWarnings("unused") Object oldInput,
 							@SuppressWarnings("unused") Object newInput) {
 					}
-				}, getLabelProvider(), message);
-		if (title != null) {
-			lsd.setTitle(title);
+				}, getLabelProvider(), _message);
+		if (_title != null) {
+			lsd.setTitle(_title);
 		}
 		lsd.open();
 		if (lsd.getReturnCode() == Window.OK) {
@@ -95,13 +95,6 @@ public abstract class IC_AbstractForList extends ICRunningField implements
 		return new ObjectArrayContentProvider();
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public String getMessage() {
-		return message;
-	}
 
 	public boolean moveDown(Object[] object) {
 		return false;

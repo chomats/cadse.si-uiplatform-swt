@@ -49,8 +49,8 @@ public class IC_DefaultForList extends IC_AbstractForList implements
 	public IC_DefaultForList(String title, String message,
 			boolean allowDuplicate) {
 		_allowDuplicate = allowDuplicate;
-		this.message = message;
-		this.title = title;		
+		this._message = message;
+		this._title = title;		
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements
 		final IAttributeType<?> subAtt = att == null ? null : att
 				.getSubAttributeType();
 		InputDialog dialog;
-		dialog = new InputDialog(parentShell, title, message,
+		dialog = new InputDialog(parentShell, _title, _message,
 
 		"", new IInputValidator() {
 

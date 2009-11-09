@@ -64,6 +64,14 @@ public class IC_LinkForBrowser_Combo_List extends
 	LinkType linkType;
 	boolean deleteExistingLink = true;
 
+	
+	public IC_LinkForBrowser_Combo_List() {
+	}
+	
+	public IC_LinkForBrowser_Combo_List(String title, String message) {
+		super(title, message);
+	}
+
 	@Override
 	public void init() throws CadseException {
 		super.init();

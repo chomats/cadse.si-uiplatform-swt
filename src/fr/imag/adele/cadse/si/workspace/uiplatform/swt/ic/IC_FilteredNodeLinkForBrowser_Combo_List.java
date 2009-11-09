@@ -39,6 +39,13 @@ import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
 public class IC_FilteredNodeLinkForBrowser_Combo_List extends
 		IC_LinkForBrowser_Combo_List {
 
+	public IC_FilteredNodeLinkForBrowser_Combo_List(String title, String message) {
+		super(title, message);
+	}
+	
+	public IC_FilteredNodeLinkForBrowser_Combo_List() {
+	}
+
 	/** The error message. */
 	String errorMessage;
 

@@ -32,29 +32,16 @@ import fr.imag.adele.cadse.core.CadseGCST;
 /** */
 
 public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends
-		ICRunningField implements IC_ForList, ISelectionStatusValidator,
+IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
 		IC_ForBrowserOrCombo {
 
-	public String _title;
-	public String _message;
-
+	
 	public IC_AbstractTreeDialogForList_Browser_Combo() {
 	}
 	
 	public IC_AbstractTreeDialogForList_Browser_Combo(String title2,
 			String message2) {
-		_title = title2;
-		_message = message2;
-	}
-
-	@Override
-	public void init() throws CadseException {
-		if (_ic != null) {
-			_title = _ic
-					.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_TITLE_);
-			_message = _ic
-					.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_MESSAGE_);
-		}
+		super(title2, message2);
 	}
 
 	public String canAddObject(Object[] object) {
@@ -134,13 +121,7 @@ public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends
 		return getTreeContentProvider();
 	}
 
-	public String getTitle() {
-		return _title;
-	}
-
-	public String getMessage() {
-		return _message;
-	}
+	
 
 	public Object fromString(String value) {
 		return null;

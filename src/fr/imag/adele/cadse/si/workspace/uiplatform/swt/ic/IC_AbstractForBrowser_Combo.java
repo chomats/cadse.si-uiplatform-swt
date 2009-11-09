@@ -32,19 +32,18 @@ import org.eclipse.ui.dialogs.ListDialog;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 
-public abstract class IC_AbstractForBrowser_Combo extends ICRunningField
+public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 		implements IC_ForBrowserOrCombo {
 
-	@Override
-	public void init() throws CadseException {
-		title = _ic
-				.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_TITLE_);
-		message = _ic
-				.getAttribute(CadseGCST.IC_ABSTRACT_FOR_BROWSER_COMBO_at_MESSAGE_);
+	
+
+	public IC_AbstractForBrowser_Combo() {
+		super();
 	}
 
-	private String title;
-	private String message;
+	public IC_AbstractForBrowser_Combo(String title2, String message2) {
+		super(title2, message2);
+	}
 
 	public Object selectOrCreateValue(Shell parentShell) {
 		ListDialog lsd = new ListDialog(parentShell);
@@ -66,8 +65,8 @@ public abstract class IC_AbstractForBrowser_Combo extends ICRunningField
 			}
 		});
 		lsd.setLabelProvider(getLabelProvider());
-		lsd.setMessage(message);
-		lsd.setTitle(title);
+		lsd.setMessage(_message);
+		lsd.setTitle(_title);
 		lsd.open();
 		if (lsd.getReturnCode() == Window.OK) {
 			Object[] ret = lsd.getResult();
@@ -122,14 +121,6 @@ public abstract class IC_AbstractForBrowser_Combo extends ICRunningField
 
 	protected Image getImage(Object element) {
 		return null;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getMessage() {
-		return message;
 	}
 
 	public Object fromString(String value) {
