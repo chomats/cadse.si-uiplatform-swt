@@ -71,7 +71,7 @@ import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
@@ -94,7 +94,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
  * @author Thomas
  * 
  */
-public class ShowDetailWLWCDialog {
+public class ShowDetailWLWCDialog extends SWTDialog {
 	/*
 	 * UI fields.
 	 */
@@ -110,7 +110,6 @@ public class ShowDetailWLWCDialog {
 
 	protected DTreeModelUI						_treeField;
 	
-	protected SWTUIPlatform 					_swtuiPlatform;
 
 	/**
 	 * Status and definition of commit operation.
@@ -131,8 +130,6 @@ public class ShowDetailWLWCDialog {
 	private DTextUI								_textField;
 
 	private boolean _performFinish;
-
-	private IPage _page;
 
 	static private class SetAttNode extends AbstractCadseViewNode {
 
@@ -342,7 +339,7 @@ public class ShowDetailWLWCDialog {
 	public class CommitActionPage extends AbstractActionPage {
 
 		@Override
-		public void doFinish(IPageController uiPlatform, Object monitor) throws Exception {
+		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			if (_performFinish)
 				_transaction.commit();
 		}
@@ -671,10 +668,8 @@ public class ShowDetailWLWCDialog {
 	 * @param performFinish 
 	 */
 	public ShowDetailWLWCDialog(SWTUIPlatform swtui, LogicalWorkspaceTransaction copy, String title, String label, boolean performFinish) {
-
+		super(swtui, title, label);
 		_performFinish = performFinish;
-		_swtuiPlatform = swtui;
-		_page = _swtuiPlatform.createPageDescription(title, label);
 		// set manipulated data
 		_transaction = copy;
 		computeItemsToShow();
@@ -691,7 +686,7 @@ public class ShowDetailWLWCDialog {
 		
 
 		// // create part with editors for selected node
-		DGridUI selectDependentFieldsGrild = _swtuiPlatform.createDGridUI(_page, 
+		DGridUI selectDependentFieldsGrild = _swtuiPlatforms.createDGridUI(_page, 
 				"#selectEdit", "", EPosLabel.none, defaultMc, null, _textField);
 		
 		
@@ -699,7 +694,7 @@ public class ShowDetailWLWCDialog {
 		// /*
 		// * Selection part
 		// */
-		_selectSashField = _swtuiPlatform.createDSashFormUI(_page, 
+		_selectSashField = _swtuiPlatforms.createDSashFormUI(_page, 
 				"#selectSash",
 				"", EPosLabel.none, defaultMc, null, _treeFieldInItem, selectDependentFieldsGrild);
 		//
@@ -708,7 +703,7 @@ public class ShowDetailWLWCDialog {
 		_selectSashField.setHorizontal(false);
 		//
 		
-		_rootSashField = _swtuiPlatform.createDSashFormUI(_page,
+		_rootSashField = _swtuiPlatforms.createDSashFormUI(_page,
 				"#rootSash", label, label == null ? EPosLabel.none : EPosLabel.top, defaultMc,
 				null, _treeField, _selectSashField);
 		_rootSashField.setHorizontal(true);
@@ -734,7 +729,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedItemTreeIC> createTreeField(boolean checkBox) {
-		return _swtuiPlatform.createTreeModelUI(_page, "#list", 
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list", 
 				"", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedItemTreeIC(), checkBox);
 	}
@@ -743,7 +738,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedInItemTreeIC> createTreeFieldInItem(boolean checkBox) {
-		return _swtuiPlatform.createTreeModelUI(_page, "#list-in", 
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list-in", 
 				"", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedInItemTreeIC(), checkBox);
 	}
@@ -752,7 +747,7 @@ public class ShowDetailWLWCDialog {
 	 * Create a text field to display the errors related to selected item.
 	 */
 	public DTextUI<ICRunningField> createTextField() {
-		return _swtuiPlatform.createTextUI(_page, "#textField", 
+		return _swtuiPlatforms.createTextUI(_page, "#textField", 
 				"Description", EPosLabel.top, new MyMC_AttributesItem(),
 				null, 1, true, false, true, false,true);
 	}
@@ -761,7 +756,7 @@ public class ShowDetailWLWCDialog {
 	 * 
 	 * @return
 	 */
-	private IActionPage getFinishAction() {
+	protected IActionPage getFinishAction() {
 		return new CommitActionPage();
 	}
 
@@ -779,26 +774,6 @@ public class ShowDetailWLWCDialog {
 		
 	}
 
-
-	private void open(final Shell shell) {
-		/**
-		 * Create a new display wen call getDefault(). Worksbench is not
-		 * started. This method is called by federation in start level.
-		 * 
-		 */
-		Display d = PlatformUI.getWorkbench().getDisplay();
-
-		d.syncExec(new Runnable() {
-			public void run() {
-				try {
-					_swtuiPlatform.open(shell, _page, getFinishAction(), false);
-					// TODO open commit progression dialog
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 
 	protected void computeItemsToShow() {

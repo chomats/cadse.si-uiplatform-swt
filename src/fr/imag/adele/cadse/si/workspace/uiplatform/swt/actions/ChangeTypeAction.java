@@ -33,7 +33,7 @@ import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_AllItemTypeForTreeUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeUI;
@@ -49,7 +49,7 @@ public class ChangeTypeAction implements IViewActionDelegate {
 		}
 
 		@Override
-		public void doFinish(IPageController uiPlatform, Object monitor) throws Exception {
+		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			ChangeTypeAction.this.selectedItemType = null;
 			Object[] selectObject = treeui.getSelectedDataObject();
 			selectedItemType = (ItemType) selectObject[0];

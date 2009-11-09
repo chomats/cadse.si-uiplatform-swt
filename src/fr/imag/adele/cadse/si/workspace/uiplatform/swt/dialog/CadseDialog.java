@@ -57,7 +57,7 @@ import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
@@ -68,7 +68,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeModelUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
-public class CadseDialog {
+public class CadseDialog extends SWTDialog {
 	
 	int						allreadyselected	= 0;
 	Item					selectedItem		= null;
@@ -76,6 +76,28 @@ public class CadseDialog {
 	Category				categoryExtendsTo;
 	Category				categoryExtendedBy;
 
+
+	protected DGridUI			fieldsCadse;
+
+	protected DSashFormUI		fieldsShash;
+	/**
+	 * 
+	 */
+	protected DTreeModelUI		fieldExtends;
+
+	/**
+	 * 
+	 */
+	protected DTextUI			fieldDescription;
+
+	/**
+	 * 
+	 */
+	protected DTextUI			fieldTWVersion;
+
+	private CadseRuntime[][]	ret;
+	
+	
 	public class MyMC_AttributesItem extends MC_AttributesItem {
 
 		
@@ -100,7 +122,7 @@ public class CadseDialog {
 	public class MyActionPage extends AbstractActionPage {
 
 		@Override
-		public void doFinish(IPageController ui, Object monitor) throws Exception {
+		public void doFinish(UIPlatform ui, Object monitor) throws Exception {
 			Object[] array = fieldExtends.getSelectedObjects();
 			HashSet<CadseRuntime> selection = new HashSet<CadseRuntime>();
 			for (int i = 0; i < array.length; i++) {
@@ -344,28 +366,7 @@ public class CadseDialog {
 		}
 
 	}
-
-	protected DGridUI			fieldsCadse;
-
-	protected DSashFormUI		fieldsShash;
-	/**
-	 * 
-	 */
-	protected DTreeModelUI		fieldExtends;
-
-	/**
-	 * 
-	 */
-	protected DTextUI			fieldDescription;
-
-	/**
-	 * 
-	 */
-	protected DTextUI			fieldTWVersion;
-
-	private CadseRuntime[][]	ret;
-	private IPage _page;
-	private SWTUIPlatform _swtuiPlatforms;
+	
 
 	/**
 	 * Create the dialog structure... DSashFormUI DGrillUI FieldExtends DGrillUI
@@ -375,8 +376,7 @@ public class CadseDialog {
 	 * @generated
 	 */
 	public CadseDialog(SWTUIPlatform swtuiPlatforms, CadseRuntime[][] ret) {
-		_swtuiPlatforms = swtuiPlatforms;
-		_page = swtuiPlatforms.createPageDescription("Executed CADSEs",
+		super(swtuiPlatforms, "Executed CADSEs",
 				"You can execute other CADSEs by validating the checkboxes bellow.");
 		this.ret = ret;
 		this.fieldExtends = createFieldExtends(true);
@@ -496,7 +496,7 @@ public class CadseDialog {
 	 * 
 	 * @return
 	 */
-	private IActionPage getFinishAction() {
+	protected IActionPage getFinishAction() {
 		return new MyActionPage();
 	}
 

@@ -9,7 +9,8 @@ Export-Package: fr.imag.adele.cadse.si.workspace.uiplatform.swt,
  fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog,
  fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic,
  fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui
-Import-Package: fede.plugin.workspace.filters,
+Import-Package: adele.util.io,
+ fede.plugin.workspace.filters,
  fede.workspace.model.manager.properties.impl,
  fede.workspace.model.manager.properties.impl.mc,
  fede.workspace.role.initmodel,
@@ -58,28 +59,33 @@ iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
  ipse.SWTService" }manipulation { field { $name="__MshowCreateWizardWit
  hError$org_eclipse_swt_widgets_Shell$fr_imag_adele_cadse_core_Item$fr_
  imag_adele_cadse_core_LinkType$fr_imag_adele_cadse_core_ItemType" $typ
- e="boolean" }field { $name="__MshowCreateWizard$org_eclipse_swt_widget
- s_Shell$fr_imag_adele_cadse_core_Item$fr_imag_adele_cadse_core_LinkTyp
- e$fr_imag_adele_cadse_core_ItemType" $type="boolean" }field { $name="_
- _MopenDialog$boolean" $type="boolean" }field { $name="__IM" $type="org
- .apache.felix.ipojo.InstanceManager" }method { $name="$init" }method {
-  $arguments="{org.apache.felix.ipojo.InstanceManager}" $name="$init" }
- method { $arguments="{boolean}" $name="openDialog" $return="fr.imag.ad
- ele.cadse.core.CadseRuntime[]" }method { $arguments="{boolean}" $name=
- "__openDialog" $return="fr.imag.adele.cadse.core.CadseRuntime[]" }meth
- od { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.co
- re.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.Ite
- mType}" $name="showCreateWizard" $return="boolean" }method { $argument
- s="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.ima
- g.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name=
- "__showCreateWizard" $return="boolean" }method { $arguments="{org.ecli
- pse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.cads
- e.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name="showCreateW
- izardWithError" }method { $arguments="{org.eclipse.swt.widgets.Shell,f
- r.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag
- .adele.cadse.core.ItemType}" $name="__showCreateWizardWithError" }inte
- rface { $name="fr.imag.adele.fede.workspace.as.eclipse.SWTService" }}}
- instance { $component="fr.imag.adele.cadse.si.workspace.uiplatform.swt
- .SWTServiceImpl" $name="fr.imag.adele.fede.workspace.as.eclipse.SWTSer
- vice.instance" }
+ e="boolean" }field { $name="__McreatePropertySheetPage" $type="boolean
+ " }field { $name="__MshowCreateWizard$org_eclipse_swt_widgets_Shell$fr
+ _imag_adele_cadse_core_Item$fr_imag_adele_cadse_core_LinkType$fr_imag_
+ adele_cadse_core_ItemType" $type="boolean" }field { $name="__MopenDial
+ og$boolean" $type="boolean" }field { $name="__IM" $type="org.apache.fe
+ lix.ipojo.InstanceManager" }method { $name="$init" }method { $argument
+ s="{org.apache.felix.ipojo.InstanceManager}" $name="$init" }method { $
+ arguments="{boolean}" $name="openDialog" $return="fr.imag.adele.cadse.
+ core.CadseRuntime[]" }method { $arguments="{boolean}" $name="__openDia
+ log" $return="fr.imag.adele.cadse.core.CadseRuntime[]" }method { $argu
+ ments="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr
+ .imag.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $n
+ ame="showCreateWizard" $return="boolean" }method { $arguments="{org.ec
+ lipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.ca
+ dse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name="__showCre
+ ateWizard" $return="boolean" }method { $arguments="{org.eclipse.swt.wi
+ dgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.Lin
+ kType,fr.imag.adele.cadse.core.ItemType}" $name="showCreateWizardWithE
+ rror" }method { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.ade
+ le.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cad
+ se.core.ItemType}" $name="__showCreateWizardWithError" }method { $name
+ ="createPropertySheetPage" $return="org.eclipse.ui.views.properties.IP
+ ropertySheetPage" }method { $name="__createPropertySheetPage" $return=
+ "org.eclipse.ui.views.properties.IPropertySheetPage" }method { $name="
+ getInstance" $return="fr.imag.adele.fede.workspace.as.eclipse.SWTServi
+ ce" }interface { $name="fr.imag.adele.fede.workspace.as.eclipse.SWTSer
+ vice" }}}instance { $component="fr.imag.adele.cadse.si.workspace.uipla
+ tform.swt.SWTServiceImpl" $name="fr.imag.adele.fede.workspace.as.eclip
+ se.SWTService.instance" }
 

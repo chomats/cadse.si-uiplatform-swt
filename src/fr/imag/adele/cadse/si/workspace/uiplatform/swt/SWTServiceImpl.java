@@ -5,23 +5,24 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseRuntime;
-import fr.imag.adele.cadse.core.DefaultItemManager;
 import fr.imag.adele.cadse.core.IItemManager;
-import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.CadseDialog;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FieldsPropertySheetPage;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 
 public class SWTServiceImpl implements SWTService {
 	
+	private static SWTService SINGLETON;
+
 	@Override
 	public CadseRuntime[] openDialog(boolean askToErase) {
 		return CadseDialog.openDialog(askToErase);
@@ -93,5 +94,15 @@ public class SWTServiceImpl implements SWTService {
 			WSPlugin.log(new Status(Status.ERROR, WSPlugin.PLUGIN_ID, 0,
 					message, e1));
 		}
+	}
+	
+	@Override
+	public IPropertySheetPage createPropertySheetPage() {
+		return new FieldsPropertySheetPage(new SWTUIPlatform());
+	}
+	
+
+	public static SWTService getInstance() {
+		return SINGLETON;
 	}
 }

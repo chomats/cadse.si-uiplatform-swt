@@ -41,7 +41,7 @@ import org.eclipse.ui.PlatformUI;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
 
@@ -369,7 +369,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 						objectSelected(obj);
 					} else {
 						item.setChecked(false);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				} else {
 					String error = canObjectDeselected(obj);
@@ -377,7 +377,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 						objectDeselected(obj);
 					} else {
 						item.setChecked(true);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				}
 			}

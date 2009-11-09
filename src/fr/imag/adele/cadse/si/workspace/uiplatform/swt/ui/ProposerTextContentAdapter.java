@@ -24,16 +24,16 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.swt.widgets.Control;
 
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 final class ProposerTextContentAdapter extends TextContentAdapter {
 	private final IFieldContenProposalProvider proposer;
-	IPageController globalUIController;
+	UIPlatform globalUIController;
 	UIRunningField controller;
 
 	ProposerTextContentAdapter(UIRunningField controller,
-			IPageController globalUIController,
+			UIPlatform globalUIController,
 			IFieldContenProposalProvider proposer) {
 		this.proposer = proposer;
 		this.globalUIController = globalUIController;

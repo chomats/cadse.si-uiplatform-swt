@@ -42,7 +42,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 
@@ -353,7 +353,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 		String error = _ic.canRemoveObject(obj);
 		if (error != null) {
-			_swtuiplatform.setMessage(error, IPageController.ERROR);
+			_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 			return;
 		}
 		Object[] removedObj = _ic.removeObject(obj);
@@ -375,7 +375,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		if (ret != null) {
 			String error = _ic.canAddObject(ret);
 			if (error != null) {
-				_swtuiplatform.setMessage(error, IPageController.ERROR);
+				_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 				return;
 			}
 			ret = _ic.transAndAddObject(ret);

@@ -43,7 +43,7 @@ import org.eclipse.ui.fieldassist.ContentAssistField;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.util.Convert;
@@ -293,7 +293,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			ret = "<invalid value>";
 			_swtuiplatform.setMessage("Internal error "
 					+ e.getClass().getCanonicalName() + ": " + e.getMessage(),
-					IPageController.ERROR);
+					UIPlatform.ERROR);
 			Activator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 							"Internal error in DBrowwserUI.toString", e));
@@ -346,7 +346,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 				_value = goodValue;
 			}
 		} else {
-			_swtuiplatform.setMessage(null, IPageController.ERROR);
+			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
 
 			// validate value and if it's ok, test other fields
 			// true if error

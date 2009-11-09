@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fr.imag.adele.cadse.core.IItemNode;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
 
@@ -122,7 +122,7 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC>
 						objectSelected(obj);
 					} else {
 						item.setChecked(false);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				} else {
 					String error = canObjectDeselected(obj);
@@ -130,7 +130,7 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC>
 						objectDeselected(obj);
 					} else {
 						item.setChecked(true);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				}
 			}

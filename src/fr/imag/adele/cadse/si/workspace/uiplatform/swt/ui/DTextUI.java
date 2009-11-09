@@ -38,7 +38,7 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
@@ -212,7 +212,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 				_currentValue = value;
 			}
 		} else {
-			_swtuiplatform.setMessage(null, IPageController.ERROR);
+			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
 
 			// validate value and if it's ok, test other fields
 			// true if error

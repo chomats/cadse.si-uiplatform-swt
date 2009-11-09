@@ -52,7 +52,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 public class DChooseFileUI<IC extends IC_ForChooseFile> extends
 		DAbstractField<IC> {
 
-	private String choosemsg;
+	public String choosemsg;
 
 	private Text textWidget;
 	private Button btExternalFileWidget;

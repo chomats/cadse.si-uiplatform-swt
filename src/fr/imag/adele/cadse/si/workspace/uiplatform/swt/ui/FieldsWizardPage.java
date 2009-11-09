@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 /**
@@ -66,7 +66,7 @@ public class FieldsWizardPage extends WizardPage {
 			_swtuiPlatform.initAfterUI(page);
 			// Reset visual value. and set UI_running at true
 			_swtuiPlatform.resetVisualValue(page);
-			setMessage(null, IPageController.ERROR);
+			setMessage(null, UIPlatform.ERROR);
 			_swtuiPlatform.validateFields(null, null);
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
@@ -83,7 +83,7 @@ public class FieldsWizardPage extends WizardPage {
 	@Override
 	public void setMessage(String newMessage, int newType) {
 		super.setMessage(newMessage, newType);
-		if (newType == IPageController.ERROR) {
+		if (newType == UIPlatform.ERROR) {
 			setPageComplete(newMessage == null);
 		}
 	}

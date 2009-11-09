@@ -87,11 +87,11 @@ import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.HierarchyPage;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIRunningValidator;
 import fr.imag.adele.cadse.core.ui.UIValidator;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
@@ -102,15 +102,21 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FileResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FolderResource_ForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_IconResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowser_Combo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.test.ui.RunTestActionPage.IC_ListTest;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.test.ui.RunTestActionPage.MC_ListTest;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DBrowserUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedListUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedTreeUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DComboUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DListUI;
@@ -127,7 +133,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 /**
  */
 
-public class SWTUIPlatform implements IPageController {
+public class SWTUIPlatform implements UIPlatform {
 
 	private final class FictifAttribute<T> extends AttributeType implements IAttributeType<T>{
 		private IAttributeType<?>[] _children = null;
@@ -212,8 +218,10 @@ public class SWTUIPlatform implements IPageController {
 		});
 		return dialog;
 	}
-	
 	public int open(Shell parentShell, IPage page, IActionPage dialogAction, boolean openDetailDialog) {
+		return open(parentShell, page, dialogAction, 800, 500, openDetailDialog);
+	}
+	public int open(Shell parentShell, IPage page, IActionPage dialogAction, int width, int height, boolean openDetailDialog) {
 		init();
 		parent = parentShell;
 		pages = new PagesImpl(false, dialogAction, null, new IPage[] { page},  Collections.EMPTY_LIST);
@@ -223,7 +231,7 @@ public class SWTUIPlatform implements IPageController {
 		} else {
 			dialog = new WizardDialog(parentShell, new WizardController(this));
 		}
-		dialog.setPageSize(800, 500);
+		dialog.setPageSize(width, height);
 		return dialog.open();
 	}
 
@@ -331,7 +339,7 @@ public class SWTUIPlatform implements IPageController {
 			resetVisualValue(page);
 		}
 
-		setMessage(null, IPageController.ERROR);
+		setMessage(null, UIPlatform.ERROR);
 		validateFields(null, null);
 
 		return container;
@@ -665,7 +673,7 @@ public class SWTUIPlatform implements IPageController {
 								.getImage(Dialog.DLG_IMG_MESSAGE_ERROR);
 						break;
 					}
-					if (newType == IPageController.ERROR) {
+					if (newType == UIPlatform.ERROR) {
 						statusLine.setErrorMessage(newImage, newMessage);
 					} else {
 						statusLine.setMessage(newImage, newMessage);
@@ -1474,6 +1482,39 @@ public class SWTUIPlatform implements IPageController {
 			UIRunningValidator abstractUIValidator) {
 		return new PagesImpl(false, action, null, new IPage[] { page }, Arrays.asList(abstractUIValidator));
 
+	}
+
+	public <IC extends IC_ForChooseFile> DChooseFileUI<IC> createDChooseFileUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, String title) {
+		return createDChooseFileUI(page, createFictifAttributte(attributte), label, none, mc, ic, title);
+	}
+	
+	public <IC extends IC_ForChooseFile> DChooseFileUI<IC> createDChooseFileUI(IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, String title) {
+		DChooseFileUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DChooseFileUI<IC>());
+		ret.choosemsg = title;
+		return ret;
+	}
+	
+	public <IC extends IC_TreeCheckedUI> DCheckedTreeUI<IC> createDCheckedTreeUI(IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean selectDelectButton, boolean fillBoth) {
+		return createDCheckedTreeUI(page, createFictifAttributte(attributte), label, none, mc, ic, selectDelectButton, fillBoth);
+	}
+
+	public <IC extends IC_TreeCheckedUI> DCheckedTreeUI<IC> createDCheckedTreeUI(IPage page,
+			IAttributeType<?> attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, boolean selectDelectButton, boolean fillBoth) {
+		DCheckedTreeUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DCheckedTreeUI<IC>());
+		ret._selectDelectButton = selectDelectButton;
+		ret._fillBoth = fillBoth;
+		return ret;
 	}
 
 	

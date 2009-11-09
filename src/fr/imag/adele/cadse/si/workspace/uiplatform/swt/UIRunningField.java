@@ -26,7 +26,7 @@ import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
@@ -98,7 +98,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 * 
 	 * @see fr.imag.adele.cadse.core.ui.IPageObject#getPageController()
 	 */
-	public IPageController getPageController() {
+	public UIPlatform getPageController() {
 		return _swtuiplatform;
 	}
 

@@ -42,7 +42,7 @@ import org.eclipse.ui.PlatformUI;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.IPageController;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
@@ -57,9 +57,9 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 		DAbstractField<IC> implements SelectionListener, TreeListener {
 
-	private boolean _fillBoth = false;
+	public boolean _fillBoth = false;
 
-	private boolean _selectDelectButton = true;
+	public boolean _selectDelectButton = true;
 
 	private Object[] _sources;
 	private Set<Object> _sources_selected = new HashSet<Object>();
@@ -499,7 +499,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 						objectSelected(obj);
 					} else {
 						item.setChecked(false);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				} else {
 					String error = canObjectDeselected(obj);
@@ -507,7 +507,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 						objectDeselected(obj);
 					} else {
 						item.setChecked(true);
-						_swtuiplatform.setMessage(error, IPageController.ERROR);
+						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
 				}
 			}
