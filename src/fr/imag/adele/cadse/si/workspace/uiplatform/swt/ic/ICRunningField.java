@@ -27,5 +27,9 @@ public class ICRunningField implements RuningInteractionController {
 	@Override
 	public void initAfterUI() {
 	}
+	
+	protected Item getItem() {
+		return _uiPlatform.getItem(getUIField());
+	}
 
 }

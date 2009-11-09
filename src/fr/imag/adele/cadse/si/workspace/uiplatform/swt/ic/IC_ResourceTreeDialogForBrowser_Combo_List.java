@@ -57,7 +57,16 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends
 
 	protected static final String REFRESH_LABEL = "Re&fresh";
 	protected static final int REFRESH_ID = 1025;
-	private int selectRoot;
+	public int _selectRoot;
+
+	public IC_ResourceTreeDialogForBrowser_Combo_List() {
+	}
+	
+	public IC_ResourceTreeDialogForBrowser_Combo_List(String title,
+			String message, int selectRoot2) {
+		super(title, message);
+		this._selectRoot = selectRoot2;
+	}
 
 	@Override
 	public Object[] transAndAddObject(Object[] object) {
@@ -129,7 +138,7 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends
 	}
 
 	protected IResource getRootSelect() {
-		if (selectRoot >= 1) {
+		if (_selectRoot >= 1) {
 			Item theItem = _uiPlatform.getItem(getUIField());
 			IResource r = theItem.getMainMappingContent(IResource.class);
 			if (r == null) {
@@ -137,12 +146,12 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends
 						"Cannot find the resource form the item {0}.", theItem
 								.getId());
 			}
-			while (selectRoot-- > 1) {
+			while (_selectRoot-- > 1) {
 				r = r.getParent();
 			}
 			return r;
 		}
-		if (selectRoot == 0) {
+		if (_selectRoot == 0) {
 			return ResourcesPlugin.getWorkspace().getRoot();
 		}
 		return null;

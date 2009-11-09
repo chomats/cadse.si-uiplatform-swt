@@ -48,7 +48,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 	private String _currentValue;
 	private String _currentValueToSend;
 	private Text _textControl;
-	private String _toolTips = null;
+	public String _toolTips = null;
 	public int _vspan = 1;
 	private boolean _sendNotification = true;
 

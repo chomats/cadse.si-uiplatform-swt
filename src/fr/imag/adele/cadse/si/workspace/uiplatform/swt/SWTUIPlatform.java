@@ -110,8 +110,6 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowse
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.test.ui.RunTestActionPage.IC_ListTest;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.test.ui.RunTestActionPage.MC_ListTest;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DBrowserUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedListUI;
@@ -218,10 +216,10 @@ public class SWTUIPlatform implements UIPlatform {
 		});
 		return dialog;
 	}
-	public int open(Shell parentShell, IPage page, IActionPage dialogAction, boolean openDetailDialog) {
+	public int open(Shell parentShell, IPage page, IActionPage dialogAction, boolean openDetailDialog) throws CadseException {
 		return open(parentShell, page, dialogAction, 800, 500, openDetailDialog);
 	}
-	public int open(Shell parentShell, IPage page, IActionPage dialogAction, int width, int height, boolean openDetailDialog) {
+	public int open(Shell parentShell, IPage page, IActionPage dialogAction, int width, int height, boolean openDetailDialog) throws CadseException {
 		init();
 		parent = parentShell;
 		pages = new PagesImpl(false, dialogAction, null, new IPage[] { page},  Collections.EMPTY_LIST);
@@ -1111,69 +1109,8 @@ public class SWTUIPlatform implements UIPlatform {
 		_pageSite = site;
 	}
 	
+
 	
-
-	static public DBrowserUI createOneFolderOrFileField(String key, String label, String title, String message,
-			boolean selectFolder, String filter, int kindroot) {
-
-		RunningModelController mc = new StringToOneResourceModelController();
-		IC_FileResourceForBrowser_Combo_List ic = new IC_FileResourceForBrowser_Combo_List(title, message, kindroot,
-				filter, selectFolder);
-		DBrowserUI ui = new DBrowserUI(key, label, EPosLabel.top, mc, ic, SWT.BORDER | SWT.SINGLE);
-		return ui;
-
-	}
-
-	static public DListUI createFolderField(String key, String label, String title, String message, int kindroot) {
-
-		IC_FolderResource_ForBrowser_Combo_List ic = new IC_FolderResource_ForBrowser_Combo_List(title, message,
-				kindroot);
-		StringToResourceListModelController mc = new StringToResourceListModelController();
-		DListUI ui = new DListUI(key, label, EPosLabel.top, mc, ic, true, true);
-		return ui;
-
-	}
-
-	static public DTextUI createShortNameField() {
-		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(),
-				null);
-
-	}
-
-	static public DTextUI createShortNameField_Noborder() {
-		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(),
-				null, SWT.SINGLE, 1, null);
-	}
-
-	static public DTextUI createUniqueNameField() {
-		return createShortNameField_Noborder();
-
-	}
-
-	static public DTextUI createDisplayNameField() {
-		return new DTextUI(CadseGCST.ITEM_at_DISPLAY_NAME, "display name:", EPosLabel.left,
-				new MC_DisplayNameItemProperty(), null, SWT.SINGLE, 1, null);
-	}
-
-	static public DTextUI createIDField() {
-		return new DTextUI(CadseGCST.ITEM_at_DISPLAY_NAME, "#ID:", EPosLabel.left, new MC_IDItemProperty(),
-				null, SWT.SINGLE, 1, null);
-	}
-
-	// TODO
-	// static public IFieldDescription createLinkCheckDependencyField(String
-	// linkName, String... linksTransitives) {
-	// return createFD(linkName,
-	// IFieldDescription.LABEL,"",
-	// IFieldDescription.POS_LABEL, EPosLabel.none,
-	// IFieldDescription.VALUE_CONTROLLER,new DefaultValueControler(),
-	// IFieldDescription.FIELD_UI_CONTROLLER, new LinkViewerController(),
-	// LinkViewerController.LINKS_TRANSITIVES, linksTransitives);
-	// }
-	public DCheckedListUI createCheckBoxList(String key, String label, IC_ForCheckedViewer ic,
-			RunningModelController mc) {
-		return new DCheckedListUI(key, label, label == null ? EPosLabel.none : EPosLabel.top, mc, ic);
-	}
 
 	public  <IC extends RuningInteractionController> DCheckBoxUI<IC> createCheckBox(IPage page, BooleanAttributeType key, String label) {
 		return createCheckBox(page, key, label, null);
@@ -1210,18 +1147,14 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	protected UIField createDefaultField(IAttributeType<?> key) {
-		return key.generateDefaultField();;
+		return key.generateDefaultField();
 	}
 
 	public RunningModelController getDefaultModelController() {
 		return _defaultModelController;
 	}
 
-	public DBrowserUI createLinkDependencyField(LinkType key, String label, IC_LinkForBrowser_Combo_List ic,
-			boolean mandatory, String msg) {
-		return createLinkDependencyField(key, label, label == null ? EPosLabel.none : EPosLabel.top, ic, mandatory, msg);
-
-	}
+	
 
 	public DBrowserUI<IC_LinkForBrowser_Combo_List> createLinkDependencyField(IPage page, LinkType key, EPosLabel poslabel,
 			IC_LinkForBrowser_Combo_List ic, boolean mandatory, String msg) {
@@ -1234,74 +1167,33 @@ public class SWTUIPlatform implements UIPlatform {
 		return rf;
 	}
 
-	static public DBrowserUI createSelectContainmentItemField(String label, String selectTitle, String selectMessage) {
-		return new DBrowserUI("", label, EPosLabel.left, new ParentPartGetAndSet(), new IC_PartParentForBrowser_Combo(
-				selectTitle, selectMessage), SWT.BORDER | SWT.SINGLE);
-	}
+	
 
 	public <IC extends RuningInteractionController> DTextUI<IC> createIntField(IPage page, IntegerAttributeType key, IC ic) {
 		return initDefaultRunningField(page, key,  null, ic, new DTextUI<IC>());
 	}
 
-	public static DTextUI createIntField( key, String label, RunningModelController mc) {
-		return new DTextUI(key, label, EPosLabel.left, mc, null);
+	
+
+	public <IC extends ICRunningField> DTextUI<IC> createTextField(IPage page, String key, String label, String tooltip) {
+		return createTextField(page, key, label, 1, tooltip, null, null);
 	}
 
-	public static DBrowserUI createBrowserIconField(String key, String label, EPosLabel poslabel) {
-		return new DBrowserUI(key, label, poslabel, new StringToResourceSimpleModelController(),
-				new IC_IconResourceForBrowser_Combo_List(), SWT.BORDER | SWT.SINGLE);
+	public <IC extends ICRunningField> DTextUI<IC> createTextField(IPage page, String key, String label, RunningModelController mc) {
+		return createTextField(page, key, label, 1, null, null, mc);
 	}
 
-	public static DBrowserUI createBrowserField(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc) {
-		return new DBrowserUI(key, label, poslabel, mc, ic, SWT.BORDER | SWT.SINGLE);
+	public <IC extends ICRunningField> DTextUI<IC> createTextField(IPage page, String key, String label, IC uc) {
+		return createTextField(page, key, label, 1, null, uc, null);
 	}
 
-	public static DComboUI createComboBox(String key, String label, EPosLabel poslabel,
-			IInteractionControllerForBrowserOrCombo ic, RunningModelController mc, boolean edit) {
-		if (mc == null) {
-			mc = new MC_AttributesItem();
-		}
-		return new DComboUI(key, label, poslabel, mc, ic, edit);
+	public <IC extends ICRunningField> DTextUI<IC> createTextField(IPage page, String key, String label, int vspan, String tooltip,
+			IC ic, RunningModelController mc) {
+		DTextUI<IC> ret = createTextUI(page, key, label, EPosLabel.defaultpos, mc, ic, vspan, false, false, false, false, false);
+		ret._toolTips = tooltip;
+		return ret;
 	}
 
-	public static Pages createDefaultNameWizard(String title, String description, CreationAction action) {
-		return createWizard(action, FieldsCore.createPage("page1", title, description, 2, FieldsCore
-				.createShortNameField()));
-	}
-
-	public static DTextUI createTextField(String key, String label) {
-		return createTextField(key, label, 1, null, null, null);
-	}
-
-	public static DTextUI createTextField(String key, String label, int vspan) {
-		return createTextField(key, label, vspan, null, null, null);
-	}
-
-	public DTextUI createTextField(String key, String label, String tooltip) {
-		return createTextField(key, label, 1, tooltip, null, null);
-	}
-
-	public DTextUI createTextField(String key, String label, RunningModelController mc) {
-		return createTextField(key, label, 1, null, null, mc);
-	}
-
-	public DTextUI createTextField(String key, String label, RuningInteractionController uc) {
-		return createTextField(key, label, 1, null, uc, null);
-	}
-
-	public DTextUI createTextField(String key, String label, int vspan, String tooltip,
-			RuningInteractionController ic, RunningModelController mc) {
-		if (mc == null) {
-			mc = new MC_AttributesItem();
-		}
-		
-		return new DTextUI(key, label, EPosLabel.left, mc, ic, 0, vspan, tooltip);
-	}
-
-	UIField createField(IAttributeType<?> att) {
-		new UIfield
-	}
 	
 	
 	
@@ -1344,9 +1236,14 @@ public class SWTUIPlatform implements UIPlatform {
 		ret._field.setFlag(Item.UI_TEXT_MULTI_LINE, multiLine);
 		ret._field.setFlag(Item.UI_NO_BORDER, noBorder);
 		ret._field.setFlag(Item.UI_TEXT_WRAP_LINE, wrapLine);
-		ret._field.setAttribute(CadseGCST.DTEXT_at_MULTI_LINE_, multiLine);
-		ret._field.setAttribute(CadseGCST.DTEXT_at_NO_BORDER_, noBorder);
-		ret._field.setAttribute(CadseGCST.DTEXT_at_WRAP_LINE_, wrapLine);
+		try {
+			ret._field.setAttribute(CadseGCST.DTEXT_at_MULTI_LINE_, multiLine);
+			ret._field.setAttribute(CadseGCST.DTEXT_at_NO_BORDER_, noBorder);
+			ret._field.setAttribute(CadseGCST.DTEXT_at_WRAP_LINE_, wrapLine);
+		} catch (CadseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ret._field.setFlag(Item.UI_HSCROLL, hscroll);
 		ret._field.setFlag(Item.UI_VSCROLL, vscroll);
 		ret._vspan = vspan;
@@ -1456,10 +1353,15 @@ public class SWTUIPlatform implements UIPlatform {
 			EPosLabel none, RunningModelController mc,
 			IC ic, boolean edit, boolean showfilter, boolean order, boolean update) {
 		DListUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DListUI<IC>());
-		ret._field.setAttribute(CadseGCST.DLIST_at_ORDER_BUTTON_, order);
-		ret._field.setAttribute(CadseGCST.DLIST_at_SHOW_FILTER_, showfilter);
-		ret._field.setAttribute(CadseGCST.DLIST_at_EDITABLE_BUTTON_, edit);
-		ret._field.setAttribute(CadseGCST.DLIST_at_UPDATE_BUTTON_, update);
+		try {
+			ret._field.setAttribute(CadseGCST.DLIST_at_ORDER_BUTTON_, order);
+			ret._field.setAttribute(CadseGCST.DLIST_at_SHOW_FILTER_, showfilter);
+			ret._field.setAttribute(CadseGCST.DLIST_at_EDITABLE_BUTTON_, edit);
+			ret._field.setAttribute(CadseGCST.DLIST_at_UPDATE_BUTTON_, update);
+		} catch (CadseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ret;
 	}
 	
