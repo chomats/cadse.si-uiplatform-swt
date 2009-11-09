@@ -435,7 +435,7 @@ public class CadseDialog extends SWTDialog {
 	 */
 	public DTextUI createFieldDescription() {
 		return _swtuiPlatforms.createTextUI(_page, CadseGCST.CADSE_at_DESCRIPTION_, "description", EPosLabel.left,
-				new MyMC_AttributesItem(), null, 20, true, false, true, false, true);
+				new MyMC_AttributesItem(), null, 20, true, false, true, false, true, null);
 	}
 
 	/**
@@ -443,7 +443,7 @@ public class CadseDialog extends SWTDialog {
 	 */
 	public DTextUI createFieldTWVersion() {
 		return _swtuiPlatforms.createTextUI(_page, CadseGCST.ITEM_at_TW_VERSION_, "version", EPosLabel.left, new MyMC_AttributesItem(),
-				null, 1, false, false, false, false, true);
+				null, 1, false, false, false, false, true, null);
 	}
 
 
