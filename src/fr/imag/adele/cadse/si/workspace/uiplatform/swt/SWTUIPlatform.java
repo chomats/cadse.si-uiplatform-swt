@@ -1227,14 +1227,22 @@ public class SWTUIPlatform implements UIPlatform {
 			String attributte, String label,
 			EPosLabel none, RunningModelController mc,
 			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll) {
-		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll);
+		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, null);
+	}
+	
+	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
+			IPage page,
+			String attributte, String label,
+			EPosLabel none, RunningModelController mc,
+			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll, String tooltips) {
+		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, tooltips);
 	}
 
 	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
 			EPosLabel none, RunningModelController mc,
-			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll) {
+			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll, String tooltips) {
 		DTextUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTextUI<IC>());
 		ret._field.setType(CadseGCST.DTEXT);
 		ret._field.setFlag(Item.UI_TEXT_MULTI_LINE, multiLine);
@@ -1251,7 +1259,7 @@ public class SWTUIPlatform implements UIPlatform {
 		ret._field.setFlag(Item.UI_HSCROLL, hscroll);
 		ret._field.setFlag(Item.UI_VSCROLL, vscroll);
 		ret._vspan = vspan;
-		
+		ret._toolTips = tooltips;
 		return ret;
 	}
 	
@@ -1386,7 +1394,9 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public PagesImpl createPages(IActionPage newAction, IPage page,
 			UIRunningValidator abstractUIValidator) {
-		return new PagesImpl(false, action, null, new IPage[] { page }, Arrays.asList(abstractUIValidator));
+		List<UIRunningValidator> uiVList = null;
+		if (abstractUIValidator != null) uiVList= Arrays.asList(abstractUIValidator);
+		return new PagesImpl(false, action, null, new IPage[] { page }, uiVList);
 
 	}
 

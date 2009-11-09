@@ -60,6 +60,7 @@ public class ExportCadsePagesAction extends SWTDialog {
 	public ExportCadsePagesAction(SWTUIPlatform swtuiPlatforms, String title,
 			String label) {
 		super(swtuiPlatforms, title, label);
+		addLast(createNameField(), createImportField(), createTimeStampField());
 	}
 
 	
