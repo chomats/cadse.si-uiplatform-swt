@@ -26,8 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.Item;
 
-public abstract class IC_AbstractForChecked extends ICRunningField implements
-		IC_ForCheckedViewer {
+public abstract class IC_AbstractForChecked extends ICRunningField implements IC_ForCheckedViewer {
 
 	public Image toImageFromObject(Object obj) {
 		Item item = (Item) obj;

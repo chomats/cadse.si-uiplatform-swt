@@ -31,18 +31,16 @@ import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ContextMenu;
 
-public abstract class DAbstractField<IC extends RuningInteractionController>
-		extends UIRunningField<IC> {
+public abstract class DAbstractField<IC extends RuningInteractionController> extends UIRunningField<IC> {
 
-	protected Label _labelWidget;
-	private MenuManager _menumanager = null;
+	protected Label		_labelWidget;
+	private MenuManager	_menumanager	= null;
 
 	protected void createContextMenu(Control parent) {
 		if (_ic instanceof IC_ContextMenu) {
 			_menumanager = new MenuManager();
 			final IC_ContextMenu contextMenu = ((IC_ContextMenu) _ic);
-			_menumanager.setRemoveAllWhenShown(contextMenu
-					.hasRemoveAllWhenShown());
+			_menumanager.setRemoveAllWhenShown(contextMenu.hasRemoveAllWhenShown());
 			_menumanager.createContextMenu(parent);
 			_menumanager.addMenuListener(new IMenuListener2() {
 
@@ -137,7 +135,8 @@ public abstract class DAbstractField<IC extends RuningInteractionController>
 	public Object getVisualValue() {
 		return null;
 	}
-	
+
+	@Override
 	public IAttributeType<?> getAttributeDefinition() {
 		return _field.getAttributeDefinition();
 	}

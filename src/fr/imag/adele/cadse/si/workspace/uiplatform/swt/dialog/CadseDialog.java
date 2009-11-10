@@ -18,18 +18,13 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -39,43 +34,34 @@ import fede.workspace.tool.view.node.FilteredItemNode;
 import fede.workspace.tool.view.node.FilteredItemNodeModel;
 import fede.workspace.tool.view.node.ItemNode;
 import fede.workspace.tool.view.node.FilteredItemNode.Category;
-import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.CadseRuntime;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemShortNameComparator;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.impl.CadseCore;
-import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
-import fr.imag.adele.cadse.core.impl.ui.PageImpl;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
-import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
-import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSashFormUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeModelUI;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 public class CadseDialog extends SWTDialog {
-	
-	int						allreadyselected	= 0;
-	Item					selectedItem		= null;
-	HashSet<CadseRuntime>	selected			= new HashSet<CadseRuntime>();
-	Category				categoryExtendsTo;
-	Category				categoryExtendedBy;
 
+	int							allreadyselected	= 0;
+	Item						selectedItem		= null;
+	HashSet<CadseRuntime>		selected			= new HashSet<CadseRuntime>();
+	Category					categoryExtendsTo;
+	Category					categoryExtendedBy;
 
 	protected DGridUI			fieldsCadse;
 
@@ -96,11 +82,9 @@ public class CadseDialog extends SWTDialog {
 	protected DTextUI			fieldTWVersion;
 
 	private CadseRuntime[][]	ret;
-	
-	
+
 	public class MyMC_AttributesItem extends MC_AttributesItem {
 
-		
 		@Override
 		public Object getValue() {
 			if (getItem() == null) {
@@ -288,7 +272,6 @@ public class CadseDialog extends SWTDialog {
 
 	public class MC_CDtree extends AbstractModelController {
 
-		
 		public MC_CDtree(Item desc) {
 			super(desc);
 		}
@@ -309,17 +292,17 @@ public class CadseDialog extends SWTDialog {
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
 		}
-		
+
 		@Override
 		public void initAfterUI(UIField field) {
 			DTreeModelUI<?> runningField = _swtuiPlatforms.getRunningField(field, _page);
 			TreeViewer viewer = runningField.getTreeViewer();
 			viewer.addFilter(new ViewerFilter() {
-				
+
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
 					if (element instanceof Item) {
-						return ((Item)element).getType() != CadseGCST.CADSE_DEFINITION;
+						return ((Item) element).getType() != CadseGCST.CADSE_DEFINITION;
 					}
 					return true;
 				}
@@ -367,7 +350,6 @@ public class CadseDialog extends SWTDialog {
 		}
 
 	}
-	
 
 	/**
 	 * Create the dialog structure... DSashFormUI DGrillUI FieldExtends DGrillUI
@@ -377,26 +359,21 @@ public class CadseDialog extends SWTDialog {
 	 * @generated
 	 */
 	public CadseDialog(SWTUIPlatform swtuiPlatforms, CadseRuntime[][] ret) {
-		super(swtuiPlatforms, "Executed CADSEs",
-				"You can execute other CADSEs by validating the checkboxes bellow.");
+		super(swtuiPlatforms, "Executed CADSEs", "You can execute other CADSEs by validating the checkboxes bellow.");
 		this.ret = ret;
 		this.fieldExtends = createFieldExtends(true);
 		this.fieldDescription = createFieldDescription();
 		this.fieldTWVersion = createFieldTWVersion();
 		MyMC_AttributesItem defaultMc = new MyMC_AttributesItem();
 
-		
-		
-		DGridUI treeGrild = _swtuiPlatforms.createDGridUI(_page, 
-				"#tree", "", EPosLabel.none, defaultMc, null, fieldExtends);
-		
-		DGridUI crFieldsGrild = _swtuiPlatforms.createDGridUI(_page, 
-				"#edit",
-				"", EPosLabel.none, defaultMc, null, this.fieldTWVersion, this.fieldDescription);
-		
-		this.fieldsShash = _swtuiPlatforms.createDSashFormUI(_page, 
-				"#sash", 
-				"", EPosLabel.none, defaultMc, null,treeGrild, crFieldsGrild);
+		DGridUI treeGrild = _swtuiPlatforms.createDGridUI(_page, "#tree", "", EPosLabel.none, defaultMc, null,
+				fieldExtends);
+
+		DGridUI crFieldsGrild = _swtuiPlatforms.createDGridUI(_page, "#edit", "", EPosLabel.none, defaultMc, null,
+				this.fieldTWVersion, this.fieldDescription);
+
+		this.fieldsShash = _swtuiPlatforms.createDSashFormUI(_page, "#sash", "", EPosLabel.none, defaultMc, null,
+				treeGrild, crFieldsGrild);
 		fieldsShash.setWeight(60); // 60% , 40%
 		// add main field
 		addLast(fieldsShash);
@@ -423,12 +400,12 @@ public class CadseDialog extends SWTDialog {
 		this.fieldTWVersion.resetVisualValue();
 	}
 
-
 	/**
 	 * Create a tree field to show CadseModel tree
 	 */
 	public DTreeModelUI createFieldExtends(boolean checkBox) {
-		return _swtuiPlatforms.createTreeModelUI(_page, "#list", "Cadse", EPosLabel.top, new MC_CDtree(null), new IC_ItemTypeForTreeUI(), checkBox);
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list", "Cadse", EPosLabel.top, new MC_CDtree(null),
+				new IC_ItemTypeForTreeUI(), checkBox);
 	}
 
 	/**
@@ -443,10 +420,9 @@ public class CadseDialog extends SWTDialog {
 	 * Create a text field to display the version's CadseRuntime item
 	 */
 	public DTextUI createFieldTWVersion() {
-		return _swtuiPlatforms.createTextUI(_page, CadseGCST.ITEM_at_TW_VERSION_, "version", EPosLabel.left, new MyMC_AttributesItem(),
-				null, 1, false, false, false, false, true, null);
+		return _swtuiPlatforms.createTextUI(_page, CadseGCST.ITEM_at_TW_VERSION_, "version", EPosLabel.left,
+				new MyMC_AttributesItem(), null, 1, false, false, false, false, true, null);
 	}
-
 
 	/**
 	 * Open dialog.
@@ -483,12 +459,13 @@ public class CadseDialog extends SWTDialog {
 						return;
 					}
 				}
-				while (true)
-				try {
-					_swtuiPlatforms.open(shell, _page, getFinishAction(), false);
-					// TODO open commit progression dialog
-				} catch (Throwable e) {
-					e.printStackTrace();
+				while (true) {
+					try {
+						_swtuiPlatforms.open(shell, _page, getFinishAction(), false);
+						// TODO open commit progression dialog
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -498,10 +475,9 @@ public class CadseDialog extends SWTDialog {
 	 * 
 	 * @return
 	 */
+	@Override
 	protected IActionPage getFinishAction() {
 		return new MyActionPage();
 	}
-
-	
 
 }

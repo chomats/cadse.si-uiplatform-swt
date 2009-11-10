@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+
 import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.CompactUUID;
 import fr.imag.adele.cadse.core.Item;
@@ -62,12 +63,11 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
  */
 public class ImportCadsePagesAction extends SWTDialog {
 
-	public ImportCadsePagesAction(SWTUIPlatform swtuiPlatforms, String title,
-			String label) {
+	public ImportCadsePagesAction(SWTUIPlatform swtuiPlatforms, String title, String label) {
 		super(swtuiPlatforms, title, label);
 		addLast(createImportField());
 	}
-	
+
 	@Override
 	protected IActionPage getFinishAction() {
 		return new MyAction();
@@ -81,8 +81,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
-		 *      java.lang.Object, java.lang.Object)
+		 * @see
+		 * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
+		 * .Viewer, java.lang.Object, java.lang.Object)
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -132,6 +133,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		 * 
 		 * @see fr.imag.adele.cadse.core.ui.IModelController#getValue()
 		 */
+		@Override
 		public Object getValue() {
 			return selectJar;
 		}
@@ -139,9 +141,11 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
+		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
+		@Override
 		public void notifieValueChanged(UIField field, Object value) {
 			selectJar = (IPath) value;
 		}
@@ -149,8 +153,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded
+		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueAdded(UIField field, Object added) {
@@ -159,8 +164,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @seefr.imag.adele.cadse.core.ui.AbstractModelController#
+		 * notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
+		 * java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueRemoved(UIField field, Object removed) {
@@ -169,8 +175,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
+		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
 		@Override
 		public void notifieValueDeleted(UIField field, Object oldvalue) {
@@ -231,7 +238,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getFileFilter()
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getFileFilter()
 		 */
 		@Override
 		protected String[] getFileFilter() {
@@ -241,7 +250,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getViewerFilter()
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getViewerFilter()
 		 */
 		@Override
 		protected ViewerFilter getViewerFilter() {
@@ -251,7 +262,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getKind()
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getKind()
 		 */
 		@Override
 		public int getKind() {
@@ -265,8 +278,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 	 * @return the d choose file ui
 	 */
 	public DChooseFileUI<IC_Import> createImportField() {
-		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Select cadse deployed zip", EPosLabel.left, new MC_Import(),
-				new IC_Import(), "Select cadse deployed zip");
+		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Select cadse deployed zip", EPosLabel.left,
+				new MC_Import(), new IC_Import(), "Select cadse deployed zip");
 	}
 
 	/**
@@ -345,11 +358,9 @@ public class ImportCadsePagesAction extends SWTDialog {
 	/** The its. */
 	HashMap<String, Item>	its;
 
-	
 	class MyAction extends AbstractActionPage {
 		@Override
-		public void doFinish(UIPlatform uiPlatform, Object monitor)
-				throws Exception {
+		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			super.doFinish(uiPlatform, monitor);
 
 			IProgressMonitor pmo = (IProgressMonitor) monitor;

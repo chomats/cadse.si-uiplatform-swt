@@ -22,22 +22,20 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 
 public class Proposal implements IContentProposal, Comparable<Proposal> {
 
-	private String _content;
-	private String _label;
-	private String _description;
-	private int _cursorPosition;
-	private Object _value = null;
+	private String	_content;
+	private String	_label;
+	private String	_description;
+	private int		_cursorPosition;
+	private Object	_value	= null;
 
-	public Proposal(String content, String label, String description,
-			int cursorPosition) {
+	public Proposal(String content, String label, String description, int cursorPosition) {
 		_content = content;
 		_label = label;
 		_description = description;
 		_cursorPosition = cursorPosition;
 	}
 
-	public Proposal(String content, String label, String description,
-			int cursorPosition, Object value) {
+	public Proposal(String content, String label, String description, int cursorPosition, Object value) {
 		_content = content;
 		_label = label;
 		_description = description;

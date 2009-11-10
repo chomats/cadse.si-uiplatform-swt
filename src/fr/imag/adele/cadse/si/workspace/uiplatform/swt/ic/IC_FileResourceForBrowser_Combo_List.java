@@ -33,11 +33,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
  * Attributes : string link-type; string title-select ;
  */
 
-public class IC_FileResourceForBrowser_Combo_List extends
-		IC_ResourceTreeDialogForBrowser_Combo_List {
+public class IC_FileResourceForBrowser_Combo_List extends IC_ResourceTreeDialogForBrowser_Combo_List {
 
-	private String pattern;
-	boolean selectfolder = false;
+	private String	pattern;
+	boolean			selectfolder	= false;
 
 	@Override
 	protected ViewerFilter getFilter() {
@@ -46,9 +45,9 @@ public class IC_FileResourceForBrowser_Combo_List extends
 
 	@Override
 	public IStatus validate(Object[] selection) {
-		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-					"Select one object only", null);
+		if (selection == null || selection.length != 1) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Select one object only", null);
+		}
 		Object o = selection[0];
 		if (o instanceof IFile) {
 			return Status.OK_STATUS;
@@ -56,13 +55,12 @@ public class IC_FileResourceForBrowser_Combo_List extends
 		if (selectfolder && o instanceof IFolder) {
 			return Status.OK_STATUS;
 		}
-		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-				"Select an icon file", null);
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Select an icon file", null);
 	}
 
 	static class FileFilter extends ViewerFilter {
 
-		private Pattern fIncludes;
+		private Pattern	fIncludes;
 
 		/**
 		 * @param patternString
@@ -83,9 +81,7 @@ public class IC_FileResourceForBrowser_Combo_List extends
 		@Override
 		public boolean select(Viewer viewer, Object parent, Object element) {
 			if (element instanceof IFile) {
-				if (fIncludes == null
-						|| fIncludes.matcher(((IFile) element).getName())
-								.matches()) {
+				if (fIncludes == null || fIncludes.matcher(((IFile) element).getName()).matches()) {
 					return true;
 				}
 				return false;

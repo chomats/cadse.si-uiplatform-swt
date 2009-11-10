@@ -9,10 +9,10 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "fr.imag.adele.cadse.si.workspace.uiplatform.swt";
+	public static final String	PLUGIN_ID	= "fr.imag.adele.cadse.si.workspace.uiplatform.swt";
 
 	// The shared instance
-	private static Activator plugin;
+	private static Activator	plugin;
 
 	/**
 	 * The constructor

@@ -24,8 +24,7 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
-public final class ObjectArrayContentProvider extends ArrayContentProvider
-		implements ITreeContentProvider {
+public final class ObjectArrayContentProvider extends ArrayContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {
 		return getElements(parentElement);

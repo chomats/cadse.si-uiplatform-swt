@@ -21,13 +21,9 @@ package fr.imag.adele.cadse.impl.exportimport;
 
 import java.net.URL;
 
-import org.eclipse.jface.wizard.WizardDialog;
-
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.IMenuAction;
-import fr.imag.adele.cadse.core.ui.Pages;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.FieldsCore;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 /**
@@ -73,13 +69,16 @@ public class ImportCadseAction extends IMenuAction {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.IMenuAction#run(fr.imag.adele.cadse.core.IItemNode[])
+	 * @see
+	 * fr.imag.adele.cadse.core.IMenuAction#run(fr.imag.adele.cadse.core.IItemNode
+	 * [])
 	 */
 	@Override
 	public void run(IItemNode[] selection) throws CadseException {
 		try {
 
-			ImportCadsePagesAction myaction = new ImportCadsePagesAction(new SWTUIPlatform(), "Import cadse", "Import cadse");
+			ImportCadsePagesAction myaction = new ImportCadsePagesAction(new SWTUIPlatform(), "Import cadse",
+					"Import cadse");
 			myaction.setPageSize(300, 200);
 			myaction.open(null);
 

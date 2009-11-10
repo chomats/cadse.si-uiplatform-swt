@@ -83,13 +83,16 @@ public class ExportCadseAction extends IMenuAction {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.imag.adele.cadse.core.IMenuAction#run(fr.imag.adele.cadse.core.IItemNode[])
+	 * @see
+	 * fr.imag.adele.cadse.core.IMenuAction#run(fr.imag.adele.cadse.core.IItemNode
+	 * [])
 	 */
 	@Override
 	public void run(IItemNode[] selection) throws CadseException {
 		try {
 
-			ExportCadsePagesAction myaction = new ExportCadsePagesAction(new SWTUIPlatform(), "Export cadse", "Export cadse");
+			ExportCadsePagesAction myaction = new ExportCadsePagesAction(new SWTUIPlatform(), "Export cadse",
+					"Export cadse");
 			myaction.setCadsedef(cadsedef);
 			myaction.setSelectJar(null);
 			myaction.setPageSize(300, 200);

@@ -36,20 +36,19 @@ import fr.imag.adele.cadse.eclipse.view.SelfViewContentProvider;
  * 
  * @generated
  */
-public class IC_FilteredNodeLinkForBrowser_Combo_List extends
-		IC_LinkForBrowser_Combo_List {
+public class IC_FilteredNodeLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_List {
 
 	public IC_FilteredNodeLinkForBrowser_Combo_List(String title, String message) {
 		super(title, message);
 	}
-	
+
 	public IC_FilteredNodeLinkForBrowser_Combo_List() {
 	}
 
 	/** The error message. */
-	String errorMessage;
+	String							errorMessage;
 
-	private FilteredItemNodeModel model;
+	private FilteredItemNodeModel	model;
 
 	/*
 	 * (non-Javadoc)
@@ -78,8 +77,9 @@ public class IC_FilteredNodeLinkForBrowser_Combo_List extends
 	protected FilteredItemNode getOrCreateFilteredNode() {
 
 		FilteredItemNodeModel treeModel = getTreeModel();
-		if (treeModel == null)
+		if (treeModel == null) {
 			return new FilteredItemNode(null);
+		}
 		return new FilteredItemNode(null, treeModel);
 	}
 
@@ -109,16 +109,14 @@ public class IC_FilteredNodeLinkForBrowser_Combo_List extends
 	 */
 	@Override
 	public IStatus validate(Object[] selection) {
-		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0,
-					errorMessage, null);
+		if (selection == null || selection.length != 1) {
+			return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
+		}
 		Object o = selection[0];
-		if (o instanceof Item
-				&& ((Item) o).isInstanceOf(getLinkType().getDestination())) {
+		if (o instanceof Item && ((Item) o).isInstanceOf(getLinkType().getDestination())) {
 			return Status.OK_STATUS;
 		}
 
-		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage,
-				null);
+		return new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, errorMessage, null);
 	}
 }

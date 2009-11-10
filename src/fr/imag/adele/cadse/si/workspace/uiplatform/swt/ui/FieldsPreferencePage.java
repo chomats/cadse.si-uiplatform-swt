@@ -34,7 +34,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 public class FieldsPreferencePage extends PropertyPage {
 
-	protected SWTUIPlatform _swtPlatform = null;
+	protected SWTUIPlatform	_swtPlatform	= null;
 
 	public FieldsPreferencePage() {
 		this._swtPlatform = new SWTUIPlatform();
@@ -58,8 +58,7 @@ public class FieldsPreferencePage extends PropertyPage {
 		layout.verticalSpacing = 9;
 		Text t = new Text(container, SWT.NONE);
 		t.setText("No item selected.");
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
-				+ GridData.VERTICAL_ALIGN_CENTER);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER + GridData.VERTICAL_ALIGN_CENTER);
 		t.setLayoutData(gd);
 		return container;
 	}
@@ -67,7 +66,7 @@ public class FieldsPreferencePage extends PropertyPage {
 	protected void updateStatus(String message) {
 		setErrorMessage(message);
 	}
-	
+
 	public void setController(Pages pages) {
 		_swtPlatform.setPages(pages);
 	}
@@ -75,8 +74,7 @@ public class FieldsPreferencePage extends PropertyPage {
 	@Override
 	public boolean performOk() {
 		try {
-			CadseCore.getCadseDomain().beginOperation(
-					"WizardController.performFinish");
+			CadseCore.getCadseDomain().beginOperation("WizardController.performFinish");
 			_swtPlatform.doFinish(null);
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -91,7 +89,8 @@ public class FieldsPreferencePage extends PropertyPage {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (_swtPlatform != null)
+		if (_swtPlatform != null) {
 			_swtPlatform.dispose();
+		}
 	}
 }

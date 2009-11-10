@@ -29,20 +29,17 @@ import fr.imag.adele.cadse.core.LinkType;
  * 
  * @generated
  */
-public class IC_MultiPartLinkForBrowser_Combo_List extends
-		IC_FilteredNodeLinkForBrowser_Combo_List {
+public class IC_MultiPartLinkForBrowser_Combo_List extends IC_FilteredNodeLinkForBrowser_Combo_List {
 
 	private final class StringComparor implements Comparator<Item> {
 		public int compare(Item arg0, Item arg1) {
-			return IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg0)
-					.compareTo(
-							IC_MultiPartLinkForBrowser_Combo_List.this
-									.toString(arg1));
+			return IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg0).compareTo(
+					IC_MultiPartLinkForBrowser_Combo_List.this.toString(arg1));
 		}
 	}
 
 	/** The part link type. */
-	LinkType[] showedLinkType;
+	LinkType[]	showedLinkType;
 
 	/**
 	 * The Constructor.
@@ -66,10 +63,8 @@ public class IC_MultiPartLinkForBrowser_Combo_List extends
 		setModel(newModel);
 
 		for (LinkType lt : showedLinkType) {
-			newModel.addItemFromItemTypeEntry(null, lt.getSource(),
-					getComparator());
-			newModel.addItemFromLinkTypeEntry(lt.getSource(), lt,
-					getComparator(), true, false);
+			newModel.addItemFromItemTypeEntry(null, lt.getSource(), getComparator());
+			newModel.addItemFromLinkTypeEntry(lt.getSource(), lt, getComparator(), true, false);
 		}
 
 	}

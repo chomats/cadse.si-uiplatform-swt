@@ -80,13 +80,13 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
  */
 public class FieldsPropertySheetPage extends Page implements IPropertySheetPage {
 
-	IItemNode lastItemNode;
-	Item lastItem;
-	ScrolledPageBook pageBook = null;
-	WorkspaceListener _listener;
-	boolean _initListener = false;
-	private Pages lastItemPages;
-	private SWTUIPlatform _swtuiPlatform;
+	IItemNode				lastItemNode;
+	Item					lastItem;
+	ScrolledPageBook		pageBook		= null;
+	WorkspaceListener		_listener;
+	boolean					_initListener	= false;
+	private Pages			lastItemPages;
+	private SWTUIPlatform	_swtuiPlatform;
 
 	public FieldsPropertySheetPage(SWTUIPlatform swtuiPlatform) {
 		this._swtuiPlatform = swtuiPlatform;
@@ -103,13 +103,11 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 			public void workspaceChanged(ImmutableWorkspaceDelta delta) {
 				for (final ImmutableItemDelta itemDelta : delta.getItems()) {
 					if (itemDelta.isDeleted()) {
-						PlatformUI.getWorkbench().getDisplay().asyncExec(
-								new Runnable() {
-									public void run() {
-										pageBook
-												.removePage(itemDelta.getItem());
-									}
-								});
+						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+							public void run() {
+								pageBook.removePage(itemDelta.getItem());
+							}
+						});
 					}
 				}
 
@@ -125,8 +123,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		if (CadseCore.getLogicalWorkspace() == null) {
 			return;
 		}
-		CadseCore.getLogicalWorkspace().addListener(_listener,
-				ChangeID.toFilter(ChangeID.DELETE_ITEM));
+		CadseCore.getLogicalWorkspace().addListener(_listener, ChangeID.toFilter(ChangeID.DELETE_ITEM));
 		_initListener = true;
 	}
 
@@ -139,8 +136,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		layout.verticalSpacing = 9;
 		Label t = new Label(container, SWT.NONE);
 		t.setText("No item selected.");
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER
-				+ GridData.VERTICAL_ALIGN_CENTER);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER + GridData.VERTICAL_ALIGN_CENTER);
 		t.setLayoutData(gd);
 		return container;
 	}
@@ -193,8 +189,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		}
 	}
 
-	private void setController(AbstractCadseTreeViewUI view, IItemNode itemNode)
-			throws CadseException {
+	private void setController(AbstractCadseTreeViewUI view, IItemNode itemNode) throws CadseException {
 		if (this.pageBook == null) {
 			return;
 		}
@@ -227,13 +222,11 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		_swtuiPlatform.setPages(lastItemPages);
 
 		_swtuiPlatform.setItem(lastItem);
-		_swtuiPlatform.setVariable(IFieldDescription.PARENT_CONTEXT, lastItem
-				.getPartParent());
-		_swtuiPlatform.setVariable(IFieldDescription.INCOMING_LINK_TYPE,
-				getContainmentLinkTypeParent(lastItem));
+		_swtuiPlatform.setVariable(IFieldDescription.PARENT_CONTEXT, lastItem.getPartParent());
+		_swtuiPlatform.setVariable(IFieldDescription.INCOMING_LINK_TYPE, getContainmentLinkTypeParent(lastItem));
 
-		_swtuiPlatform.setFilterContext(new FilterContext(lastItem, null,
-				lastItem.getType(), view, null, null, itemNode, lastItemPages));
+		_swtuiPlatform.setFilterContext(new FilterContext(lastItem, null, lastItem.getType(), view, null, null,
+				itemNode, lastItemPages));
 		if (!pageBook.hasPage(lastItem)) {
 			Composite page = pageBook.createPage(lastItem);
 			page.setLayout(new GridLayout());
@@ -252,8 +245,9 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		pageBook.dispose();
 
 		_swtuiPlatform.dispose();
-		if (CadseCore.getLogicalWorkspace() != null)
+		if (CadseCore.getLogicalWorkspace() != null) {
 			CadseCore.getLogicalWorkspace().removeListener(_listener);
+		}
 	}
 
 }

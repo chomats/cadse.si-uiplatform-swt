@@ -1,6 +1,5 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -14,10 +13,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 public abstract class SWTDialog {
 
-	protected IPage _page;
-	protected SWTUIPlatform _swtuiPlatforms;
-	private int _pageWidth = 800;
-	private int _pageHeight = 500;
+	protected IPage			_page;
+	protected SWTUIPlatform	_swtuiPlatforms;
+	private int				_pageWidth	= 800;
+	private int				_pageHeight	= 500;
 
 	/**
 	 * Create the dialog structure... DSashFormUI DGrillUI FieldExtends DGrillUI
@@ -30,8 +29,7 @@ public abstract class SWTDialog {
 		_swtuiPlatforms = swtuiPlatforms;
 		_page = swtuiPlatforms.createPageDescription(title, label);
 	}
-	
-	
+
 	public void open(final Shell shell) {
 		/**
 		 * Create a new display wen call getDefault(). Worksbench is not
@@ -50,7 +48,7 @@ public abstract class SWTDialog {
 			}
 		});
 	}
-	
+
 	/**
 	 * Sets the size of all pages. The given size takes precedence over computed
 	 * sizes.
@@ -66,8 +64,7 @@ public abstract class SWTDialog {
 		_pageHeight = height;
 	}
 
-	
-	protected void addLast(UIRunningField<?> ...runningFields) {
+	protected void addLast(UIRunningField<?>... runningFields) {
 		IAttributeType<?>[] attr = new IAttributeType[runningFields.length];
 		for (int i = 0; i < attr.length; i++) {
 			attr[i] = runningFields[i].getAttributeDefinition();

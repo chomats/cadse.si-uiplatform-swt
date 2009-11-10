@@ -51,8 +51,7 @@ public class UIWizardDialog extends WizardDialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		WizardController wizardController = (WizardController) getWizard();
 		if (wizardController.hasShowDetail()) {
-			createButton(parent, IDialogConstants.DETAILS_ID,
-					"Operations detail", false);
+			createButton(parent, IDialogConstants.DETAILS_ID, "Operations detail", false);
 		}
 		super.createButtonsForButtonBar(parent);
 	}

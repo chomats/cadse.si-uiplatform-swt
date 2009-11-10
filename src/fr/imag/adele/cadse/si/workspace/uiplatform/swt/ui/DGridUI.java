@@ -13,8 +13,8 @@ import fr.imag.adele.cadse.core.ui.UIField;
 
 public class DGridUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	Composite composite;
-	boolean makeColumnsEqualWidth = false;
+	Composite	composite;
+	boolean		makeColumnsEqualWidth	= false;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -23,8 +23,7 @@ public class DGridUI<IC extends RuningInteractionController> extends DAbstractFi
 		if (!_field.getFlag(Item.UI_NO_BORDER)) {
 			style |= SWT.BORDER;
 		}
-		composite = _swtuiplatform.getToolkit().createComposite(container,
-				style);
+		composite = _swtuiplatform.getToolkit().createComposite(container, style);
 		composite.setData(UIField.CADSE_MODEL_KEY, _field);
 		composite.setLayoutData(gridData);
 

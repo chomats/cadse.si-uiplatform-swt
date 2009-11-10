@@ -42,28 +42,27 @@ import fr.imag.adele.cadse.core.attribute.ListAttributeType;
  * @author chomats
  * 
  */
-public class IC_DefaultForList extends IC_AbstractForList implements
-		IC_ForList, ILabelProvider {
+public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList, ILabelProvider {
 
-	public IC_DefaultForList() {}
-	public IC_DefaultForList(String title, String message,
-			boolean allowDuplicate) {
+	public IC_DefaultForList() {
+	}
+
+	public IC_DefaultForList(String title, String message, boolean allowDuplicate) {
 		_allowDuplicate = allowDuplicate;
 		this._message = message;
-		this._title = title;		
+		this._title = title;
 	}
 
 	@Override
 	public void init() throws CadseException {
 		super.init();
 		if (_ic != null) {
-			_allowDuplicate = _ic
-				.getAttribute(CadseGCST.IC_STRING_LIST_FOR_LIST_at_ALLOW_DUPLICATE_);
+			_allowDuplicate = _ic.getAttribute(CadseGCST.IC_STRING_LIST_FOR_LIST_at_ALLOW_DUPLICATE_);
 		}
 
 	}
 
-	private boolean _allowDuplicate;
+	private boolean	_allowDuplicate;
 
 	public void addListener(ILabelProviderListener listener) {
 
@@ -123,10 +122,8 @@ public class IC_DefaultForList extends IC_AbstractForList implements
 			return null;
 		}
 
-		ListAttributeType<?> att = (ListAttributeType<?>) getUIField()
-				.getAttributeDefinition();
-		final IAttributeType<?> subAtt = att == null ? null : att
-				.getSubAttributeType();
+		ListAttributeType<?> att = (ListAttributeType<?>) getUIField().getAttributeDefinition();
+		final IAttributeType<?> subAtt = att == null ? null : att.getSubAttributeType();
 		InputDialog dialog;
 		dialog = new InputDialog(parentShell, _title, _message,
 
@@ -134,8 +131,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements
 
 			public String isValid(String newText) {
 				if (subAtt != null) {
-					CheckStatus error = subAtt.check(_uiPlatform
-							.getItem(getUIField()), newText);
+					CheckStatus error = subAtt.check(_uiPlatform.getItem(getUIField()), newText);
 					if (error != null) {
 						return error.getFormatedMessage();
 					}

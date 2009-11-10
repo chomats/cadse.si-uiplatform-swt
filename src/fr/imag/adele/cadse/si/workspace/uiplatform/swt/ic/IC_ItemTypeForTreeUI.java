@@ -31,17 +31,18 @@ import fr.imag.adele.cadse.core.LinkType;
 public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 
 	public String getText(Object obj) {
-		if (obj instanceof LinkType)
+		if (obj instanceof LinkType) {
 			return getTreeText((LinkType) obj);
+		}
 		return getTreeText((ItemType) obj);
 	}
 
 	protected String getTreeText(LinkType lt) {
-		if (lt.getDestination().getId().equals(CadseDomain.ITEM_ID))
+		if (lt.getDestination().getId().equals(CadseDomain.ITEM_ID)) {
 			return lt.getName();
-		return MessageFormat
-				.format(
-						Messages.getString("dialog.run.create-item.4"), lt.getName(), lt.getDestination().getId()); //$NON-NLS-1$
+		}
+		return MessageFormat.format(
+				Messages.getString("dialog.run.create-item.4"), lt.getName(), lt.getDestination().getId()); //$NON-NLS-1$
 	}
 
 	protected String getTreeText(ItemType it) {
@@ -52,8 +53,9 @@ public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 		if (obj instanceof LinkType) {
 			LinkType lt = (LinkType) obj;
 			obj = lt.getDestination();
-			if (obj == null)
+			if (obj == null) {
 				return null;
+			}
 		}
 		ItemType it = (ItemType) obj;
 		return WSPlugin.getDefault().getImageFrom(it, null);
@@ -61,10 +63,11 @@ public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 
 	public Object[] getChildren(Object obj) {
 		ItemType superItemType;
-		if (obj instanceof LinkType)
+		if (obj instanceof LinkType) {
 			superItemType = ((LinkType) obj).getDestination();
-		else
+		} else {
 			superItemType = (ItemType) obj;
+		}
 
 		return superItemType.getSubTypes();
 	}

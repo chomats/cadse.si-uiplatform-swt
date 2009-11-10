@@ -60,17 +60,17 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
  */
 
 public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
-	private String[] columns;
+	private String[]			columns;
 
-	public static final String TABLE_COLUMNS = "table-columns";
-	private Table table;
-	private Object[] root;
-	TableViewer viewer;
-	Map<String, String> values = new HashMap<String, String>();
-	int newValueIndex = 0;
-	private TableEditor fTableEditor;
+	public static final String	TABLE_COLUMNS	= "table-columns";
+	private Table				table;
+	private Object[]			root;
+	TableViewer					viewer;
+	Map<String, String>			values			= new HashMap<String, String>();
+	int							newValueIndex	= 0;
+	private TableEditor			fTableEditor;
 
-	ITableUserController uctable;
+	ITableUserController		uctable;
 
 	@Override
 	public void init() throws CadseException {
@@ -78,8 +78,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 
 	@Override
 	public void createControl(Composite container, int hspan) {
-		table = new Table(container, SWT.H_SCROLL | SWT.V_SCROLL
-				| SWT.BORDER | SWT.VIRTUAL);
+		table = new Table(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
 		table.setLayoutData(gd);
@@ -146,8 +145,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 							return null;
 						}
 
-						public void modify(Object element, String property,
-								Object value) {
+						public void modify(Object element, String property, Object value) {
 							// TODO Auto-generated method stub
 
 						}
@@ -156,8 +154,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 				}
 
 				public CellEditor[] getCellsEditor() {
-					return new CellEditor[] { new TextCellEditor(),
-							new TextCellEditor() };
+					return new CellEditor[] { new TextCellEditor(), new TextCellEditor() };
 				}
 
 			};
@@ -167,8 +164,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 			TableColumn tc = new TableColumn(table, SWT.LEFT);
 			tc.setText(uctable.getTableCollumn(i));
 			tc.setResizable(uctable.getTableResizable(i));
-			layout.addColumnData(new ColumnWeightData(uctable
-					.getTableMinSize(i), true));
+			layout.addColumnData(new ColumnWeightData(uctable.getTableMinSize(i), true));
 		}
 
 		table.addSelectionListener(new SelectionListener() {
@@ -266,8 +262,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 				if (e.keyCode == 13) {
 					Text text = (Text) fTableEditor.getEditor();
 					if (text != null) {
-						fTableEditor.getItem().setText(
-								fTableEditor.getColumn(), text.getText());
+						fTableEditor.getItem().setText(fTableEditor.getColumn(), text.getText());
 						text.setVisible(false);
 						text.dispose();
 						fTableEditor.setEditor(null);
@@ -301,8 +296,7 @@ public class DTableUI<IC extends IC_Tree> extends DAbstractField<IC> {
 
 			}
 
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
 			}
 

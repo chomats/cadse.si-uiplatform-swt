@@ -43,9 +43,9 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
  */
 public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-	List<Object> fElements;
+	List<Object>			fElements;
 
-	private FilteredTree fFilteredTree;
+	private FilteredTree	fFilteredTree;
 
 	@Override
 	public Object getVisualValue() {
@@ -56,8 +56,7 @@ public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> 
 	public void createControl(Composite container, int hspan) {
 
 		GridData gd;
-		fFilteredTree = new FilteredTree(container, SWT.BORDER
-				| SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
+		fFilteredTree = new FilteredTree(container, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = 100;
@@ -112,7 +111,6 @@ public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> 
 
 	@Override
 	public Object[] getSelectedObjects() {
-		return ((StructuredSelection) fFilteredTree.getViewer().getSelection())
-				.toArray();
+		return ((StructuredSelection) fFilteredTree.getViewer().getSelection()).toArray();
 	}
 }

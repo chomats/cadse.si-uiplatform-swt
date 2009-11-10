@@ -26,21 +26,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
-import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.CadseGCST;
-
 /** */
 
-public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends
-IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
-		IC_ForBrowserOrCombo {
+public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends IC_WithDialogAction implements IC_ForList,
+		ISelectionStatusValidator, IC_ForBrowserOrCombo {
 
-	
 	public IC_AbstractTreeDialogForList_Browser_Combo() {
 	}
-	
-	public IC_AbstractTreeDialogForList_Browser_Combo(String title2,
-			String message2) {
+
+	public IC_AbstractTreeDialogForList_Browser_Combo(String title2, String message2) {
 		super(title2, message2);
 	}
 
@@ -80,10 +74,8 @@ IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
 		return null;
 	}
 
-	protected Object[] selectOrCreateValues(Shell parentShell,
-			boolean allowMultipleSelection) {
-		ElementTreeSelectionDialog lsd = createTreeDialog(parentShell,
-				allowMultipleSelection);
+	protected Object[] selectOrCreateValues(Shell parentShell, boolean allowMultipleSelection) {
+		ElementTreeSelectionDialog lsd = createTreeDialog(parentShell, allowMultipleSelection);
 		lsd.open();
 		if (lsd.getReturnCode() == Window.OK) {
 			return lsd.getResult(); // after call canAddObject and
@@ -92,8 +84,7 @@ IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
 		return null;
 	}
 
-	protected ElementTreeSelectionDialog createTreeDialog(Shell parentShell,
-			boolean allowMultipleSelection) {
+	protected ElementTreeSelectionDialog createTreeDialog(Shell parentShell, boolean allowMultipleSelection) {
 		ElementTreeSelectionDialog lsd = newTreeDialog(parentShell);
 		ViewerFilter filter = getFilter();
 		if (filter != null) {
@@ -108,8 +99,8 @@ IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
 	}
 
 	protected ElementTreeSelectionDialog newTreeDialog(Shell parentShell) {
-		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(
-				parentShell, getLabelProvider(), getTreeContentProvider());
+		ElementTreeSelectionDialog lsd = new ElementTreeSelectionDialog(parentShell, getLabelProvider(),
+				getTreeContentProvider());
 		return lsd;
 	}
 
@@ -120,8 +111,6 @@ IC_WithDialogAction implements IC_ForList, ISelectionStatusValidator,
 	public IContentProvider getContentProvider() {
 		return getTreeContentProvider();
 	}
-
-	
 
 	public Object fromString(String value) {
 		return null;

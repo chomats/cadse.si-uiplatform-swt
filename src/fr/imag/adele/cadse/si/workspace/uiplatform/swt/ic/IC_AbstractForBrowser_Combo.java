@@ -29,13 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ListDialog;
 
-import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.CadseGCST;
-
-public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
-		implements IC_ForBrowserOrCombo {
-
-	
+public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction implements IC_ForBrowserOrCombo {
 
 	public IC_AbstractForBrowser_Combo() {
 		super();
@@ -51,8 +45,9 @@ public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 		lsd.setContentProvider(new IStructuredContentProvider() {
 
 			public Object[] getElements(Object inputElement) {
-				if (inputElement instanceof Object[])
+				if (inputElement instanceof Object[]) {
 					return ((Object[]) inputElement);
+				}
 				return null;
 			}
 
@@ -60,8 +55,7 @@ public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 			}
 
 			public void inputChanged(@SuppressWarnings("unused") Viewer viewer,
-					@SuppressWarnings("unused") Object oldInput,
-					@SuppressWarnings("unused") Object newInput) {
+					@SuppressWarnings("unused") Object oldInput, @SuppressWarnings("unused") Object newInput) {
 			}
 		});
 		lsd.setLabelProvider(getLabelProvider());
@@ -70,8 +64,9 @@ public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 		lsd.open();
 		if (lsd.getReturnCode() == Window.OK) {
 			Object[] ret = lsd.getResult();
-			if ((ret != null) && (ret.length == 1))
+			if ((ret != null) && (ret.length == 1)) {
 				return createGoodObject(ret[0]);
+			}
 
 		}
 		return null;
@@ -85,10 +80,8 @@ public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 	protected Comparator<Object> getComparator() {
 		return new Comparator<Object>() {
 			public int compare(Object arg0, Object arg1) {
-				return IC_AbstractForBrowser_Combo.this
-						.toString(arg0)
-						.compareTo(
-								IC_AbstractForBrowser_Combo.this.toString(arg1));
+				return IC_AbstractForBrowser_Combo.this.toString(arg0).compareTo(
+						IC_AbstractForBrowser_Combo.this.toString(arg1));
 			}
 		};
 	}
@@ -100,8 +93,9 @@ public abstract class IC_AbstractForBrowser_Combo extends IC_WithDialogAction
 	protected abstract Object[] getSelectableValues();
 
 	public String toString(Object value) {
-		if (value == null)
+		if (value == null) {
 			return "<none>";
+		}
 		return value.toString();
 	}
 

@@ -3,13 +3,13 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.impl.ui.ic.IC_Abstract;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 
 public class ICRunningField implements RuningInteractionController {
-	public Item _ic;
-	public UIPlatform _uiPlatform;
+	public Item			_ic;
+	public UIPlatform	_uiPlatform;
 
 	@Override
 	public void dispose() {
@@ -27,7 +27,7 @@ public class ICRunningField implements RuningInteractionController {
 	@Override
 	public void initAfterUI() {
 	}
-	
+
 	protected Item getItem() {
 		return _uiPlatform.getItem(getUIField());
 	}

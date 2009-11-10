@@ -29,7 +29,6 @@ import fede.workspace.model.manager.properties.impl.mc.MC_AllItemType;
 import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IPage;
@@ -56,14 +55,14 @@ public class ChangeTypeAction implements IViewActionDelegate {
 		}
 	}
 
-	private Item		item;
-	IItemManager		ip;
-	private IViewPart	view;
-	protected ItemType	selectedItemType;
-	private SWTUIPlatform _swtuiPlatform;
-	private IPage _page;
-	private DTreeUI<IC_AllItemTypeForTreeUI> _treeUI;
-	private ChangeTypeActionPage _action;
+	private Item								item;
+	IItemManager								ip;
+	private IViewPart							view;
+	protected ItemType							selectedItemType;
+	private SWTUIPlatform						_swtuiPlatform;
+	private IPage								_page;
+	private DTreeUI<IC_AllItemTypeForTreeUI>	_treeUI;
+	private ChangeTypeActionPage				_action;
 
 	public ChangeTypeAction() {
 		super();
@@ -72,7 +71,7 @@ public class ChangeTypeAction implements IViewActionDelegate {
 	public void run(IAction action) {
 		try {
 			createCreateItemWizard();
-			if (_swtuiPlatform.open(view.getViewSite().getShell(), _page, _action, false) ==Window.OK) {
+			if (_swtuiPlatform.open(view.getViewSite().getShell(), _page, _action, false) == Window.OK) {
 				item.setType(selectedItemType);
 			}
 		} catch (Throwable e) {
@@ -114,8 +113,8 @@ public class ChangeTypeAction implements IViewActionDelegate {
 	void createCreateItemWizard() {
 		_swtuiPlatform = new SWTUIPlatform();
 		_page = _swtuiPlatform.createPageDescription("Select an item type", "Select an item type");
-				
-		_treeUI =_swtuiPlatform.createTreeUI(_page, "selector", null, EPosLabel.none, new MC_AllItemType(),
+
+		_treeUI = _swtuiPlatform.createTreeUI(_page, "selector", null, EPosLabel.none, new MC_AllItemType(),
 				new IC_AllItemTypeForTreeUI());
 		_page.addLast(_treeUI.getAttributeDefinition());
 		_action = new ChangeTypeActionPage(_treeUI);

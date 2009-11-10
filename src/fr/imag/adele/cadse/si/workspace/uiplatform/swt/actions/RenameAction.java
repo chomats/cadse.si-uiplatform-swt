@@ -75,8 +75,8 @@ public class RenameAction extends AbstractEclipseMenuAction implements IInputVal
 					LogicalWorkspaceTransaction copy = item.getLogicalWorkspace().createTransaction();
 					ItemDelta itemOperation = copy.getItem(item.getId());
 					itemOperation.setAttribute(CadseGCST.ITEM_at_NAME_, newShortName);
-					ShowDetailWLWCDialog.openDialog(new SWTUIPlatform(),viewer.getShell(),copy, "Rename the item " + item.getName(), "Items to change",
-							true);
+					ShowDetailWLWCDialog.openDialog(new SWTUIPlatform(), viewer.getShell(), copy, "Rename the item "
+							+ item.getName(), "Items to change", true);
 
 				}
 			} catch (Throwable e) {

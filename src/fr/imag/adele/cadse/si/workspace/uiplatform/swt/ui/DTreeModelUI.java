@@ -19,18 +19,17 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import fede.workspace.tool.view.node.FilteredItemNode;
 import fr.imag.adele.cadse.core.IItemNode;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
 
-public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC>
-		implements ISelectionChangedListener, SelectionListener,
-		ICheckStateListener, TreeListener {
+public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> implements ISelectionChangedListener,
+		SelectionListener, ICheckStateListener, TreeListener {
 
-	public boolean _useCheckBox = true;
-	private Tree _treeControl;
-	private CheckboxTreeViewer _treeViewer;
-	private FilteredItemNode _rootNode;
+	public boolean				_useCheckBox	= true;
+	private Tree				_treeControl;
+	private CheckboxTreeViewer	_treeViewer;
+	private FilteredItemNode	_rootNode;
 
 	@Override
 	public void dispose() {

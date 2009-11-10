@@ -41,9 +41,9 @@ import fr.imag.adele.cadse.core.ItemType;
 
 public class IC_ForChooseFile extends ICRunningField {
 
-	public static final int FOLDER_EXT = 1;
-	public static final int FILE_EXT = 2;
-	public static final int WORKSPACE = 4;
+	public static final int	FOLDER_EXT	= 1;
+	public static final int	FILE_EXT	= 2;
+	public static final int	WORKSPACE	= 4;
 
 	public IPath selectExternalFolder(Shell shell, String msg, IPath currPath) {
 
@@ -52,8 +52,9 @@ public class IC_ForChooseFile extends ICRunningField {
 		DirectoryDialog dialog = new DirectoryDialog(shell);
 		dialog.setMessage(msg);
 		// dialog.setText(this.choosetext);
-		if (file != null)
+		if (file != null) {
 			dialog.setFilterPath(file.getAbsolutePath());
+		}
 		String res = dialog.open();
 		if (res != null) {
 			return Path.fromOSString(res).makeAbsolute();
@@ -68,10 +69,12 @@ public class IC_ForChooseFile extends ICRunningField {
 		FileDialog dialog = new FileDialog(shell);
 		dialog.setText(msg);
 		String[] fileFilter = getFileFilter();
-		if (fileFilter != null)
-			dialog.setFilterExtensions(fileFilter); 
-		if (file != null)
+		if (fileFilter != null) {
+			dialog.setFilterExtensions(fileFilter);
+		}
+		if (file != null) {
 			dialog.setFilterPath(file.getAbsolutePath());
+		}
 		String res = dialog.open();
 		if (res != null) {
 			return Path.fromOSString(res).makeAbsolute();
@@ -80,16 +83,17 @@ public class IC_ForChooseFile extends ICRunningField {
 	}
 
 	private File getFileFrom(IPath currPath) {
-		if (currPath == null)
+		if (currPath == null) {
 			return null;
+		}
 		File file = currPath.toFile();
-		IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(
-				currPath);
+		IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(currPath);
 		if (r != null && r.getLocation() != null) {
 			file = r.getLocation().toFile();
 		}
-		if (file != null && file.isFile())
+		if (file != null && file.isFile()) {
 			file = file.getParentFile();
+		}
 		return file;
 	}
 
@@ -107,11 +111,11 @@ public class IC_ForChooseFile extends ICRunningField {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource initSel = root.findMember(currPath);
 
-		ElementTreeSelectionDialog dialog = createTreeSelectionDialog(shell,
-				lp, cp);
+		ElementTreeSelectionDialog dialog = createTreeSelectionDialog(shell, lp, cp);
 		dialog.setAllowMultiple(false);
-		if (filter != null)
+		if (filter != null) {
 			dialog.addFilter(filter);
+		}
 		dialog.setTitle(msg);
 		// dialog.setMessage(NewWizardMessages.SourceAttachmentBlock_intjardialog_message);
 		dialog.setInput(root);
@@ -128,8 +132,8 @@ public class IC_ForChooseFile extends ICRunningField {
 		return null;
 	}
 
-	protected ElementTreeSelectionDialog createTreeSelectionDialog(Shell shell,
-			ILabelProvider lp, ITreeContentProvider cp) {
+	protected ElementTreeSelectionDialog createTreeSelectionDialog(Shell shell, ILabelProvider lp,
+			ITreeContentProvider cp) {
 		return new ElementTreeSelectionDialog(shell, lp, cp);
 	}
 

@@ -32,8 +32,7 @@ import fr.imag.adele.cadse.core.ui.IFieldDescription;
  * workspace. suppose que la key est le nom du lien.
  */
 
-public class IC_PartParentForBrowser_Combo extends IC_AbstractForBrowser_Combo
-		implements IC_ForBrowserOrCombo {
+public class IC_PartParentForBrowser_Combo extends IC_AbstractForBrowser_Combo implements IC_ForBrowserOrCombo {
 
 	@Override
 	public String toString(Object value) {

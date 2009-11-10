@@ -43,9 +43,9 @@ import org.eclipse.ui.fieldassist.ContentAssistField;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.util.Convert;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
@@ -56,17 +56,16 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
  * @author chomats
  * 
  */
-public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> implements
-		IContentProposalListener {
-	private Button _buttonBrowser;
-	private ContentAssistField _contentAssistField;
-	private Text _textControl;
-	private Object _value;
+public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> implements IContentProposalListener {
+	private Button				_buttonBrowser;
+	private ContentAssistField	_contentAssistField;
+	private Text				_textControl;
+	private Object				_value;
 
-	private String _currentValueTextToSend;
+	private String				_currentValueTextToSend;
 
-	private String _currentValueText;
-	private boolean _sendNotification;
+	private String				_currentValueText;
+	private boolean				_sendNotification;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -78,25 +77,19 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			style |= SWT.READ_ONLY;
 		}
 		if (_field.isEditable() && proposer != null) {
-			IControlContentAdapter contentAdapter = new ProposerTextContentAdapter(
-					this, _swtuiplatform, proposer);
+			IControlContentAdapter contentAdapter = new ProposerTextContentAdapter(this, _swtuiplatform, proposer);
 
-			_contentAssistField = new ContentAssistField(container, style,
-					new IControlCreator() {
-						public Control createControl(Composite controlParent,
-								int style) {
-							return new Text(controlParent, style);
-						}
-					}, contentAdapter, proposer.getContentProposalProvider(),
-					proposer.getCommandId(), proposer
-							.getAutoActivationCharacters());
-			_contentAssistField.getContentAssistCommandAdapter()
-					.setProposalAcceptanceStyle(
-							proposer.getProposalAcceptanceStyle());
+			_contentAssistField = new ContentAssistField(container, style, new IControlCreator() {
+				public Control createControl(Composite controlParent, int style) {
+					return new Text(controlParent, style);
+				}
+			}, contentAdapter, proposer.getContentProposalProvider(), proposer.getCommandId(), proposer
+					.getAutoActivationCharacters());
+			_contentAssistField.getContentAssistCommandAdapter().setProposalAcceptanceStyle(
+					proposer.getProposalAcceptanceStyle());
 			_textControl = (Text) _contentAssistField.getControl();
 			swtControl = _contentAssistField.getLayoutControl();
-			_contentAssistField.getContentAssistCommandAdapter()
-					.addContentProposalListener(this);
+			_contentAssistField.getContentAssistCommandAdapter().addContentProposalListener(this);
 		} else {
 			swtControl = _textControl = new Text(container, style);
 		}
@@ -153,8 +146,9 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			}
 
 			public void focusLost(FocusEvent e) {
-				if (_currentValueTextToSend != null)
+				if (_currentValueTextToSend != null) {
 					sendModificationIfNeed(_currentValueTextToSend, true);
+				}
 			}
 		});
 
@@ -162,8 +156,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		_buttonBrowser.setText(UIField.SELECT_BUTTON);
 		_buttonBrowser.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(
-					@SuppressWarnings("unused") SelectionEvent e) {
+			public void widgetSelected(@SuppressWarnings("unused") SelectionEvent e) {
 				handleSelect();
 			}
 		});
@@ -208,7 +201,6 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		return null;
 	}
 
-
 	@Override
 	public Control getMainControl() {
 		return this._textControl;
@@ -229,13 +221,11 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 	}
 
 	protected void handleSelect() {
-		Object ret = _ic.selectOrCreateValue(
-				this._buttonBrowser.getShell());
+		Object ret = _ic.selectOrCreateValue(this._buttonBrowser.getShell());
 
 		if (ret != null) {
 			setVisualValue(ret, false);
-			_swtuiplatform.broadcastValueChanged(_page, _field,
-					getVisualValue());
+			_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
 		}
 	}
 
@@ -265,8 +255,9 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		_value = visualValue;
-		if (_textControl == null || _textControl.isDisposed())
+		if (_textControl == null || _textControl.isDisposed()) {
 			return;
+		}
 
 		final String valueText = toString(_value);
 		if (valueText.equals(_currentValueText)) {
@@ -291,12 +282,10 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			}
 		} catch (Throwable e) {
 			ret = "<invalid value>";
-			_swtuiplatform.setMessage("Internal error "
-					+ e.getClass().getCanonicalName() + ": " + e.getMessage(),
+			_swtuiplatform.setMessage("Internal error " + e.getClass().getCanonicalName() + ": " + e.getMessage(),
 					UIPlatform.ERROR);
 			Activator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							"Internal error in DBrowwserUI.toString", e));
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Internal error in DBrowwserUI.toString", e));
 		}
 		return ret;
 	}
@@ -312,8 +301,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 				return;
 			}
 
-			Object newValue = proposer
-					.getValueFromProposal((Proposal) proposal);
+			Object newValue = proposer.getValueFromProposal((Proposal) proposal);
 			// setVisualValue(newValue);
 			if (newValue != null) {
 				_value = newValue;
@@ -328,8 +316,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 
 	}
 
-	protected synchronized void sendModificationIfNeed(String value,
-			boolean send) {
+	protected synchronized void sendModificationIfNeed(String value, boolean send) {
 		if (!_field.isEditable()) {
 			return;
 		}

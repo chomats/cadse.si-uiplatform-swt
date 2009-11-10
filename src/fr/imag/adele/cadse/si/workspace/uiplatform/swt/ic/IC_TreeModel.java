@@ -14,8 +14,8 @@ import fr.imag.adele.cadse.eclipse.view.SelfViewLabelProvider;
 
 public class IC_TreeModel extends ICRunningField implements ItemNodeIsSelected {
 
-	protected FilteredItemNodeModel model;
-	protected FilteredItemNode rootNode = null;
+	protected FilteredItemNodeModel	model;
+	protected FilteredItemNode		rootNode	= null;
 
 	public ItemType getType() {
 		// TODO Auto-generated method stub

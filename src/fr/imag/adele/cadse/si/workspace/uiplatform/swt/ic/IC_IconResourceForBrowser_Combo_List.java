@@ -44,12 +44,11 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  *         Chomat&lt;/a&gt;
  * @version 2.0
  */
-public class IC_IconResourceForBrowser_Combo_List extends
-		IC_FileResourceForBrowser_Combo_List {
+public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrowser_Combo_List {
 
 	static class ImageFilter extends ViewerFilter {
 
-		private ImageLoader imageloader;
+		private ImageLoader	imageloader;
 
 		/**
 		 * @param patternString
@@ -69,16 +68,16 @@ public class IC_IconResourceForBrowser_Combo_List extends
 		public boolean select(Viewer viewer, Object parent, Object element) {
 			if (element instanceof IResource) {
 				IResource f = (IResource) element;
-				if (f.isDerived())
+				if (f.isDerived()) {
 					return false;
+				}
 				if (f.isTeamPrivateMember()) {
 					return false;
 				}
 			}
 			if (element instanceof IFile) {
 				try {
-					imageloader.load(((IFile) element).getLocation()
-							.toOSString());
+					imageloader.load(((IFile) element).getLocation().toOSString());
 					return true;
 				} catch (SWTException e) {
 					return false;
@@ -90,11 +89,13 @@ public class IC_IconResourceForBrowser_Combo_List extends
 				IContainer c = (IContainer) element;
 				try {
 					IResource[] m = c.members();
-					if (m != null)
+					if (m != null) {
 						for (IResource e : m) {
-							if (select(viewer, c, e))
+							if (select(viewer, c, e)) {
 								return true;
+							}
 						}
+					}
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -117,21 +118,18 @@ public class IC_IconResourceForBrowser_Combo_List extends
 	protected IResource getRootSelect() {
 		// Item manager = (Item) description.getContext();
 		// Item model = ManagerManager._getWorkspaceModel(manager);
-		return _uiPlatform.getItem(getUIField()).getMainMappingContent(
-				IResource.class);
+		return _uiPlatform.getItem(getUIField()).getMainMappingContent(IResource.class);
 	}
 
 	@Override
 	public ILabelProvider getLabelProvider() {
 		return new WorkbenchLabelProvider() {
 			@Override
-			protected ImageDescriptor decorateImage(ImageDescriptor input,
-					Object element) {
+			protected ImageDescriptor decorateImage(ImageDescriptor input, Object element) {
 				if (element instanceof IFile) {
 					IFile f = (IFile) element;
 					try {
-						return ImageDescriptor.createFromURL(f.getLocationURI()
-								.toURL());
+						return ImageDescriptor.createFromURL(f.getLocationURI().toURL());
 					} catch (MalformedURLException e) {
 					}
 				}

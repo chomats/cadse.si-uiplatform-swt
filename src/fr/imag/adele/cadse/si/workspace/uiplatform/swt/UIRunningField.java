@@ -24,14 +24,13 @@ import org.eclipse.swt.widgets.Composite;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
-import fr.imag.adele.cadse.core.impl.ui.UIFieldImpl;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 
 /**
  * Represente a graphic field which display a value of an attribute definition
@@ -47,18 +46,18 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * @author chomats
  */
 public abstract class UIRunningField<IC extends RuningInteractionController> {
-	public UIField _field = null;
+	public UIField					_field	= null;
 
 	/** The getPage(). */
-	public IPage _page;
+	public IPage					_page;
 	/** The global controller. */
-	public SWTUIPlatform _swtuiplatform;
+	public SWTUIPlatform			_swtuiplatform;
 
-	public UIRunningField<?> _next;
+	public UIRunningField<?>		_next;
 
-	public UIRunningField<?>[] _children;
-	public IC _ic;
-	public RunningModelController _mc;
+	public UIRunningField<?>[]		_children;
+	public IC						_ic;
+	public RunningModelController	_mc;
 
 	/*
 	 * (non-Javadoc)
@@ -151,8 +150,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 */
 	public void setValue(Object visualValue) {
 		setVisualValue(visualValue);
-		getModelController().notifieValueChanged( _field,
-				visualValue);
+		getModelController().notifieValueChanged(_field, visualValue);
 	}
 
 	/*
@@ -235,7 +233,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 */
 	public void initAfterUI() {
 		try {
-			if (((Item)_field).isHidden()) {
+			if (((Item) _field).isHidden()) {
 				setVisible(false);
 			}
 		} catch (Throwable e) {

@@ -39,22 +39,20 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * @author chomats
  * 
  */
-public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends
-		DAbstractField<IC> {
+public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	SymbolicBitMapAttributeType attributeDefinition;
-	String[] labels;
-	Button[] controls;
-	Object value;
-	int col;
-	private Group g;
+	SymbolicBitMapAttributeType	attributeDefinition;
+	String[]					labels;
+	Button[]					controls;
+	Object						value;
+	int							col;
+	private Group				g;
 
 	@Override
 	public void init() throws CadseException {
 		assert _field.getAttributeDefinition() instanceof SymbolicBitMapAttributeType;
 
-		this.attributeDefinition = (SymbolicBitMapAttributeType) _field
-				.getAttributeDefinition();
+		this.attributeDefinition = (SymbolicBitMapAttributeType) _field.getAttributeDefinition();
 		this.labels = this.attributeDefinition.getLabels();
 		value = attributeDefinition.getDefaultValue();
 		col = 3;
@@ -85,8 +83,7 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends
 
 		GridData gd;
 
-		g = _swtuiplatform.getToolkit().createGroup(container,
-				getLabel());
+		g = _swtuiplatform.getToolkit().createGroup(container, getLabel());
 		g.setData(UIField.CADSE_MODEL_KEY, _field);
 		g.setLayout(new GridLayout(col, false));
 		controls = new Button[labels.length];
@@ -95,19 +92,16 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends
 				controls[i] = null;
 				continue; // reseved or private position
 			}
-			controls[i] = _swtuiplatform.getToolkit().createButton(g,
-					labels[i], SWT.CHECK);
+			controls[i] = _swtuiplatform.getToolkit().createButton(g, labels[i], SWT.CHECK);
 			controls[i].setData(i);
 			controls[i].setData(UIField.CADSE_MODEL_KEY, _field);
 			controls[i].addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
-					_swtuiplatform.broadcastValueChanged(_page, _field,
-							getVisualValue());
+					_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
 				}
 
 				public void widgetDefaultSelected(SelectionEvent e) {
-					_swtuiplatform.broadcastValueChanged(_page, _field,
-							getVisualValue());
+					_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
 				}
 
 			});

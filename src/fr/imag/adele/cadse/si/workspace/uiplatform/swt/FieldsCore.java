@@ -39,14 +39,15 @@ import fr.imag.adele.cadse.core.impl.ui.mc.MC_DefaultForList;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_StringToBoolean;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.RuningInteractionController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FileResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_FolderResource_ForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_IconResourceForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_PartParentForBrowser_Combo;
@@ -100,14 +101,13 @@ public class FieldsCore {
 	}
 
 	static public DTextUI createShortNameField() {
-		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(),
-				null);
+		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(), null);
 
 	}
 
 	static public DTextUI createShortNameField_Noborder() {
-		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(),
-				null, SWT.SINGLE, 1, null);
+		return new DTextUI(CadseGCST.ITEM_at_NAME, "name:", EPosLabel.left, new MC_ShortNameItemProperty(), null,
+				SWT.SINGLE, 1, null);
 	}
 
 	static public DTextUI createUniqueNameField() {
@@ -121,8 +121,8 @@ public class FieldsCore {
 	}
 
 	static public DTextUI createIDField() {
-		return new DTextUI(CadseGCST.ITEM_at_DISPLAY_NAME, "#ID:", EPosLabel.left, new MC_IDItemProperty(),
-				null, SWT.SINGLE, 1, null);
+		return new DTextUI(CadseGCST.ITEM_at_DISPLAY_NAME, "#ID:", EPosLabel.left, new MC_IDItemProperty(), null,
+				SWT.SINGLE, 1, null);
 	}
 
 	// TODO
@@ -166,7 +166,8 @@ public class FieldsCore {
 				selectTitle, selectMessage), SWT.BORDER | SWT.SINGLE);
 	}
 
-	public static DTextUI createIntField(String key, String label, RunningModelController mc, RuningInteractionController ic) {
+	public static DTextUI createIntField(String key, String label, RunningModelController mc,
+			RuningInteractionController ic) {
 		return new DTextUI(key, label, EPosLabel.left, mc, ic);
 	}
 
@@ -227,17 +228,16 @@ public class FieldsCore {
 
 	public static DListUI createList_ListOfString(String key, String label, String title, String message,
 			boolean allowDuplicate, int min, int max) {
-		return createList(key, label, new MC_DefaultForList(min, max), new IC_DefaultForList(title,
-				message, allowDuplicate));
+		return createList(key, label, new MC_DefaultForList(min, max), new IC_DefaultForList(title, message,
+				allowDuplicate));
 	}
 
-	public static DListUI createList_ListOfString(String key, String label, MC_DefaultForList mc,
-			IC_DefaultForList ic) {
+	public static DListUI createList_ListOfString(String key, String label, MC_DefaultForList mc, IC_DefaultForList ic) {
 		return createList(key, label, mc, ic);
 	}
 
-	public static DListUI createList(String key, String label, RunningModelController mc, IInteractionControllerForList ic,
-			Object... objects) {
+	public static DListUI createList(String key, String label, RunningModelController mc,
+			IInteractionControllerForList ic, Object... objects) {
 		return new DListUI(key, label, EPosLabel.top, mc, ic, true, true);
 
 	}

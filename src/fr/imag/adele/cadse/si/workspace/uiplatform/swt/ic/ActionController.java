@@ -18,9 +18,6 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 
-import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.impl.ui.ic.IC_Abstract;
-
 public class ActionController extends ICRunningField {
 
 	public void callAction() {

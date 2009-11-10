@@ -71,8 +71,7 @@ public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit {
 	 * 
 	 * @return the label
 	 */
-	public Label createLabel(Composite container, int hspan, String label,
-			EPosLabel posLabel) {
+	public Label createLabel(Composite container, int hspan, String label, EPosLabel posLabel) {
 		Label labelWidget;
 		GridData gd;
 
@@ -93,8 +92,9 @@ public class FedeFormToolkit extends FormToolkit implements IFedeFormToolkit {
 	 */
 	public Group createGroup(Object container, String label) {
 		Group g = new Group((Composite) container, 0);
-		if (label != null)
+		if (label != null) {
 			g.setText(label);
+		}
 		adapt(g, false, false);
 		return g;
 	}

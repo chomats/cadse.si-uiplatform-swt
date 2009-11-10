@@ -42,8 +42,8 @@ import org.eclipse.ui.PlatformUI;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 
@@ -54,18 +54,18 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
  * @author vega
  * 
  */
-public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
-		DAbstractField<IC> implements SelectionListener, TreeListener {
+public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<IC> implements SelectionListener,
+		TreeListener {
 
-	public boolean _fillBoth = false;
+	public boolean					_fillBoth			= false;
 
-	public boolean _selectDelectButton = true;
+	public boolean					_selectDelectButton	= true;
 
-	private Object[] _sources;
-	private Set<Object> _sources_selected = new HashSet<Object>();
+	private Object[]				_sources;
+	private Set<Object>				_sources_selected	= new HashSet<Object>();
 
-	private Map<Object, TreeItem[]> _treeItems;
-	private Tree _treeObjects;
+	private Map<Object, TreeItem[]>	_treeItems;
+	private Tree					_treeObjects;
 
 	public void addNode(final Object item) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
@@ -124,8 +124,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 	public void createControl(Composite container, int hspan) {
 		GridData gd;
 
-		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER
-				| SWT.V_SCROLL | SWT.H_SCROLL);
+		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.addTreeListener(this);
 		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
@@ -150,8 +149,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 		setSource(_ic.getSources());
 
 		if (_selectDelectButton) {
-			Button selectAll = _swtuiplatform.getToolkit().createButton(
-					container, "Select All", SWT.PUSH);
+			Button selectAll = _swtuiplatform.getToolkit().createButton(container, "Select All", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			selectAll.setLayoutData(gd);
 			selectAll.addSelectionListener(new SelectionListener() {
@@ -164,8 +162,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 			});
 			selectAll.setData(this);
 
-			Button deselectAll = _swtuiplatform.getToolkit().createButton(
-					container, "Deselect All", SWT.PUSH);
+			Button deselectAll = _swtuiplatform.getToolkit().createButton(container, "Deselect All", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			deselectAll.setLayoutData(gd);
 			deselectAll.addSelectionListener(new SelectionListener() {
@@ -179,8 +176,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 			deselectAll.setData(this);
 		}
 		if (_field.isEditable()) {
-			Button editButton = _swtuiplatform.getToolkit().createButton(
-					container, "Edit", SWT.PUSH);
+			Button editButton = _swtuiplatform.getToolkit().createButton(container, "Edit", SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			editButton.setLayoutData(gd);
 			editButton.addSelectionListener(new SelectionListener() {
@@ -221,8 +217,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 			if (childobjects != null && childobjects.length != 0) {
 				Arrays.sort(childobjects, new Comparator<Object>() {
 					public int compare(Object o1, Object o2) {
-						return toStringFromObject(o1).compareTo(
-								toStringFromObject(o2));
+						return toStringFromObject(o1).compareTo(toStringFromObject(o2));
 					}
 				});
 				createItemFromObjects(childobjects, ti);
@@ -247,8 +242,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 		ti.setData(obj);
 		ti.setImage(toImageFromObject(obj));
 
-		_treeItems.put(obj, ArraysUtil.add(TreeItem.class, _treeItems.get(obj),
-				ti));
+		_treeItems.put(obj, ArraysUtil.add(TreeItem.class, _treeItems.get(obj), ti));
 		return ti;
 	}
 
@@ -258,8 +252,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 				treeItem.setChecked(false);
 			}
 		}
-		_swtuiplatform
-				.broadcastSubValueRemoved(_page, _field, getVisualValue());
+		_swtuiplatform.broadcastSubValueRemoved(_page, _field, getVisualValue());
 		_sources_selected.clear();
 	}
 
@@ -377,8 +370,9 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 	}
 
 	public void selectObject(final Object obj, final boolean sel) {
-		if (_treeItems == null)
+		if (_treeItems == null) {
 			return;
+		}
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				selectObject_(obj, sel);
@@ -417,8 +411,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 			return;
 		}
 
-		if ((oldSource != null) && (source != null)
-				&& (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
+		if ((oldSource != null) && (source != null) && (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
 			return;
 		}
 
@@ -447,8 +440,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends
 	}
 
 	@Override
-	public void setVisualValue(final Object visualValue,
-			boolean sendNotification) {
+	public void setVisualValue(final Object visualValue, boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				Object[] selectedObject = (Object[]) visualValue;

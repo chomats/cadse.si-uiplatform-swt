@@ -35,7 +35,6 @@ import org.eclipse.swt.graphics.Image;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
-import fr.imag.adele.cadse.core.impl.ui.ic.IC_Abstract;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.UIField;
@@ -55,8 +54,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
  */
 public class RunTestActionPage extends SWTDialog {
 
-	public RunTestActionPage(SWTUIPlatform swtuiPlatforms, String title,
-			String label) {
+	public RunTestActionPage(SWTUIPlatform swtuiPlatforms, String title, String label) {
 		super(swtuiPlatforms, title, label);
 		addLast(createDirectoryField(), createListField());
 	}
@@ -69,8 +67,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
-		 *      java.lang.Object, java.lang.Object)
+		 * @see
+		 * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
+		 * .Viewer, java.lang.Object, java.lang.Object)
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -103,6 +102,7 @@ public class RunTestActionPage extends SWTDialog {
 		 * 
 		 * @see fr.imag.adele.cadse.core.ui.IModelController#getValue()
 		 */
+		@Override
 		public Object getValue() {
 			return directoryPath;
 		}
@@ -110,9 +110,11 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
+		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
+		@Override
 		public void notifieValueChanged(UIField field, Object value) {
 			directoryPath = (IPath) value;
 		}
@@ -120,8 +122,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded
+		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueAdded(UIField field, Object added) {
@@ -130,8 +133,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @seefr.imag.adele.cadse.core.ui.AbstractModelController#
+		 * notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
+		 * java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueRemoved(UIField field, Object removed) {
@@ -140,8 +144,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted(fr.imag.adele.cadse.core.ui.UIField,
-		 *      java.lang.Object)
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
+		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
 		 */
 		@Override
 		public void notifieValueDeleted(UIField field, Object oldvalue) {
@@ -174,10 +179,12 @@ public class RunTestActionPage extends SWTDialog {
 
 	class MC_ListTest extends AbstractModelController {
 
+		@Override
 		public Object getValue() {
 			return selectedTest.toArray(new File[selectedTest.size()]);
 		}
 
+		@Override
 		public void notifieValueChanged(UIField field, Object value) {
 		}
 
@@ -271,7 +278,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getViewerFilter()
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getViewerFilter()
 		 */
 		@Override
 		protected ViewerFilter getViewerFilter() {
@@ -281,7 +290,9 @@ public class RunTestActionPage extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getKind()
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getKind()
 		 */
 		@Override
 		public int getKind() {
@@ -295,13 +306,13 @@ public class RunTestActionPage extends SWTDialog {
 	 * @return the d choose file ui
 	 */
 	public DChooseFileUI<IC_Directory> createDirectoryField() {
-		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Directory:", EPosLabel.left, new MC_Directory(), new IC_Directory(),
-				"Select a directory where tests are stored");
+		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Directory:", EPosLabel.left,
+				new MC_Directory(), new IC_Directory(), "Select a directory where tests are stored");
 	}
 
 	public boolean isTest(File f) {
 		return false;
-		//return View.getInstance().getTestService().isTest(f);
+		// return View.getInstance().getTestService().isTest(f);
 	}
 
 	/**
@@ -310,7 +321,8 @@ public class RunTestActionPage extends SWTDialog {
 	 * @return the d choose file ui
 	 */
 	public DCheckedTreeUI<IC_ListTest> createListField() {
-		return _swtuiPlatforms.createDCheckedTreeUI(_page, "name", "Test:", EPosLabel.top, new MC_ListTest(), new IC_ListTest(), false, false);
+		return _swtuiPlatforms.createDCheckedTreeUI(_page, "name", "Test:", EPosLabel.top, new MC_ListTest(),
+				new IC_ListTest(), false, false);
 	}
 
 	/**
@@ -334,8 +346,7 @@ public class RunTestActionPage extends SWTDialog {
 
 	class MyAction extends AbstractActionPage {
 		@Override
-		public void doFinish(UIPlatform uiPlatform, Object monitor)
-				throws Exception {
+		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			// TODO Auto-generated method stub
 			super.doFinish(uiPlatform, monitor);
 			IProgressMonitor pmo = (IProgressMonitor) monitor;

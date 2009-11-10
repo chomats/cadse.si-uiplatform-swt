@@ -30,8 +30,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * Attributes : string link-type; string title-select ;
  */
 
-public class IC_FolderResource_ForBrowser_Combo_List extends
-		IC_ResourceTreeDialogForBrowser_Combo_List {
+public class IC_FolderResource_ForBrowser_Combo_List extends IC_ResourceTreeDialogForBrowser_Combo_List {
 
 	@Override
 	public IStatus validate(Object[] selection) {
@@ -45,7 +44,7 @@ public class IC_FolderResource_ForBrowser_Combo_List extends
 
 	static class FolderFileFilter extends ViewerFilter {
 
-		private List<IFolder> fExcludes;
+		private List<IFolder>	fExcludes;
 
 		/**
 		 * @param excludedFiles

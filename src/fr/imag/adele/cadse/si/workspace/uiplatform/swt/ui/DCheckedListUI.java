@@ -41,8 +41,8 @@ import org.eclipse.ui.PlatformUI;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
 
 /**
@@ -52,16 +52,15 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
  * @author vega
  * 
  */
-public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
-		DAbstractField<IC> implements SelectionListener {
+public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractField<IC> implements SelectionListener {
 
-	private Object[] _sources;
-	private Set<Object> _sources_selected = new HashSet<Object>();
-	private Map<Object, TreeItem> _treeItems;
-	private Tree _treeObjects;
+	private Object[]				_sources;
+	private Set<Object>				_sources_selected	= new HashSet<Object>();
+	private Map<Object, TreeItem>	_treeItems;
+	private Tree					_treeObjects;
 
-	private int _heightHint = 200;
-	private int _widthHint = 400;
+	private int						_heightHint			= 200;
+	private int						_widthHint			= 400;
 
 	/**
 	 * 
@@ -87,8 +86,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 	public void createControl(Composite container, int hspan) {
 		GridData gd;
 
-		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER
-				| SWT.V_SCROLL | SWT.H_SCROLL);
+		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
 
@@ -104,8 +102,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 
 		setSource(_ic.getSources());
 
-		Button selectAll = _swtuiplatform.getToolkit().createButton(
-				container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
+		Button selectAll = _swtuiplatform.getToolkit().createButton(container, UIField.SELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		selectAll.setLayoutData(gd);
 		selectAll.addSelectionListener(new SelectionListener() {
@@ -118,8 +115,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 		});
 		selectAll.setData(UIField.CADSE_MODEL_KEY, _field);
 
-		Button deselectAll = _swtuiplatform.getToolkit().createButton(
-				container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
+		Button deselectAll = _swtuiplatform.getToolkit().createButton(container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
 		deselectAll.setLayoutData(gd);
 		deselectAll.addSelectionListener(new SelectionListener() {
@@ -133,8 +129,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 		deselectAll.setData(UIField.CADSE_MODEL_KEY, _field);
 
 		if (edit) {
-			Button editButton = _swtuiplatform.getToolkit().createButton(
-					container, UIField.EDIT_BUTTON, SWT.PUSH);
+			Button editButton = _swtuiplatform.getToolkit().createButton(container, UIField.EDIT_BUTTON, SWT.PUSH);
 			gd = new GridData(GridData.CENTER);
 			editButton.setLayoutData(gd);
 			editButton.addSelectionListener(new SelectionListener() {
@@ -162,8 +157,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 		for (TreeItem ti : this._treeItems.values()) {
 			ti.setChecked(false);
 		}
-		_swtuiplatform
-				.broadcastSubValueRemoved(_page, _field, getVisualValue());
+		_swtuiplatform.broadcastSubValueRemoved(_page, _field, getVisualValue());
 		_sources_selected.clear();
 	}
 
@@ -277,8 +271,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 			return;
 		}
 
-		if ((oldSource != null) && (source != null)
-				&& (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
+		if ((oldSource != null) && (source != null) && (Arrays.asList(oldSource).equals(Arrays.asList(source)))) {
 			return;
 		}
 
@@ -321,8 +314,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends
 	}
 
 	@Override
-	public void setVisualValue(final Object visualValue,
-			boolean sendNotification) {
+	public void setVisualValue(final Object visualValue, boolean sendNotification) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				Object[] selectedObject = null;

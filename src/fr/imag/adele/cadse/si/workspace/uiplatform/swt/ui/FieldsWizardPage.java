@@ -32,9 +32,9 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 public class FieldsWizardPage extends WizardPage {
 
-	IPage page;
-	private boolean init;
-	SWTUIPlatform _swtuiPlatform;
+	IPage			page;
+	private boolean	init;
+	SWTUIPlatform	_swtuiPlatform;
 
 	/**
 	 * Constructor for FieldsWizardPage.
@@ -44,8 +44,7 @@ public class FieldsWizardPage extends WizardPage {
 	 * @param theCurrentItem
 	 * @throws CadseException
 	 */
-	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page)
-			throws CadseException {
+	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page) throws CadseException {
 		super("wizardPage");
 		this.page = page;
 		// pageDesc.put("wizard-page",this);
@@ -63,7 +62,7 @@ public class FieldsWizardPage extends WizardPage {
 
 		try {
 			setControl(_swtuiPlatform.createPage(page, parent));
-			
+
 			setMessage(null, UIPlatform.ERROR);
 			_swtuiPlatform.validateFields(null, null);
 		} catch (Throwable e) {

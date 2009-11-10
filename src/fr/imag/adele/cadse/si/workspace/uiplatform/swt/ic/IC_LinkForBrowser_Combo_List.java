@@ -56,18 +56,15 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.Proposal;
  * workspace. suppose que la key est le nom du lien.
  */
 
-public class IC_LinkForBrowser_Combo_List extends
-		IC_AbstractTreeDialogForList_Browser_Combo implements
-		IC_ForBrowserOrCombo, IFieldContenProposalProvider,
-		IContentProposalProvider, IC_ForList {
+public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_Browser_Combo implements
+		IC_ForBrowserOrCombo, IFieldContenProposalProvider, IContentProposalProvider, IC_ForList {
 
-	LinkType linkType;
-	boolean deleteExistingLink = true;
+	LinkType	linkType;
+	boolean		deleteExistingLink	= true;
 
-	
 	public IC_LinkForBrowser_Combo_List() {
 	}
-	
+
 	public IC_LinkForBrowser_Combo_List(String title, String message) {
 		super(title, message);
 	}
@@ -108,8 +105,9 @@ public class IC_LinkForBrowser_Combo_List extends
 		LogicalWorkspaceTransaction copy = null;
 		if (_uiPlatform.isModification()) {
 			copy = getUIField().getLogicalWorkspace().createTransaction();
-		} else
+		} else {
 			copy = _uiPlatform.getCopy();
+		}
 
 		ItemDelta deltaItem = copy.loadItem(item);
 		if (deleteExistingLink) {
@@ -125,8 +123,9 @@ public class IC_LinkForBrowser_Combo_List extends
 		if (_uiPlatform.isModification()) {
 			copy.commit();
 			return item.getOutgoingLink(getLinkType(), dest.getId());
-		} else
+		} else {
 			return linkDetla;
+		}
 	}
 
 	public char[] getAutoActivationCharacters() {
@@ -173,8 +172,7 @@ public class IC_LinkForBrowser_Combo_List extends
 			}
 		}
 
-		IContentProposal[] retarray = ret.toArray(new IContentProposal[ret
-				.size()]);
+		IContentProposal[] retarray = ret.toArray(new IContentProposal[ret.size()]);
 		Arrays.sort(retarray);
 		return retarray;
 	}
@@ -189,13 +187,11 @@ public class IC_LinkForBrowser_Combo_List extends
 	 *            the current position
 	 * @return null or a proposal
 	 */
-	protected Proposal createProposal(Item item, String contents, int position,
-			Object[] items) {
+	protected Proposal createProposal(Item item, String contents, int position, Object[] items) {
 		if (contents != null && !item.getName().startsWith(contents)) {
 			return null;
 		}
-		return new Proposal(item.getName(), item.getName(), item.getName(), 0,
-				item);
+		return new Proposal(item.getName(), item.getName(), item.getName(), 0, item);
 	}
 
 	public int getProposalAcceptanceStyle() {
@@ -216,14 +212,12 @@ public class IC_LinkForBrowser_Combo_List extends
 	}
 
 	protected Item getItemFromShortName(String newValue) {
-		Item item = CadseCore.getLogicalWorkspace().getItemByShortName(
-				getLinkType().getDestination(), newValue);
+		Item item = CadseCore.getLogicalWorkspace().getItemByShortName(getLinkType().getDestination(), newValue);
 		return item;
 	}
 
 	public Object[] getValues() {
-		Collection<Item> values = this.getLinkType().getSelectingDestination(
-				_uiPlatform.getItem(getUIField()));
+		Collection<Item> values = this.getLinkType().getSelectingDestination(_uiPlatform.getItem(getUIField()));
 		return values.toArray();
 	}
 
@@ -289,8 +283,7 @@ public class IC_LinkForBrowser_Combo_List extends
 	@Override
 	public void initAfterUI() {
 		super.initAfterUI();
-		if (getUIField() != null
-				&& getUIField().getAttributeDefinition() != null) {
+		if (getUIField() != null && getUIField().getAttributeDefinition() != null) {
 			linkType = (LinkType) getUIField().getAttributeDefinition();
 		}
 	}
@@ -349,22 +342,19 @@ public class IC_LinkForBrowser_Combo_List extends
 			Item dest = (Item) o;
 			String msg = canCreateLink(source, dest, linkType);
 			if (msg != null) {
-				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, msg,
-						null);
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, msg, null);
 			}
 
 			Link l = source.getOutgoingLink(linkType, dest.getId());
 			if (l != null) {
-				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-						"Allready exists", null);
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Allready exists", null);
 			}
 
 			LinkType inv_lt = linkType.getInverse();
 			if (inv_lt != null) {
 				msg = canCreateLink(dest, source, inv_lt);
 				if (msg != null) {
-					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-							msg, null);
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, msg, null);
 				}
 			}
 
@@ -381,15 +371,13 @@ public class IC_LinkForBrowser_Combo_List extends
 		}
 
 		if (!source.canCreateLink(lt, dest.getId())) {
-			return "cannot create a link from " + source.getDisplayName()
-					+ " to " + dest.getDisplayName() + " of type "
-					+ lt.getDisplayName();
+			return "cannot create a link from " + source.getDisplayName() + " to " + dest.getDisplayName()
+					+ " of type " + lt.getDisplayName();
 		}
 
 		if (!deleteExistingLink && lt.getMax() != -1) {
 			if (source.getOutgoingItems(lt, false).size() >= lt.getMax()) {
-				return "error maximum cardinality is exceed of link type "
-						+ lt.getDisplayName();
+				return "error maximum cardinality is exceed of link type " + lt.getDisplayName();
 			}
 		}
 		return null;
@@ -401,8 +389,7 @@ public class IC_LinkForBrowser_Combo_List extends
 
 	@Override
 	public boolean moveDown(Object[] object) {
-		List<Object> values = (List<Object>) _uiPlatform
-				.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform.getVisualValue(getUIField());
 		int end = values.size() - 1;
 		for (Object o : object) {
 			Link l = (Link) o;
@@ -412,8 +399,7 @@ public class IC_LinkForBrowser_Combo_List extends
 			}
 			Link l2 = (Link) values.get(index + 1);
 			try {
-				LogicalWorkspaceTransaction t = l.getSource()
-						.getLogicalWorkspace().createTransaction();
+				LogicalWorkspaceTransaction t = l.getSource().getLogicalWorkspace().createTransaction();
 				t.getLink(l).moveAfter(l2);
 				t.commit();
 			} catch (CadseException e) {
@@ -426,8 +412,7 @@ public class IC_LinkForBrowser_Combo_List extends
 
 	@Override
 	public boolean moveUp(Object[] object) {
-		List<Object> values = (List<Object>) _uiPlatform
-				.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform.getVisualValue(getUIField());
 		for (Object o : object) {
 			Link l = (Link) o;
 			int index = values.indexOf(o);
@@ -436,8 +421,7 @@ public class IC_LinkForBrowser_Combo_List extends
 			}
 			Link l2 = (Link) values.get(index - 1);
 			try {
-				LogicalWorkspaceTransaction t = l.getSource()
-						.getLogicalWorkspace().createTransaction();
+				LogicalWorkspaceTransaction t = l.getSource().getLogicalWorkspace().createTransaction();
 				t.getLink(l).moveBefore(l2);
 				t.commit();
 			} catch (CadseException e) {

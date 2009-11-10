@@ -37,9 +37,9 @@ import fr.imag.adele.cadse.core.ui.UIField;
  */
 public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	private Button _control;
+	private Button	_control;
 
-	private Boolean _value;
+	private Boolean	_value;
 
 	public Object __getVisualValue() {
 		_value = _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
@@ -52,18 +52,15 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		GridData gd;
 
 		String label = getLabel();
-		_control = _swtuiplatform.getToolkit().createButton(container, label,
-				SWT.CHECK);
+		_control = _swtuiplatform.getToolkit().createButton(container, label, SWT.CHECK);
 		_control.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				_swtuiplatform.broadcastValueChanged(_page, _field,
-						__getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				_swtuiplatform.broadcastValueChanged(_page, _field,
-						__getVisualValue());
+				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 			}
 
 		});
@@ -122,8 +119,9 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		assert visualValue instanceof Boolean;
 
 		_value = (Boolean) visualValue;
-		if (_control != null && !_control.isDisposed())
+		if (_control != null && !_control.isDisposed()) {
 			(_control).setSelection(_value.booleanValue());
+		}
 	}
 
 }

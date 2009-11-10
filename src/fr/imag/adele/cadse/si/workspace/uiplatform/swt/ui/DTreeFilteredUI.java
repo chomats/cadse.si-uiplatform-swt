@@ -37,8 +37,8 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 
 /**
@@ -50,10 +50,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
  */
 public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-	List<Object> fElements;
-	private FilteredTree packageTable;
-	private Button buttonAdd;
-	private Button buttonRemove;
+	List<Object>			fElements;
+	private FilteredTree	packageTable;
+	private Button			buttonAdd;
+	private Button			buttonRemove;
 
 	@Override
 	public Object getVisualValue() {
@@ -65,8 +65,7 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 		GridData gd;
 		Composite container = ocontainer;
-		packageTable = new FilteredTree(container, SWT.BORDER | SWT.SINGLE
-				| SWT.V_SCROLL, new PatternFilter());
+		packageTable = new FilteredTree(container, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL, new PatternFilter());
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = 100;
@@ -80,8 +79,7 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		buttonAdd.setText("Add...");
 		buttonAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(
-					@SuppressWarnings("unused") SelectionEvent e) {
+			public void widgetSelected(@SuppressWarnings("unused") SelectionEvent e) {
 				handleAdd();
 			}
 		});
@@ -91,8 +89,7 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		buttonRemove.setText("Remove...");
 		buttonRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(
-					@SuppressWarnings("unused") SelectionEvent e) {
+			public void widgetSelected(@SuppressWarnings("unused") SelectionEvent e) {
 				ISelection sel = packageTable.getViewer().getSelection();
 				if (sel == null) {
 					return;
@@ -136,8 +133,7 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 			ret = _ic.transAndAddObject(ret);
 			fElements.addAll(Arrays.asList(ret));
 			setVisualValue(fElements);
-			_swtuiplatform.broadcastValueChanged(_page, _field,
-					getVisualValue());
+			_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());
 		}
 	}
 
@@ -191,7 +187,6 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	@Override
 	public Object[] getSelectedObjects() {
-		return ((StructuredSelection) this.packageTable.getViewer()
-				.getSelection()).toArray();
+		return ((StructuredSelection) this.packageTable.getViewer().getSelection()).toArray();
 	}
 }

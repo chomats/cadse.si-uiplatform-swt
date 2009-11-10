@@ -18,7 +18,6 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 
-
 public class IC_AllItemTypeForTreeUI extends IC_ItemTypeForTreeUI {
 
 	@Override

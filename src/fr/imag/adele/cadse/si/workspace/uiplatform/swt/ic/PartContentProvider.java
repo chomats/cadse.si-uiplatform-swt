@@ -42,13 +42,13 @@ import fr.imag.adele.cadse.core.LinkType;
 public class PartContentProvider implements ITreeContentProvider {
 
 	/** The lt. */
-	final private LinkType lt;
+	final private LinkType				lt;
 
 	/** The comparator. */
-	final private Comparator<Object> comparator;
+	final private Comparator<Object>	comparator;
 
 	/** The selectable value. */
-	final private Object[] selectableValue;
+	final private Object[]				selectableValue;
 
 	/**
 	 * Instantiates a new part content provider.
@@ -60,8 +60,7 @@ public class PartContentProvider implements ITreeContentProvider {
 	 * @param selectableValue
 	 *            the selectable value
 	 */
-	public PartContentProvider(LinkType lt, Comparator<Object> comparator,
-			Object[] selectableValue) {
+	public PartContentProvider(LinkType lt, Comparator<Object> comparator, Object[] selectableValue) {
 		this.lt = lt;
 		this.comparator = comparator;
 		this.selectableValue = selectableValue;
@@ -81,12 +80,12 @@ public class PartContentProvider implements ITreeContentProvider {
 
 		if (parentElement instanceof Item) {
 			Item i = ((Item) parentElement);
-			if (i.isInstanceOf(lt.getSource()))
+			if (i.isInstanceOf(lt.getSource())) {
 				;
+			}
 			Collection<Item> outgoingItems = i.getOutgoingItems(lt, true);
 			if (selectableValue != null) {
-				HashSet<Object> o = new HashSet<Object>(Arrays
-						.asList(selectableValue));
+				HashSet<Object> o = new HashSet<Object>(Arrays.asList(selectableValue));
 				o.retainAll(outgoingItems);
 				return sort(o.toArray());
 			}
@@ -105,8 +104,9 @@ public class PartContentProvider implements ITreeContentProvider {
 	public Object getParent(Object element) {
 		if (element instanceof Item) {
 			Item i = ((Item) element);
-			if (i.isInstanceOf(lt.getDestination()))
+			if (i.isInstanceOf(lt.getDestination())) {
 				;
+			}
 			return i.getPartParent();
 		}
 		return null;

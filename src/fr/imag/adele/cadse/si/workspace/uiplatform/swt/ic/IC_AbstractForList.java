@@ -25,14 +25,10 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import fr.imag.adele.cadse.core.CadseException;
-
 /** */
 // attribut
 // - string select-title;
-public abstract class IC_AbstractForList extends IC_WithDialogAction implements
-		IC_ForList {
-
+public abstract class IC_AbstractForList extends IC_WithDialogAction implements IC_ForList {
 
 	public IC_AbstractForList() {
 		super();
@@ -61,25 +57,22 @@ public abstract class IC_AbstractForList extends IC_WithDialogAction implements
 	protected abstract Object[] getValues();
 
 	public Object[] selectOrCreateValues(Shell parentShell) {
-		ListSelectionDialog lsd = new ListSelectionDialog(parentShell,
-				getValues(), new IStructuredContentProvider() {
+		ListSelectionDialog lsd = new ListSelectionDialog(parentShell, getValues(), new IStructuredContentProvider() {
 
-					public Object[] getElements(Object inputElement) {
-						if (inputElement instanceof Object[]) {
-							return (Object[]) inputElement;
-						}
-						return null;
-					}
+			public Object[] getElements(Object inputElement) {
+				if (inputElement instanceof Object[]) {
+					return (Object[]) inputElement;
+				}
+				return null;
+			}
 
-					public void dispose() {
-					}
+			public void dispose() {
+			}
 
-					public void inputChanged(
-							@SuppressWarnings("unused") Viewer viewer,
-							@SuppressWarnings("unused") Object oldInput,
-							@SuppressWarnings("unused") Object newInput) {
-					}
-				}, getLabelProvider(), _message);
+			public void inputChanged(@SuppressWarnings("unused") Viewer viewer,
+					@SuppressWarnings("unused") Object oldInput, @SuppressWarnings("unused") Object newInput) {
+			}
+		}, getLabelProvider(), _message);
 		if (_title != null) {
 			lsd.setTitle(_title);
 		}
@@ -94,7 +87,6 @@ public abstract class IC_AbstractForList extends IC_WithDialogAction implements
 	public IContentProvider getContentProvider() {
 		return new ObjectArrayContentProvider();
 	}
-
 
 	public boolean moveDown(Object[] object) {
 		return false;

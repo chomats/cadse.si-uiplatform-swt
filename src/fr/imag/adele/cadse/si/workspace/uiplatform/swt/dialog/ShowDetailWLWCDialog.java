@@ -18,7 +18,6 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -27,19 +26,12 @@ import java.util.List;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 import fede.workspace.tool.view.actions.delete.WCLabelDecorator;
 import fede.workspace.tool.view.node.AbstractCadseViewNode;
@@ -58,22 +50,18 @@ import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.LinkType;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.delta.DeleteOperation;
 import fr.imag.adele.cadse.core.delta.ItemDelta;
 import fr.imag.adele.cadse.core.delta.LinkDelta;
 import fr.imag.adele.cadse.core.delta.SetAttributeOperation;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
-import fr.imag.adele.cadse.core.impl.ui.PageImpl;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
-import fr.imag.adele.cadse.core.ui.IPage;
-import fr.imag.adele.cadse.core.ui.UIPlatform;
-import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.UIField;
+import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ContextMenu;
@@ -82,8 +70,6 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSashFormUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeModelUI;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DetailWizardDialog;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 /**
  * Dialog used for asking delete of items to commit. Informations provided by
@@ -109,7 +95,6 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	protected DSashFormUI						_rootSashField;
 
 	protected DTreeModelUI						_treeField;
-	
 
 	/**
 	 * Status and definition of commit operation.
@@ -129,7 +114,7 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 
 	private DTextUI								_textField;
 
-	private boolean _performFinish;
+	private boolean								_performFinish;
 
 	static private class SetAttNode extends AbstractCadseViewNode {
 
@@ -276,10 +261,10 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	}
 
 	static public class ItemsFromWorkspaceCopy extends Rule {
-		Comparator<ItemDelta>			sortFct	= null;
-		boolean							modifiedOnly;
-		LogicalWorkspaceTransaction		copy;
-		FilterItem						filter;
+		Comparator<ItemDelta>		sortFct	= null;
+		boolean						modifiedOnly;
+		LogicalWorkspaceTransaction	copy;
+		FilterItem					filter;
 
 		public ItemsFromWorkspaceCopy(LogicalWorkspaceTransaction copy, Comparator<ItemDelta> sortFct,
 				boolean modifiedOnly, FilterItem filter) {
@@ -316,8 +301,6 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 
 	public class MyMC_AttributesItem extends MC_AttributesItem {
 
-		
-
 		@Override
 		public Object getValue() {
 			if (_uiPlatform.getItem(getUIField()) == null) {
@@ -340,8 +323,9 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 
 		@Override
 		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
-			if (_performFinish)
+			if (_performFinish) {
 				_transaction.commit();
+			}
 		}
 	}
 
@@ -629,7 +613,6 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 
 	public class MC_CommitTree extends AbstractModelController {
 
-
 		public MC_CommitTree() {
 			super(null);
 		}
@@ -644,7 +627,7 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 		}
 
 		@Override
-		public void notifieSubValueRemoved( UIField field, Object removed) {
+		public void notifieSubValueRemoved(UIField field, Object removed) {
 
 		}
 
@@ -652,7 +635,6 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 		public Object getValue() {
 			return null;
 		}
-
 
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
@@ -665,9 +647,11 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	 * (selection part) _treeField _ DGrillUI (selection dependent part)
 	 * _errorsField _modifiedAttrsField _reqNewRevField DGrillUI (selection
 	 * independent part) _commentField
-	 * @param performFinish 
+	 * 
+	 * @param performFinish
 	 */
-	public ShowDetailWLWCDialog(SWTUIPlatform swtui, LogicalWorkspaceTransaction copy, String title, String label, boolean performFinish) {
+	public ShowDetailWLWCDialog(SWTUIPlatform swtui, LogicalWorkspaceTransaction copy, String title, String label,
+			boolean performFinish) {
 		super(swtui, title, label);
 		_performFinish = performFinish;
 		// set manipulated data
@@ -677,43 +661,38 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 		// create all UI fields
 		_treeField = createTreeField(false);
 		_treeFieldInItem = createTreeFieldInItem(false);
-		
+
 		_textField = createTextField();
 		_textField._field.setEditable(false);
 
 		//
 		MyMC_AttributesItem defaultMc = new MyMC_AttributesItem();
-		
 
 		// // create part with editors for selected node
-		DGridUI selectDependentFieldsGrild = _swtuiPlatforms.createDGridUI(_page, 
-				"#selectEdit", "", EPosLabel.none, defaultMc, null, _textField);
-		
-		
+		DGridUI selectDependentFieldsGrild = _swtuiPlatforms.createDGridUI(_page, "#selectEdit", "", EPosLabel.none,
+				defaultMc, null, _textField);
+
 		//
 		// /*
 		// * Selection part
 		// */
-		_selectSashField = _swtuiPlatforms.createDSashFormUI(_page, 
-				"#selectSash",
-				"", EPosLabel.none, defaultMc, null, _treeFieldInItem, selectDependentFieldsGrild);
+		_selectSashField = _swtuiPlatforms.createDSashFormUI(_page, "#selectSash", "", EPosLabel.none, defaultMc, null,
+				_treeFieldInItem, selectDependentFieldsGrild);
 		//
 		// // create selection part containing a tree
 		_selectSashField.setWeight(60); // 60% , 40%
 		_selectSashField.setHorizontal(false);
 		//
-		
-		_rootSashField = _swtuiPlatforms.createDSashFormUI(_page,
-				"#rootSash", label, label == null ? EPosLabel.none : EPosLabel.top, defaultMc,
-				null, _treeField, _selectSashField);
+
+		_rootSashField = _swtuiPlatforms.createDSashFormUI(_page, "#rootSash", label, label == null ? EPosLabel.none
+				: EPosLabel.top, defaultMc, null, _treeField, _selectSashField);
 		_rootSashField.setHorizontal(true);
 		// // 50%
 		// // 50%
 		_rootSashField.setWeight(50);
-		
+
 		// add main field
 		_page.addLast(_rootSashField.getAttributeDefinition());
-
 
 		// add listeners
 		registerListener();
@@ -729,8 +708,7 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedItemTreeIC> createTreeField(boolean checkBox) {
-		return _swtuiPlatforms.createTreeModelUI(_page, "#list", 
-				"", EPosLabel.none, new MC_CommitTree(),
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list", "", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedItemTreeIC(), checkBox);
 	}
 
@@ -738,8 +716,7 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	 * Create a tree field.
 	 */
 	public DTreeModelUI<ModifiedInItemTreeIC> createTreeFieldInItem(boolean checkBox) {
-		return _swtuiPlatforms.createTreeModelUI(_page, "#list-in", 
-				"", EPosLabel.none, new MC_CommitTree(),
+		return _swtuiPlatforms.createTreeModelUI(_page, "#list-in", "", EPosLabel.none, new MC_CommitTree(),
 				new ModifiedInItemTreeIC(), checkBox);
 	}
 
@@ -747,34 +724,33 @@ public class ShowDetailWLWCDialog extends SWTDialog {
 	 * Create a text field to display the errors related to selected item.
 	 */
 	public DTextUI<ICRunningField> createTextField() {
-		return _swtuiPlatforms.createTextUI(_page, "#textField", 
-				"Description", EPosLabel.top, new MyMC_AttributesItem(),
-				null, 1, true, false, true, false,true);
+		return _swtuiPlatforms.createTextUI(_page, "#textField", "Description", EPosLabel.top,
+				new MyMC_AttributesItem(), null, 1, true, false, true, false, true);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
+	@Override
 	protected IActionPage getFinishAction() {
 		return new CommitActionPage();
 	}
 
 	/**
 	 * Open Commit Definition dialog.
-	 * @param shell 
+	 * 
+	 * @param shell
 	 * 
 	 * @param commitState
 	 *            status and definition of commit operation
 	 * @throws CadseException
 	 */
-	static public void openDialog(SWTUIPlatform swtuiPlatform, Shell shell, final LogicalWorkspaceTransaction copy, final String title, final String label,
-			final boolean performFinish) throws CadseException {
+	static public void openDialog(SWTUIPlatform swtuiPlatform, Shell shell, final LogicalWorkspaceTransaction copy,
+			final String title, final String label, final boolean performFinish) throws CadseException {
 		new ShowDetailWLWCDialog(swtuiPlatform, copy, title, label, performFinish).open(shell);
-		
+
 	}
-
-
 
 	protected void computeItemsToShow() {
 		Collection<ItemDelta> itemsToCommit = _transaction.getItemOperations();

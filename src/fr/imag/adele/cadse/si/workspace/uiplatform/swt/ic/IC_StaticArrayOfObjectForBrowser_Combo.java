@@ -21,14 +21,14 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 
-public class IC_StaticArrayOfObjectForBrowser_Combo extends
-		IC_AbstractForBrowser_Combo {
+public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 
-	private Object[] values;
+	private Object[]	values;
+
 	public IC_StaticArrayOfObjectForBrowser_Combo() {
 	}
-	public IC_StaticArrayOfObjectForBrowser_Combo(String title,
-			String message, String[] lastCommitMsgTab) {
+
+	public IC_StaticArrayOfObjectForBrowser_Combo(String title, String message, String[] lastCommitMsgTab) {
 		this._title = title;
 		this._message = message;
 		values = lastCommitMsgTab;

@@ -36,17 +36,15 @@ public class DButtonUI<IC extends ActionController> extends DAbstractField<IC> {
 
 	protected Button	_button;
 
-
 	@Override
 	public void createControl(Composite container, int hspan) {
-		Composite composite = (Composite) container;
+		Composite composite = container;
 
 		_button = new Button(composite, SWT.PUSH);
 		_button.setText(getLabel());
 		_button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(@SuppressWarnings("unused")
-			SelectionEvent e) {
+			public void widgetSelected(@SuppressWarnings("unused") SelectionEvent e) {
 				handleSelect();
 			}
 		});
@@ -76,6 +74,7 @@ public class DButtonUI<IC extends ActionController> extends DAbstractField<IC> {
 		return null;
 	}
 
+	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		// do nothing
 	}

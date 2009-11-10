@@ -28,12 +28,11 @@ import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
 
 final class ProposerTextContentAdapter extends TextContentAdapter {
-	private final IFieldContenProposalProvider proposer;
-	UIPlatform globalUIController;
-	UIRunningField controller;
+	private final IFieldContenProposalProvider	proposer;
+	UIPlatform									globalUIController;
+	UIRunningField								controller;
 
-	ProposerTextContentAdapter(UIRunningField controller,
-			UIPlatform globalUIController,
+	ProposerTextContentAdapter(UIRunningField controller, UIPlatform globalUIController,
 			IFieldContenProposalProvider proposer) {
 		this.proposer = proposer;
 		this.globalUIController = globalUIController;
@@ -42,8 +41,7 @@ final class ProposerTextContentAdapter extends TextContentAdapter {
 	}
 
 	@Override
-	public void setControlContents(Control control, String text,
-			int cursorPosition) {
+	public void setControlContents(Control control, String text, int cursorPosition) {
 		super.setControlContents(control, text, cursorPosition);
 
 		// deprecated....
@@ -53,16 +51,13 @@ final class ProposerTextContentAdapter extends TextContentAdapter {
 		}
 
 		// controller.setVisualValue(newValue);
-		globalUIController.broadcastValueChanged(null, controller.getUIField(),
-				newValue);
+		globalUIController.broadcastValueChanged(null, controller.getUIField(), newValue);
 	}
 
 	@Override
-	public void insertControlContents(Control control, String text,
-			int cursorPosition) {
+	public void insertControlContents(Control control, String text, int cursorPosition) {
 		super.insertControlContents(control, text, cursorPosition);
-		Object newValue = proposer
-				.setControlContents(getControlContents(control));
+		Object newValue = proposer.setControlContents(getControlContents(control));
 		if (newValue == null) {
 			return;
 		}

@@ -44,14 +44,13 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
  */
 
 public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
-	private Object[] _rootNodes;
-	private Object[] _selectedObjects;
-	private Tree _treeControl;
+	private Object[]	_rootNodes;
+	private Object[]	_selectedObjects;
+	private Tree		_treeControl;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
-		_treeControl = new Tree(container, SWT.H_SCROLL
-				| SWT.V_SCROLL | SWT.BORDER);
+		_treeControl = new Tree(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
 		_treeControl.setLayoutData(gd);

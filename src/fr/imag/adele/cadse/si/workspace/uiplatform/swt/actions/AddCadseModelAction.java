@@ -20,7 +20,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.actions;
 
 import java.util.ArrayList;
 
-
 import fede.workspace.role.initmodel.ErrorWhenLoadedModel;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
@@ -32,7 +31,7 @@ import fr.imag.adele.fede.workspace.as.initmodel.IInitModel;
 
 public class AddCadseModelAction extends MenuAction {
 
-	private IInitModel _initModel;
+	private IInitModel	_initModel;
 
 	public AddCadseModelAction(IInitModel initModel) {
 		super();
@@ -61,8 +60,9 @@ public class AddCadseModelAction extends MenuAction {
 		ArrayList<CadseRuntime> ret = new ArrayList<CadseRuntime>();
 		for (IItemNode n : selection) {
 			if (n.getItem() != null && n.getItem() instanceof CadseRuntime) {
-				if (n.getItem().getType() == CadseGCST.CADSE_DEFINITION)
+				if (n.getItem().getType() == CadseGCST.CADSE_DEFINITION) {
 					continue;
+				}
 				ret.add((CadseRuntime) n.getItem());
 			}
 		}

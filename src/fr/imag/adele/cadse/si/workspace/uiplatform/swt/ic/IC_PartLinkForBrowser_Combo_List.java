@@ -35,14 +35,13 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator;
  * 
  * @generated
  */
-public class IC_PartLinkForBrowser_Combo_List extends
-		IC_LinkForBrowser_Combo_List {
+public class IC_PartLinkForBrowser_Combo_List extends IC_LinkForBrowser_Combo_List {
 
 	/** The part link type. */
-	LinkType partLinkType;
+	LinkType	partLinkType;
 
 	/** The error message. */
-	String errorMessage;
+	String		errorMessage;
 
 	/**
 	 * The Constructor.
@@ -70,8 +69,7 @@ public class IC_PartLinkForBrowser_Combo_List extends
 	 */
 	@Override
 	protected ITreeContentProvider getTreeContentProvider() {
-		return new PartContentProvider(partLinkType, getComparator(),
-				getValues());
+		return new PartContentProvider(partLinkType, getComparator(), getValues());
 	}
 
 	/*
@@ -123,10 +121,8 @@ public class IC_PartLinkForBrowser_Combo_List extends
 	protected Comparator<Object> getComparator() {
 		return new Comparator<Object>() {
 			public int compare(Object arg0, Object arg1) {
-				return IC_PartLinkForBrowser_Combo_List.this.toString(arg0)
-						.compareTo(
-								IC_PartLinkForBrowser_Combo_List.this
-										.toString(arg1));
+				return IC_PartLinkForBrowser_Combo_List.this.toString(arg0).compareTo(
+						IC_PartLinkForBrowser_Combo_List.this.toString(arg1));
 			}
 		};
 	}
@@ -140,17 +136,15 @@ public class IC_PartLinkForBrowser_Combo_List extends
 	 */
 	@Override
 	public IStatus validate(Object[] selection) {
-		if (selection == null || selection.length != 1)
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-					errorMessage, null);
+		if (selection == null || selection.length != 1) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, errorMessage, null);
+		}
 		Object o = selection[0];
-		if (o instanceof Item
-				&& ((Item) o).isInstanceOf(partLinkType.getDestination())) {
+		if (o instanceof Item && ((Item) o).isInstanceOf(partLinkType.getDestination())) {
 			return Status.OK_STATUS;
 		}
 
-		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, errorMessage,
-				null);
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, errorMessage, null);
 	}
 
 	@Override

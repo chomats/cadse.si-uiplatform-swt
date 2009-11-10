@@ -29,9 +29,8 @@ import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.IFieldContenProposalProvider;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.Proposal;
 
-public final class IC_BooleanText extends ICRunningField implements
-		RuningInteractionController, IFieldContenProposalProvider,
-		IContentProposalProvider {
+public final class IC_BooleanText extends ICRunningField implements RuningInteractionController,
+		IFieldContenProposalProvider, IContentProposalProvider {
 
 	public char[] getAutoActivationCharacters() {
 		return new char[0];

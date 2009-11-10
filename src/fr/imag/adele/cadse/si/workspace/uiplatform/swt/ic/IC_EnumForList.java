@@ -29,13 +29,12 @@ import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
 
 public class IC_EnumForList extends IC_AbstractForList {
 
-	private Class<?> values;
+	private Class<?>	values;
 
 	@Override
 	public Object[] getValues() {
 		if (values == null) {
-			EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField()
-					.getAttributeDefinition();
+			EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
 			values = enumAttribute.getAttributeType();
 		}
 		return values.getEnumConstants();
@@ -49,14 +48,15 @@ public class IC_EnumForList extends IC_AbstractForList {
 	public String canAddObject(Object[] object) {
 		Object visualValue = _uiPlatform.getVisualValue(getUIField());
 
-		if (visualValue == null || !(visualValue instanceof List)
-				|| object == null)
+		if (visualValue == null || !(visualValue instanceof List) || object == null) {
 			return null;
+		}
 
 		List<Object> fElements = (List<Object>) visualValue;
 		for (Object o : object) {
-			if (fElements.contains(o))
+			if (fElements.contains(o)) {
 				return "Already contains " + o.toString();
+			}
 		}
 		return null;
 	}

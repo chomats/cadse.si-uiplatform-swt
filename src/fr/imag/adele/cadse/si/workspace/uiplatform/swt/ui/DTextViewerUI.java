@@ -28,16 +28,15 @@ import org.eclipse.swt.widgets.Control;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 
-public class DTextViewerUI<IC extends RuningInteractionController> extends
-		DAbstractField<IC> {
+public class DTextViewerUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	public static final String FLAGS = "flags";
+	public static final String	FLAGS	= "flags";
 
-	ITextViewer fTextViewer;
+	ITextViewer					fTextViewer;
 
-	private int vspan = 1;
+	private int					vspan	= 1;
 
-	private int style = SWT.SINGLE;
+	private int					style	= SWT.SINGLE;
 
 	@Override
 	public void createControl(Composite container, int hspan) {

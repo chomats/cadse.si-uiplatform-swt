@@ -51,8 +51,8 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.ShowDetailWLWCDial
 public class DeleteItemAction extends AbstractEclipseMenuAction {
 
 	private Set<IItemNode>	items;
-	IShellProvider _shell;
-	
+	IShellProvider			_shell;
+
 	public DeleteItemAction(Set<IItemNode> items, IShellProvider shell) {
 		setDescription("Deletes the selected elements");
 
@@ -93,7 +93,8 @@ public class DeleteItemAction extends AbstractEclipseMenuAction {
 			copyItem.delete(true);
 		}
 
-		ShowDetailWLWCDialog.openDialog(new SWTUIPlatform(), _shell.getShell(), copy, "Deleted items", "Items to delete", true);
+		ShowDetailWLWCDialog.openDialog(new SWTUIPlatform(), _shell.getShell(), copy, "Deleted items",
+				"Items to delete", true);
 	}
 
 	@Override
