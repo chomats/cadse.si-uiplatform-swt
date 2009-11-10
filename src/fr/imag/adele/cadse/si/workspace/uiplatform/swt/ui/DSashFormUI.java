@@ -26,13 +26,15 @@ public class DSashFormUI<IC extends RuningInteractionController> extends
 		sashForm = new SashForm(container,
 				horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
 		sashForm.setLayoutData(gridData);
-		sashForm.setWeights(new int[] { hone, 100 - hone });
 		sashForm.setData(UIField.CADSE_MODEL_KEY, _field);
 
 		GridLayout gridLayout = new GridLayout(hspan, false);
 		_swtuiplatform.createChildrenControl(this, sashForm, gridLayout);
 		Assert.isNotNull(_children);
 		Assert.isTrue(_children.length == 2);
+		// must set after create two children
+		sashForm.setWeights(new int[] { hone, 100 - hone });
+		
 	}
 
 	@Override

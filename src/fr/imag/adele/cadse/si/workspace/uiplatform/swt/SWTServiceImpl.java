@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
@@ -43,7 +44,8 @@ public class SWTServiceImpl implements SWTService {
 			SWTUIPlatform swtuiPlatform = new SWTUIPlatform();
 
 			swtuiPlatform.setPages(f);
-			swtuiPlatform.createCreationWizard(parentShell);
+			WizardDialog dialog = swtuiPlatform.createCreationWizard(parentShell);
+			dialog.open();
 			return true;
 		}
 		

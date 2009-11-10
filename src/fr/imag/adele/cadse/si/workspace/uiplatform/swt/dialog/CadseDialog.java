@@ -388,7 +388,6 @@ public class CadseDialog extends SWTDialog {
 		
 		DGridUI treeGrild = _swtuiPlatforms.createDGridUI(_page, 
 				"#tree", "", EPosLabel.none, defaultMc, null, fieldExtends);
-		fieldsShash.setWeight(60); // 60% , 40%
 		
 		DGridUI crFieldsGrild = _swtuiPlatforms.createDGridUI(_page, 
 				"#edit",
@@ -397,6 +396,7 @@ public class CadseDialog extends SWTDialog {
 		this.fieldsShash = _swtuiPlatforms.createDSashFormUI(_page, 
 				"#sash", 
 				"", EPosLabel.none, defaultMc, null,treeGrild, crFieldsGrild);
+		fieldsShash.setWeight(60); // 60% , 40%
 		// add main field
 		_page.addLast(fieldsShash.getAttributeDefinition());
 
@@ -482,6 +482,7 @@ public class CadseDialog extends SWTDialog {
 						return;
 					}
 				}
+				while (true)
 				try {
 					_swtuiPlatforms.open(shell, _page, getFinishAction(), false);
 					// TODO open commit progression dialog

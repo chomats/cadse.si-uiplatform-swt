@@ -63,9 +63,7 @@ public class FieldsWizardPage extends WizardPage {
 
 		try {
 			setControl(_swtuiPlatform.createPage(page, parent));
-			_swtuiPlatform.initAfterUI(page);
-			// Reset visual value. and set UI_running at true
-			_swtuiPlatform.resetVisualValue(page);
+			
 			setMessage(null, UIPlatform.ERROR);
 			_swtuiPlatform.validateFields(null, null);
 		} catch (Throwable e) {

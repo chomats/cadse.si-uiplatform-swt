@@ -88,4 +88,5 @@ iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
  vice" }}}instance { $component="fr.imag.adele.cadse.si.workspace.uipla
  tform.swt.SWTServiceImpl" $name="fr.imag.adele.fede.workspace.as.eclip
  se.SWTService.instance" }
+ipojo-auto-start: true
 

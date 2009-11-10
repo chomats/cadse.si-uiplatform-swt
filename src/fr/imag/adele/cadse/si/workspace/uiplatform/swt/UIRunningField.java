@@ -22,7 +22,9 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 import org.eclipse.swt.widgets.Composite;
 
 import fr.imag.adele.cadse.core.CadseException;
+import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
+import fr.imag.adele.cadse.core.impl.ui.UIFieldImpl;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.IPage;
@@ -233,7 +235,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 */
 	public void initAfterUI() {
 		try {
-			if (_field.isHidden()) {
+			if (((Item)_field).isHidden()) {
 				setVisible(false);
 			}
 		} catch (Throwable e) {
