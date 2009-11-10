@@ -226,7 +226,6 @@ public class SWTUIPlatform implements UIPlatform {
 		initAfterUI(page);
 		// Reset visual value. and set UI_running at true
 		resetVisualValue(page);
-		
 		return ret;
 
 	}
@@ -1131,22 +1130,28 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public <IC extends RuningInteractionController> DCheckBoxUI<IC> createCheckBox(IPage page, BooleanAttributeType key, String label, IC ic) {
-		return initDefaultRunningField(page, key, null, ic, new DCheckBoxUI<IC>(), CadseGCST.DCHECK_BOX);
+		return initDefaultRunningField(page, key, label, EPosLabel.defaultpos, null, ic, new DCheckBoxUI<IC>(), CadseGCST.DCHECK_BOX);
 	}
 
 	private <IC extends RuningInteractionController, T extends UIRunningField<IC>> T initDefaultRunningField(IPage page, IAttributeType<?> attributte,
+			String label, EPosLabel posLabel, 
 			RunningModelController defaultMC, IC ic,  T ret, ItemType it, UIRunningField<?> ...children) {
 		ret._field = createDefaultField(attributte);
 		if (ret._field == null) {
 			ret._field = new UIFieldImpl(it, CompactUUID.randomUUID());
 			((UIFieldImpl)ret._field)._attributeRef = attributte;
 		}
+		if (posLabel != null)
+			ret._field.setPositionLabel(posLabel);
+		if (label != null)
+			ret._field.setLabel(label);
 		ret._ic = ic;
 		ret._page = page;
 		ret._swtuiplatform = this;
 		ret._mc = defaultMC;
 		if (ret._mc == null)
 			ret._mc = getDefaultModelController();
+		
 		this.runningField.put(ret._field, ret);
 		this.pages.setUIField(attributte, ret._field);
 		if (children.length != 0) {
@@ -1180,14 +1185,13 @@ public class SWTUIPlatform implements UIPlatform {
 
 	
 
-	public DBrowserUI<IC_LinkForBrowser_Combo_List> createLinkDependencyField(IPage page, LinkType key, EPosLabel poslabel,
+	public DBrowserUI<IC_LinkForBrowser_Combo_List> createLinkDependencyField(IPage page, LinkType key, String label, EPosLabel poslabel,
 			IC_LinkForBrowser_Combo_List ic, boolean mandatory, String msg) {
 		//return new DBrowserUI(key.getName(), label, poslabel, mc, ic, SWT.BORDER | SWT.SINGLE);
 
-		DBrowserUI<IC_LinkForBrowser_Combo_List> rf = initDefaultRunningField(page, key,  new LinkModelController(mandatory, msg), ic, new DBrowserUI<IC_LinkForBrowser_Combo_List>()
+		DBrowserUI<IC_LinkForBrowser_Combo_List> rf = initDefaultRunningField(page, key, label, poslabel, new LinkModelController(mandatory, msg), ic, new DBrowserUI<IC_LinkForBrowser_Combo_List>()
 				, CadseGCST.DBROWSER);
-		if (poslabel != null)
-			rf._field.setPositionLabel(poslabel);
+		
 		rf._field.setStyle(SWT.BORDER | SWT.SINGLE);
 		return rf;
 	}
@@ -1195,7 +1199,7 @@ public class SWTUIPlatform implements UIPlatform {
 	
 
 	public <IC extends RuningInteractionController> DTextUI<IC> createIntField(IPage page, IntegerAttributeType key, IC ic) {
-		return initDefaultRunningField(page, key,  null, ic, new DTextUI<IC>(), CadseGCST.DTEXT);
+		return initDefaultRunningField(page, key,  null, EPosLabel.defaultpos, null, ic, new DTextUI<IC>(), CadseGCST.DTEXT);
 	}
 
 	
@@ -1229,16 +1233,16 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean checkBox) {
-		return createTreeModelUI(page, createFictifAttributte(attributte), label, none, mc, ic, checkBox);
+		return createTreeModelUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, checkBox);
 	}
 	
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean checkBox) {
-		DTreeModelUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTreeModelUI<IC>(), CadseGCST.DTREE);
+		DTreeModelUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DTreeModelUI<IC>(), CadseGCST.DTREE);
 		ret._useCheckBox = checkBox;
 		return ret;
 	}
@@ -1246,25 +1250,25 @@ public class SWTUIPlatform implements UIPlatform {
 	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
 			IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll) {
-		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, null);
+		return createTextUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, null);
 	}
 	
 	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
 			IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll, String tooltips) {
-		return createTextUI(page, createFictifAttributte(attributte), label, none, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, tooltips);
+		return createTextUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, vspan, multiLine, noBorder, wrapLine, hscroll, vscroll, tooltips);
 	}
 
 	public <IC extends ICRunningField> DTextUI<IC> createTextUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, int vspan, boolean multiLine, boolean noBorder, boolean wrapLine, boolean hscroll, boolean vscroll, String tooltips) {
-		DTextUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTextUI<IC>(), CadseGCST.DTEXT);
+		DTextUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DTextUI<IC>(), CadseGCST.DTEXT);
 		ret._field.setType(CadseGCST.DTEXT);
 		ret._field.setFlag(Item.UI_TEXT_MULTI_LINE, multiLine);
 		ret._field.setFlag(Item.UI_NO_BORDER, noBorder);
@@ -1287,18 +1291,18 @@ public class SWTUIPlatform implements UIPlatform {
 	public <IC extends ICRunningField> DSashFormUI<IC> createDSashFormUI(
 			IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, UIRunningField<?> child1, UIRunningField<?> child2) {
 		
-		return createDSashFormUI(page, createFictifAttributte(attributte), label, none, mc, ic, child1, child2);
+		return createDSashFormUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, child1, child2);
 	}
 
 	public <IC extends ICRunningField> DSashFormUI<IC> createDSashFormUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, UIRunningField<?> child1, UIRunningField<?> child2) {
-		DSashFormUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DSashFormUI<IC>(), CadseGCST.FIELD, child1, child2);
+		DSashFormUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DSashFormUI<IC>(), CadseGCST.FIELD, child1, child2);
 		return ret;
 	}
 
@@ -1313,9 +1317,9 @@ public class SWTUIPlatform implements UIPlatform {
 	public <IC extends ICRunningField> DGridUI<IC> createDGridUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, UIRunningField<?>... children) {
-		DGridUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DGridUI<IC>(), CadseGCST.FIELD, children);
+		DGridUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DGridUI<IC>(), CadseGCST.FIELD, children);
 		return ret;
 	}
 
@@ -1330,25 +1334,25 @@ public class SWTUIPlatform implements UIPlatform {
 	public <IC extends IC_Tree> DTreeUI<IC> createTreeUI(
 			IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		return createTreeUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+		return createTreeUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic);
 	}
 
 	public <IC extends IC_Tree> DTreeUI<IC> createTreeUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		DTreeUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DTreeUI<IC>(), CadseGCST.DTREE);
+		DTreeUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DTreeUI<IC>(), CadseGCST.DTREE);
 		return ret;
 	}
 	
 	public <IC extends IC_ForList> DListUI<IC> createDListUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean edit, boolean showfilter, boolean order, boolean update) {
-		return createDListUI(page, createFictifAttributte(attributte), label, none, mc, ic, edit, showfilter, order, update);
+		return createDListUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, edit, showfilter, order, update);
 	}
 
 	public DListUI<IC_DefaultForList> createList_ListOfString(IPage page, String key, String label, String title, String message,
@@ -1370,9 +1374,9 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	public <IC extends IC_ForList> DListUI<IC> createDListUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean edit, boolean showfilter, boolean order, boolean update) {
-		DListUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DListUI<IC>(), CadseGCST.DLIST);
+		DListUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DListUI<IC>(), CadseGCST.DLIST);
 		try {
 			ret._field.setAttribute(CadseGCST.DLIST_at_ORDER_BUTTON_, order);
 			ret._field.setAttribute(CadseGCST.DLIST_at_SHOW_FILTER_, showfilter);
@@ -1387,16 +1391,16 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	public <IC extends ICRunningField> DCheckBoxUI<IC> createCheckBoxUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		return createCheckBoxUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+		return createCheckBoxUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic);
 	}
 
 	public <IC extends ICRunningField> DCheckBoxUI<IC> createCheckBoxUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		DCheckBoxUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DCheckBoxUI<IC>(), CadseGCST.DCHECK_BOX);
+		DCheckBoxUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DCheckBoxUI<IC>(), CadseGCST.DCHECK_BOX);
 		return ret;
 	}
 
@@ -1411,32 +1415,32 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public <IC extends IC_ForChooseFile> DChooseFileUI<IC> createDChooseFileUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, String title) {
-		return createDChooseFileUI(page, createFictifAttributte(attributte), label, none, mc, ic, title);
+		return createDChooseFileUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, title);
 	}
 	
 	public <IC extends IC_ForChooseFile> DChooseFileUI<IC> createDChooseFileUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, String title) {
-		DChooseFileUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DChooseFileUI<IC>(), CadseGCST.FIELD);
+		DChooseFileUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DChooseFileUI<IC>(), CadseGCST.FIELD);
 		ret.choosemsg = title;
 		return ret;
 	}
 	
 	public <IC extends IC_TreeCheckedUI> DCheckedTreeUI<IC> createDCheckedTreeUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean selectDelectButton, boolean fillBoth) {
-		return createDCheckedTreeUI(page, createFictifAttributte(attributte), label, none, mc, ic, selectDelectButton, fillBoth);
+		return createDCheckedTreeUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, selectDelectButton, fillBoth);
 	}
 
 	public <IC extends IC_TreeCheckedUI> DCheckedTreeUI<IC> createDCheckedTreeUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean selectDelectButton, boolean fillBoth) {
-		DCheckedTreeUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DCheckedTreeUI<IC>(), CadseGCST.DCHECKED_TREE);
+		DCheckedTreeUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DCheckedTreeUI<IC>(), CadseGCST.DCHECKED_TREE);
 		ret._selectDelectButton = selectDelectButton;
 		ret._fillBoth = fillBoth;
 		return ret;
@@ -1445,33 +1449,33 @@ public class SWTUIPlatform implements UIPlatform {
 	public  <IC extends IC_ForBrowserOrCombo> DComboUI<IC> createDComboUI(
 			IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean edit) {
-		return createDComboUI(page, createFictifAttributte(attributte), label, none, mc, ic, edit);
+		return createDComboUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, edit);
 	}
 	
 	public  <IC extends IC_ForBrowserOrCombo> DComboUI<IC> createDComboUI(
 			IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic, boolean edit) {
-		DComboUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DComboUI<IC>(), CadseGCST.DCOMBO);
+		DComboUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DComboUI<IC>(), CadseGCST.DCOMBO);
 		ret._field.setEditable(edit);
 		return ret;
 	}
 	
 	public <IC extends ActionController> DButtonUI<IC> createDButtonUI(IPage page,
 			String attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		return createDButtonUI(page, createFictifAttributte(attributte), label, none, mc, ic);
+		return createDButtonUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic);
 	}
 
 	public <IC extends ActionController> DButtonUI<IC> createDButtonUI(IPage page,
 			IAttributeType<?> attributte, String label,
-			EPosLabel none, RunningModelController mc,
+			EPosLabel posLabel, RunningModelController mc,
 			IC ic) {
-		DButtonUI<IC> ret = initDefaultRunningField(page, attributte, mc, ic, new DButtonUI<IC>(), CadseGCST.FIELD);
+		DButtonUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic, new DButtonUI<IC>(), CadseGCST.FIELD);
 		return ret;
 	}
 
