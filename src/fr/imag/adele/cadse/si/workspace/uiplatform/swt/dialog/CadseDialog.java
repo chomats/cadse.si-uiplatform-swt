@@ -151,7 +151,7 @@ public class CadseDialog extends SWTDialog {
 				FilteredItemNode node = getOrCreateFilteredNode();
 				for (IItemNode n : node.getChildren()) {
 					if (isSelected(n) == IItemNode.SELECTED) {
-						((DTreeModelUI) getUIField()).selectNode(n);
+						fieldExtends.selectNode(n);
 					}
 				}
 			} catch (Throwable e) {
@@ -312,7 +312,8 @@ public class CadseDialog extends SWTDialog {
 		
 		@Override
 		public void initAfterUI(UIField field) {
-			TreeViewer viewer = ((DTreeModelUI) field).getTreeViewer();
+			DTreeModelUI<?> runningField = _swtuiPlatforms.getRunningField(field, _page);
+			TreeViewer viewer = runningField.getTreeViewer();
 			viewer.addFilter(new ViewerFilter() {
 				
 				@Override
@@ -330,7 +331,7 @@ public class CadseDialog extends SWTDialog {
 			if (added instanceof CategoryNode) {
 				for (IItemNode n : ((CategoryNode) added).getChildren()) {
 					if (n.getItem() != null && n.getItem().getType() == CadseGCST.CADSE) {
-						((DTreeModelUI) field).selectNode(n);
+						fieldExtends.selectNode(n);
 					}
 				}
 				return;
@@ -344,7 +345,7 @@ public class CadseDialog extends SWTDialog {
 							for (IItemNode nnc : nc.getChildren()) {
 								if (nnc.getItem() != null && n.getItem().getType() == CadseGCST.CADSE) {
 									if (selected.add((CadseRuntime) nnc.getItem())) {
-										((DTreeModelUI) field).selectNode(nnc);
+										fieldExtends.selectNode(nnc);
 										notifieSubValueAdded(field, nnc);
 									}
 								}
@@ -398,7 +399,7 @@ public class CadseDialog extends SWTDialog {
 				"", EPosLabel.none, defaultMc, null,treeGrild, crFieldsGrild);
 		fieldsShash.setWeight(60); // 60% , 40%
 		// add main field
-		_page.addLast(fieldsShash.getAttributeDefinition());
+		addLast(fieldsShash);
 
 		registerListener();
 	}

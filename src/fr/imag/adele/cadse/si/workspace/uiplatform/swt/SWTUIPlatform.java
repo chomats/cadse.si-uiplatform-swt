@@ -207,7 +207,6 @@ public class SWTUIPlatform implements UIPlatform {
 	public int open(Shell parentShell, IPage page, IActionPage dialogAction, int width, int height, boolean openDetailDialog) throws CadseException {
 		init();
 		parent = parentShell;
-		pages.addPage(page);
 		if (dialogAction != null)
 			pages.setAction(dialogAction);
 		if (openDetailDialog) {
@@ -354,6 +353,7 @@ public class SWTUIPlatform implements UIPlatform {
 		UIRunningField[] uiRunningFields = _runningPage.get(page);
 		if (uiRunningFields == null) return;
 		for (UIRunningField uiRunningField : uiRunningFields) {
+			uiRunningField._mc.init(this);
 			uiRunningField.initAfterUI();
 		}
 	}
@@ -1487,6 +1487,16 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public void setPages(Pages lastItemPages) {
 		pages = lastItemPages;
+	}
+
+	public  <UI extends UIRunningField<?>> UI getRunningField(UIField field, IPage page) {
+		UIRunningField<?>[] uiRunningFields = _runningPage.get(page);
+		if (uiRunningFields == null) return null;
+		for (UIRunningField<?> uiRunningField : uiRunningFields) {
+			if (uiRunningField._field == field)
+				return (UI) uiRunningField;
+		}
+		return null;
 	}
 	
 	
