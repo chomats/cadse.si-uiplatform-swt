@@ -228,7 +228,12 @@ public class SWTUIPlatform implements UIPlatform {
 	public Composite createPage(IPage page, Composite parentPage) {
 		Composite container = getToolkit().createComposite(parentPage);
 		Composite ret = createFieldsControl(page, null, container, getFields(page), null);
-		initAfterUI(page);
+		try {
+			initAfterUI(page);
+		} catch (CadseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Reset visual value. and set UI_running at true
 		resetVisualValue(page);
 		return ret;
@@ -357,7 +362,7 @@ public class SWTUIPlatform implements UIPlatform {
 		return false;
 	}
 
-	private void initAfterUI(IPage page) {
+	private void initAfterUI(IPage page) throws CadseException {
 		UIRunningField[] uiRunningFields = _runningPage.get(page);
 		if (uiRunningFields == null) {
 			return;
