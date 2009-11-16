@@ -459,7 +459,7 @@ public class CadseDialog extends SWTDialog {
 						return;
 					}
 				}
-				while (true) {
+				{
 					try {
 						_swtuiPlatforms.open(shell, _page, getFinishAction(), false);
 						// TODO open commit progression dialog
