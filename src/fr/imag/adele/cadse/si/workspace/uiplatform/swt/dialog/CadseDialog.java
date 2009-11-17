@@ -96,6 +96,11 @@ public class CadseDialog extends SWTDialog {
 			}
 			return _ret;
 		}
+		
+		@Override
+		public Item getItem() {
+			return selectedItem;
+		}
 
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {

@@ -94,6 +94,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 
 	@Override
 	public void createControl(Composite parent) {
+		_swtuiPlatform.setParent(parent);
 		FormToolkit myFormToolkit = _swtuiPlatform.getToolkit();
 		_swtuiPlatform.setSite(getSite());
 		pageBook = myFormToolkit.createPageBook(parent, SWT.V_SCROLL);

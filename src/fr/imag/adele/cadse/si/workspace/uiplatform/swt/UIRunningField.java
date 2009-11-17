@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
+import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
@@ -57,7 +58,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 
 	public UIRunningField<?>[]		_children;
 	public IC						_ic;
-	public RunningModelController	_mc;
+	public AbstractModelController	_mc;
 
 	/*
 	 * (non-Javadoc)

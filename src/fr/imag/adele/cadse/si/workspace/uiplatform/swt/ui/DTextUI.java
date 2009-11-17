@@ -63,9 +63,9 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		final IFieldContenProposalProvider proposer = getContentAssistant();
 		// Container ocontainer;
 		int style = 0;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_MULTI_LINE_)) ? SWT.MULTI : SWT.SINGLE;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_WRAP_LINE_)) ? SWT.WRAP : 0;
-		style |= (_field.getAttribute(CadseGCST.DTEXT_at_NO_BORDER_)) ? 0 : SWT.BORDER;
+		style |= (_field.getAttributeWithDefaultValue(CadseGCST.DTEXT_at_MULTI_LINE_,false)) ? SWT.MULTI : SWT.SINGLE;
+		style |= (_field.getAttributeWithDefaultValue(CadseGCST.DTEXT_at_WRAP_LINE_, false)) ? SWT.WRAP : 0;
+		style |= (_field.getAttributeWithDefaultValue(CadseGCST.DTEXT_at_NO_BORDER_, false)) ? 0 : SWT.BORDER;
 		style |= (_field.getFlag(Item.UI_HSCROLL)) ? 0 : SWT.H_SCROLL;
 		style |= (_field.getFlag(Item.UI_VSCROLL)) ? 0 : SWT.V_SCROLL;
 		if (!_field.isEditable()) {
@@ -228,7 +228,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
-		if (!_swtuiplatform.isDisposed()) {
+		if (_swtuiplatform.isDisposed()) {
 			return;
 		}
 		if (visualValue == null) {
