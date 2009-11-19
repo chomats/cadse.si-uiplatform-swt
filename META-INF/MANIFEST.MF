@@ -56,37 +56,19 @@ iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
  le.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $factory="fr.imag
  .adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $architecture
  ="true" provides { $specification="fr.imag.adele.fede.workspace.as.ecl
- ipse.SWTService" }manipulation { field { $name="__MshowCreateWizardWit
- hError$org_eclipse_swt_widgets_Shell$fr_imag_adele_cadse_core_Item$fr_
- imag_adele_cadse_core_LinkType$fr_imag_adele_cadse_core_ItemType" $typ
- e="boolean" }field { $name="__McreatePropertySheetPage" $type="boolean
- " }field { $name="__MshowCreateWizard$org_eclipse_swt_widgets_Shell$fr
- _imag_adele_cadse_core_Item$fr_imag_adele_cadse_core_LinkType$fr_imag_
- adele_cadse_core_ItemType" $type="boolean" }field { $name="__MopenDial
- og$boolean" $type="boolean" }field { $name="__IM" $type="org.apache.fe
- lix.ipojo.InstanceManager" }method { $name="$init" }method { $argument
- s="{org.apache.felix.ipojo.InstanceManager}" $name="$init" }method { $
- arguments="{boolean}" $name="openDialog" $return="fr.imag.adele.cadse.
- core.CadseRuntime[]" }method { $arguments="{boolean}" $name="__openDia
- log" $return="fr.imag.adele.cadse.core.CadseRuntime[]" }method { $argu
- ments="{org.eclipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr
- .imag.adele.cadse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $n
- ame="showCreateWizard" $return="boolean" }method { $arguments="{org.ec
- lipse.swt.widgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.ca
- dse.core.LinkType,fr.imag.adele.cadse.core.ItemType}" $name="__showCre
- ateWizard" $return="boolean" }method { $arguments="{org.eclipse.swt.wi
- dgets.Shell,fr.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.Lin
- kType,fr.imag.adele.cadse.core.ItemType}" $name="showCreateWizardWithE
- rror" }method { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.ade
- le.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cad
- se.core.ItemType}" $name="__showCreateWizardWithError" }method { $name
- ="createPropertySheetPage" $return="org.eclipse.ui.views.properties.IP
- ropertySheetPage" }method { $name="__createPropertySheetPage" $return=
- "org.eclipse.ui.views.properties.IPropertySheetPage" }method { $name="
- getInstance" $return="fr.imag.adele.fede.workspace.as.eclipse.SWTServi
- ce" }interface { $name="fr.imag.adele.fede.workspace.as.eclipse.SWTSer
- vice" }}}instance { $component="fr.imag.adele.cadse.si.workspace.uipla
- tform.swt.SWTServiceImpl" $name="fr.imag.adele.fede.workspace.as.eclip
- se.SWTService.instance" }
+ ipse.SWTService" }manipulation { method { $name="$init" }method { $arg
+ uments="{boolean}" $name="openDialog" $return="fr.imag.adele.cadse.cor
+ e.CadseRuntime[]" }method { $arguments="{org.eclipse.swt.widgets.Shell
+ ,fr.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.im
+ ag.adele.cadse.core.ItemType}" $name="showCreateWizard" $return="boole
+ an" }method { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.adele
+ .cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cadse
+ .core.ItemType}" $name="showCreateWizardWithError" }method { $name="cr
+ eatePropertySheetPage" $return="org.eclipse.ui.views.properties.IPrope
+ rtySheetPage" }method { $name="getInstance" $return="fr.imag.adele.fed
+ e.workspace.as.eclipse.SWTService" }interface { $name="fr.imag.adele.f
+ ede.workspace.as.eclipse.SWTService" }}}instance { $component="fr.imag
+ .adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $name="fr.ima
+ g.adele.fede.workspace.as.eclipse.SWTService.instance" }
 ipojo-auto-start: true
 
