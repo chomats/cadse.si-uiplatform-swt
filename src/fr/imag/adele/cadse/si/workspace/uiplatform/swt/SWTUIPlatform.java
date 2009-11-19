@@ -84,6 +84,7 @@ import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIRunningValidator;
 import fr.imag.adele.cadse.core.ui.UIValidator;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
+import fr.imag.adele.cadse.core.ui.view.NewContext;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.core.util.CreatedObjectManager;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ActionController;
@@ -453,9 +454,9 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	protected void init() throws CadseException {
-		if (!isModification() && copy == null) {
-			copy = CadseCore.getLogicalWorkspace().createTransaction();
-		}
+		//if (!isModification() && copy == null) {
+		//	copy = CadseCore.getLogicalWorkspace().createTransaction();
+		//}
 		if (pages.getAction() != null) {
 			pages.getAction().init(this);
 		}
@@ -758,7 +759,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public LogicalWorkspaceTransaction getCopy() {
-		return copy;
+		return _context != null ? _context.getTransaction() : null;
 	}
 
 	@Override
@@ -995,7 +996,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	Map<ItemType, Class<?>>				itToClassImpl	= new HashMap<ItemType, Class<?>>();
-	private LogicalWorkspaceTransaction	copy;
+	private NewContext		_context;
 	private FedeFormToolkit				_toolkit;
 	private IPageSite					_pageSite;
 
@@ -1058,7 +1059,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 */
 	public boolean doFinish(Object monitor) throws Exception {
 		pages.getAction().doFinish(this, monitor);
-		copy.commit();
+		_context.getTransaction().commit();
 		return true;
 	}
 
@@ -1069,7 +1070,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 */
 	public void doCancel(Object monitor) {
 		pages.getAction().doCancel(this, monitor);
-		copy.rollback();
+		_context.getTransaction().rollback();
 	}
 
 	/*
@@ -1518,6 +1519,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public void setPages(Pages lastItemPages) {
 		pages = lastItemPages;
+		_context = pages.getContext();
 	}
 
 	public <UI extends UIRunningField<?>> UI getRunningField(UIField field, IPage page) {

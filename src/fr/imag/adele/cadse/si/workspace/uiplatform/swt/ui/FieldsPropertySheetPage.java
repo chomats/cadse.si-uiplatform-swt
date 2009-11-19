@@ -219,7 +219,9 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		lastItem = item;
 
 		lastItemPages = null;
-		lastItemPages = lastItem.getType().getGoodModificationPage(itemNode);
+		FilterContext fc = new FilterContext(item, null, item.getType(), null, null, null, lastItemNode, null);
+		
+		lastItemPages = lastItem.getModificationPages(fc);
 		_swtuiPlatform.setPages(lastItemPages);
 
 		_swtuiPlatform.setItem(lastItem);

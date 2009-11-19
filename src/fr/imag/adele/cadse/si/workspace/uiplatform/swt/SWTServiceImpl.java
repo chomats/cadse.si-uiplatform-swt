@@ -16,7 +16,9 @@ import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
+import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.view.NewContext;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.CadseDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FieldsPropertySheetPage;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
@@ -40,7 +42,11 @@ public class SWTServiceImpl implements SWTService {
 		if (ip.isAbstract(parent, lt)) {
 			return false;
 		}
-		Pages f = destItemType.getGoodCreationPage(parent, destItemType, lt);
+		NewContext nc = new NewContext(parent, lt, destItemType);
+		nc.initTransaction(destItemType.getLogicalWorkspace());
+		
+		
+		Pages f = nc.getNewItem().getCreationPages(nc);
 
 		if (f != null) {
 			SWTUIPlatform swtuiPlatform = new SWTUIPlatform();

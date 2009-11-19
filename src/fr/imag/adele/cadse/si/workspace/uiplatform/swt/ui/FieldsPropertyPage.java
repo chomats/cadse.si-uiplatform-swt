@@ -35,6 +35,7 @@ import fr.imag.adele.cadse.core.IItemManager;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ui.IFieldDescription;
 import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 
 public class FieldsPropertyPage extends PropertyPage {
@@ -84,9 +85,9 @@ public class FieldsPropertyPage extends PropertyPage {
 	public void setElement(IAdaptable element) {
 		super.setElement(element);
 		Item item = ((Item) element);
-
+		FilterContext fc = new FilterContext(item, null, item.getType(), null, null, null, null, null);
 		IItemManager im = item.getType().getItemManager();
-		Pages pages = item.getInstanceModificationPages(item);
+		Pages pages = item.getModificationPages(fc);
 
 		this._swtuiplatform = new SWTUIPlatform(pages, null);
 		_swtuiplatform.setItem(item);
