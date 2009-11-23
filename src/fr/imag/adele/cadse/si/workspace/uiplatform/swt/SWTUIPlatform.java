@@ -1059,7 +1059,8 @@ public class SWTUIPlatform implements UIPlatform {
 	 */
 	public boolean doFinish(Object monitor) throws Exception {
 		pages.getAction().doFinish(this, monitor);
-		_context.getTransaction().commit();
+		if (_context != null && _context.getTransaction() != null)
+			_context.getTransaction().commit();
 		return true;
 	}
 
@@ -1070,7 +1071,8 @@ public class SWTUIPlatform implements UIPlatform {
 	 */
 	public void doCancel(Object monitor) {
 		pages.getAction().doCancel(this, monitor);
-		_context.getTransaction().rollback();
+		if (_context != null && _context.getTransaction() != null)
+			_context.getTransaction().rollback();
 	}
 
 	/*
