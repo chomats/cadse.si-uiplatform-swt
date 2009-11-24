@@ -52,11 +52,6 @@ public class DButtonUI<IC extends ActionController> extends DAbstractField<IC> {
 		setEditable(_field.isEditable());
 	}
 
-	@Override
-	public void initAfterUI() {
-		super.initAfterUI();
-	}
-
 	protected void handleSelect() {
 		RuningInteractionController ic = _ic;
 		if (ic == null) {

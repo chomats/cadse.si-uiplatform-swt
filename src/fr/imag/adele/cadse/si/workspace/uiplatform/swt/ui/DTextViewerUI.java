@@ -82,10 +82,6 @@ public class DTextViewerUI<IC extends RuningInteractionController> extends DAbst
 
 	}
 
-	public int getVSpan() {
-		return 1;
-	}
-
 	@Override
 	public Object getVisualValue() {
 		return fTextViewer.getDocument().get();

@@ -210,7 +210,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage 
 		}
 
 		if (lastItem != null) {
-			pageBook.removePage(lastItem, false);
+			pageBook.removePage(lastItem, true);
 		}
 		if (lastItemPages != null) {
 			_swtuiPlatform.dispose();

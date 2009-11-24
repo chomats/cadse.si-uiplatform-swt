@@ -318,4 +318,8 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 		return _field == null ? null : _field.getAttributeDefinition();
 	}
 
+	public int getVSpan() {
+		return 1;
+	}
+
 }

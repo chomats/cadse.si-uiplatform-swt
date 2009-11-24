@@ -514,8 +514,7 @@ public class SWTUIPlatform implements UIPlatform {
 		if (field.getPosLabel().equals(EPosLabel.left) || field.getPosLabel().equals(EPosLabel.right)) {
 			hspan_label--;
 		}
-		container = createLabelField(field, container, hspan);
-
+		
 		UIRunningField<T> rf = find(page, field);
 		if (rf == null) {
 			rf = create(field);
@@ -549,6 +548,7 @@ public class SWTUIPlatform implements UIPlatform {
 			
 			rf._running_mc = rmc;
 		}
+		container = createLabelField(rf, container, hspan);
 
 		rf.createControl(container, hspan_label);
 		return rf;
@@ -565,26 +565,26 @@ public class SWTUIPlatform implements UIPlatform {
 		return null;
 	}
 
-	protected Composite createLabelField(UIField field, Composite container, int hspan) {
+	protected Composite createLabelField(UIRunningField<?> field, Composite container, int hspan) {
 		GridData gd;
 		if (field.getPosLabel().equals(EPosLabel.left)) {
 			Label l = getToolkit().createLabel(container, field.getLabel());
 			gd = new GridData();
 			gd.verticalSpan = field.getVSpan();
 			l.setLayoutData(gd);
-			if (!field.isEditable()) {
+			if (!field.getUIField().isEditable()) {
 				l.setEnabled(false);
 			}
-			labels.put(field, l);
+			labels.put(field.getUIField(), l);
 		} else if (field.getPosLabel().equals(EPosLabel.top)) {
 			Label l = getToolkit().createLabel(container, field.getLabel());
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = hspan;
 			l.setLayoutData(gd);
-			if (!field.isEditable()) {
+			if (!field.getUIField().isEditable()) {
 				l.setEnabled(false);
 			}
-			labels.put(field, l);
+			labels.put(field.getUIField(), l);
 		} else if (field.getPosLabel().equals(EPosLabel.group)) {
 			Group g = getToolkit().createGroup(container, field.getLabel());
 			gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -772,6 +772,8 @@ public class SWTUIPlatform implements UIPlatform {
 	@Override
 	public void addListener(final Item item, final WorkspaceListener listener, int eventFilter) {
 		item.addListener(listener, eventFilter);
+		if (_removeListener == null)
+			_removeListener = new ArrayList<RemoveListener>();
 		_removeListener.add(new RemoveListener() {
 			public void dispose() {
 				item.removeListener(listener);
@@ -820,11 +822,18 @@ public class SWTUIPlatform implements UIPlatform {
 			rf = rf._next;
 		}
 	}
-
+	
+	public void setEditable(UIField uiField, boolean b) {
+		UIRunningField rf = runningField.get(uiField);
+		while (rf != null) {
+			rf.setEditable(b);
+			rf = rf._next;
+		}
+	};
+	
 	@Override
 	public void setMessageError(String string) {
-		// TODO Auto-generated method stub
-
+		setMessage(string, ERROR);
 	}
 
 	@Override
@@ -1524,5 +1533,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public void setParent(Composite parent2) {
 		parent = parent2;
 	}
+	
+	
 
 }

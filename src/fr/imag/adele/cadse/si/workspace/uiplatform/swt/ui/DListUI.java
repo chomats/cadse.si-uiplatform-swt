@@ -106,6 +106,33 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	private Button			buttonReOrder;
 	private Button			buttonEdit;
 
+		
+	@Override
+	public int getVSpan() {
+		int vspan = 0;
+		if (_field.isEditable()) {
+			if (add_remove) {
+				vspan++;
+				vspan++;
+	
+			}
+			if (order) {
+				vspan++;
+				vspan++;
+			}
+			if (re_order) {
+				vspan++;
+			}
+			if (update) {
+				vspan++;
+			}
+		}
+		if (vspan == 0) {
+			vspan = 1;
+		}
+		return vspan;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -299,6 +326,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		packageTable.getViewer().setLabelProvider(getLabelProvider());
 		packageTable.getViewer().setContentProvider(_ic.getContentProvider());
 	}
+	
+	
 
 	protected void handleReOrder(ITreeSelection sel) {
 		// TODO Auto-generated method stub
