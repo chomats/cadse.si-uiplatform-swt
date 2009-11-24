@@ -62,6 +62,7 @@ import fr.imag.adele.cadse.core.WorkspaceListener;
 import fr.imag.adele.cadse.core.attribute.BooleanAttributeType;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.attribute.IntegerAttributeType;
+import fr.imag.adele.cadse.core.delta.CreateOperation;
 import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.impl.attribute.AttributeType;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
@@ -89,7 +90,10 @@ import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.core.util.CreatedObjectManager;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ActionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_BooleanText;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_DefaultForList;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_EnumForBrowser_Combo;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_EnumForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
@@ -174,6 +178,25 @@ public class SWTUIPlatform implements UIPlatform {
 	private Map<IPage, UIRunningField[]>					_runningPage	= new HashMap<IPage, UIRunningField[]>();
 	static ItemType	_groupType;
 
+	
+	static 	CreatedObjectManager.JavaCreatedObject defaultRegister = new CreatedObjectManager.JavaCreatedObject(CreatedObjectManager.DEFAULTObjectMANAGER); 
+	{
+		CreatedObjectManager.registerPlatform(SWTUIPlatform.class, defaultRegister);
+		
+		defaultRegister.register(CadseGCST.DTEXT, DTextUI.class);
+		defaultRegister.register(CadseGCST.DBROWSER, DBrowserUI.class);
+		defaultRegister.register(CadseGCST.DCHECK_BOX, DCheckBoxUI.class);
+		defaultRegister.register(CadseGCST.DCHECKED_LIST, DCheckedListUI.class);
+		defaultRegister.register(CadseGCST.DCHECKED_TREE, DCheckedTreeUI.class);
+		defaultRegister.register(CadseGCST.DCOMBO, DComboUI.class);		
+		defaultRegister.register(CadseGCST.DLIST, DListUI.class);
+		defaultRegister.register(CadseGCST.DTREE, DTreeUI.class);
+		defaultRegister.register(CadseGCST.IC_LINK_FOR_BROWSER_COMBO_LIST, IC_LinkForBrowser_Combo_List.class);
+		defaultRegister.register(CadseGCST.IC_BOOLEAN_TEXT, IC_BooleanText.class);
+		defaultRegister.register(CadseGCST.IC_ENUM_FOR_LIST, IC_EnumForList.class);
+		defaultRegister.register(CadseGCST.IC_ENUM_FOR_BROWSER_COMBO, IC_EnumForBrowser_Combo.class);
+	}
+	
 	/**
 	 * Constructor for FieldsWizardPage.
 	 * 
@@ -183,14 +206,8 @@ public class SWTUIPlatform implements UIPlatform {
 	public SWTUIPlatform(Pages desc, Composite parent) {
 		this.pages = desc;
 		this.parent = parent;
-		itToClassImpl.put(CadseGCST.DTEXT, DTextUI.class);
-		itToClassImpl.put(CadseGCST.DBROWSER, DBrowserUI.class);
-		itToClassImpl.put(CadseGCST.DCHECK_BOX, DCheckBoxUI.class);
-		itToClassImpl.put(CadseGCST.DCHECKED_LIST, DCheckedListUI.class);
-		itToClassImpl.put(CadseGCST.DCHECKED_TREE, DCheckedTreeUI.class);
-		itToClassImpl.put(CadseGCST.DCOMBO, DComboUI.class);		
-		itToClassImpl.put(CadseGCST.DLIST, DListUI.class);
-		itToClassImpl.put(CadseGCST.DTREE, DTreeUI.class);
+		
+		
 		
 	}
 
@@ -352,7 +369,7 @@ public class SWTUIPlatform implements UIPlatform {
 			try {
 				child = createControl(page, mf, container, maxHspan);
 			} catch (Throwable e) {
-				log("", e);
+				log("Cannot create field "+mf.getType()+":"+mf.getName()+":"+mf.getAttributeDefinition().getType(), e);
 			}
 			if (child != null)
 				children.add(child);
@@ -498,7 +515,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 		UIRunningField<T> rf = find(page, field);
 		if (rf == null) {
-			rf = createRunningField(field);
+			rf = create(field);
 			if (rf == null) {
 				return null;
 			}
@@ -508,16 +525,20 @@ public class SWTUIPlatform implements UIPlatform {
 			rf._next = runningField.get(field);
 			runningField.put(field, rf);
 
-			ICRunningField ric = createIC(field.getInteractionControllerBASE());
+			Item ic = field.getInteractionControllerBASE();
+			ICRunningField ric = create(ic);
 			if (ric != null) {
-				ric._ic = field.getInteractionControllerBASE();
+				ric._ic = ic;
 				ric._uiPlatform = this;
+				ric._uirunningField = rf;
 				rf._ic = (T) ric;
 			}
 
-			AbstractModelController rmc = createMC(field.getModelController());
+			AbstractModelController rmc = create(field.getModelController());
 			if (rmc == null) {
 				rmc = createAbstractModelController(field);
+				rmc._uiField = field;
+				rmc._uiPlatform = this;
 			}
 			rf._mc = rmc;
 		}
@@ -995,61 +1016,16 @@ public class SWTUIPlatform implements UIPlatform {
 		return pages.isModificationPages();
 	}
 
-	Map<ItemType, Class<?>>				itToClassImpl	= new HashMap<ItemType, Class<?>>();
+	
 	private NewContext		_context;
 	private FedeFormToolkit				_toolkit;
 	private IPageSite					_pageSite;
 
-	public <T extends RuningInteractionController> UIRunningField<T> createRunningField(UIField field) {
-		ItemType it = field.getType();
-		Class<?> clazz = itToClassImpl.get(it);
-		if (clazz == null) {
-			return null;
-		}
-		try {
-			return (UIRunningField<T>) clazz.newInstance();
-		} catch (SecurityException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (IllegalArgumentException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (InstantiationException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (IllegalAccessException e) {
-			log("Cannot create instance of " + clazz, e);
-		}
-		return null;
-	}
 
-	public ICRunningField createIC(Item ic) {
-		if (ic == null) 
+	public <T> T create(Item desc) {
+		if (desc == null) 
 			return null;
-		ItemType it = ic.getType();
-		Class<?> clazz = itToClassImpl.get(it);
-		if (clazz == null) {
-			return null;
-		}
-		try {
-			return (ICRunningField) clazz.newInstance();
-		} catch (SecurityException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (IllegalArgumentException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (InstantiationException e) {
-			log("Cannot create instance of " + clazz, e);
-		} catch (IllegalAccessException e) {
-			log("Cannot create instance of " + clazz, e);
-		}
-		return null;
-	}
-
-	private AbstractModelController createMC(Item modelController) {
-		if( modelController == null) 
-				return null;
-		CreatedObjectManager<AbstractModelController> manager = CreatedObjectManager.getManager(modelController,
-				AbstractModelController.class);
-		if (manager == null)
-			return null;
-		return manager.create(modelController);
+		return CreatedObjectManager.getManager(desc, SWTUIPlatform.class).create(desc);
 	}
 
 	/*
