@@ -29,6 +29,7 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.IPageChangingListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -80,6 +81,7 @@ import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
+import fr.imag.adele.cadse.core.ui.RunningModelController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.core.ui.UIRunningValidator;
@@ -177,6 +179,7 @@ public class SWTUIPlatform implements UIPlatform {
 	private List<RemoveListener>							_removeListener;
 	private WizardDialog									dialog;
 	private Map<IPage, UIRunningField[]>					_runningPage	= new HashMap<IPage, UIRunningField[]>();
+	private IPage	_currentPage;
 	static ItemType	_groupType;
 
 	
@@ -230,15 +233,22 @@ public class SWTUIPlatform implements UIPlatform {
 
 			@Override
 			public void pageChanged(PageChangedEvent event) {
-				// TODO Auto-generated method stub
-
+				Object p = event.getSelectedPage();
+				if (p instanceof FieldsWizardPage) {
+					FieldsWizardPage fwp = (FieldsWizardPage) p;
+					_currentPage = fwp.getPage();
+					resetVisualValue(_currentPage);
+					setMessage(null, UIPlatform.ERROR);
+					validateFields(null, _currentPage);
+				}
 			}
 		});
 		dialog.addPageChangingListener(new IPageChangingListener() {
 
 			@Override
 			public void handlePageChanging(PageChangingEvent event) {
-				// TODO Auto-generated method stub
+				Object p = event.getCurrentPage();
+				System.out.println("pageChanging:"+p);
 
 			}
 		});
@@ -435,7 +445,48 @@ public class SWTUIPlatform implements UIPlatform {
 		return container;
 	}
 
-	public boolean validateFields(UIField fieldsController, IPage page) {
+	public boolean validateFields(UIField uiField, IPage page) {
+		
+			
+		if (page != null) {
+			UIRunningField[] uiRunningFields = _runningPage.get(page);
+			boolean error = false;
+			for (UIRunningField uiRunningField : uiRunningFields) {
+				UIField uiField2 = uiRunningField.getUIField();
+				if (uiField2 == uiField) continue;
+				error = validateField(uiRunningField, uiField2);
+				if (error)
+					return true;
+			}
+		}
+		setMessage(null, NONE);
+		return false;
+	}
+
+	private boolean validateField(UIRunningField uiRunningField, UIField field) {
+		boolean error = false;
+		Object visualValue = uiRunningField.getVisualValue();
+		RunningModelController mc = uiRunningField.getModelController();
+		if (mc != null)
+			error = mc.validValue(field, visualValue);
+		if (error)
+			return true;
+		if (!error) {
+			UIRunningValidator[] listeners = this._listen.get(field.getAttributeDefinition());
+			if (listeners != null) {
+				for (UIRunningValidator v : listeners) {
+					try {
+						error = v.validValue(field, visualValue);
+						if (error) {
+							return true;
+						}
+					} catch (Throwable e) {
+						log("Validator "+v, e);
+						v.incrementError();
+					}
+				}
+			}
+		}
 		return false;
 	}
 
@@ -461,22 +512,8 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 	}
 
-	private void clearStatusMessage() {
-		if (_pageSite == null) {
-			throw new NullPointerException();
-		}
-
-		IStatusLineManager statusLine = _pageSite.getActionBars().getStatusLineManager();
-		if (statusLine != null) {
-			statusLine.setErrorMessage(null);
-			statusLine.setMessage(null);
-		}
-	}
 
 	protected void init() throws CadseException {
-		//if (!isModification() && copy == null) {
-		//	copy = CadseCore.getLogicalWorkspace().createTransaction();
-		//}
 		if (pages.getAction() != null) {
 			pages.getAction().init(this);
 		}
@@ -974,42 +1011,7 @@ public class SWTUIPlatform implements UIPlatform {
 		return abstratcObject;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.imag.adele.cadse.core.ui.UIField#validateField()
-	 */
-	public boolean validateField(UIField field, Object visualValue) {
-		if (isDisposed()) {
-			return true;
-		}
 
-		boolean error = false;
-		AbstractModelController getFct = getModelController(field);
-		if (getFct != null) {
-			error = getFct.validValue(field, visualValue);
-		}
-		if (error) {
-			return true;
-		}
-
-		UIRunningValidator[] listeners = this._listen.get(field.getAttributeDefinition());
-		if (listeners != null) {
-			for (UIRunningValidator v : listeners) {
-				try {
-					error = v.validValue(field, visualValue);
-					if (error) {
-						return true;
-					}
-				} catch (Throwable e) {
-					e.printStackTrace();
-					v.incrementError();
-				}
-			}
-		}
-
-		return false;
-	}
 
 	public boolean isDisposed() {
 		return false;

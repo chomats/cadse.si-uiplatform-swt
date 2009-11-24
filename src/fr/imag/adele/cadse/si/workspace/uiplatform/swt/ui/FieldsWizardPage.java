@@ -62,12 +62,8 @@ public class FieldsWizardPage extends WizardPage {
 
 		try {
 			setControl(_swtuiPlatform.createPage(page, parent));
-
-			setMessage(null, UIPlatform.ERROR);
-			_swtuiPlatform.validateFields(null, null);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			_swtuiPlatform.log("fields wizard page", e);
 		}
 		this.init = false;
 	}

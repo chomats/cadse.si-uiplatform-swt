@@ -205,8 +205,6 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 				_currentValue = value;
 			}
 		} else {
-			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
-
 			// validate value and if it's ok, test other fields
 			// true if error
 			if (!_swtuiplatform.validateValueChanged(_field, value)) {
