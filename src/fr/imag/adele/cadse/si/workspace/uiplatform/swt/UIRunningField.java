@@ -58,7 +58,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 
 	public UIRunningField<?>[]		_children;
 	public IC						_ic;
-	public AbstractModelController	_mc;
+	public AbstractModelController	_running_mc;
 
 	/*
 	 * (non-Javadoc)
@@ -125,7 +125,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 	 * @see fr.imag.adele.cadse.core.ui.UIField#getModelController()
 	 */
 	public RunningModelController getModelController() {
-		return _mc;
+		return _running_mc;
 	}
 
 	/*

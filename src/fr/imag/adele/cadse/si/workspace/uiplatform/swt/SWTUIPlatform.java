@@ -445,8 +445,8 @@ public class SWTUIPlatform implements UIPlatform {
 			return;
 		}
 		for (UIRunningField uiRunningField : uiRunningFields) {
-			if (uiRunningField._mc != null)
-				uiRunningField._mc.init(this);
+			if (uiRunningField._running_mc != null)
+				uiRunningField._running_mc.init(this);
 			uiRunningField.initAfterUI();
 		}
 	}
@@ -537,13 +537,17 @@ public class SWTUIPlatform implements UIPlatform {
 				rf._ic = (T) ric;
 			}
 
-			AbstractModelController rmc = create(field.getModelController());
+			Item mc = field.getModelController();
+			AbstractModelController rmc = create(mc);
 			if (rmc == null) {
 				rmc = createAbstractModelController(field);
-				rmc._uiField = field;
-				rmc._uiPlatform = this;
 			}
-			rf._mc = rmc;
+			
+			rmc._uiField = field;
+			rmc._uiPlatform = this;
+			rmc._desc = mc;
+			
+			rf._running_mc = rmc;
 		}
 
 		rf.createControl(container, hspan_label);
@@ -632,7 +636,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	private AbstractModelController getModelController(UIField field) {
-		return runningField.get(field)._mc;
+		return runningField.get(field)._running_mc;
 	}
 
 	public boolean broadcastSubValueRemoved(IPage page, UIField field, Object removed) {
@@ -722,16 +726,6 @@ public class SWTUIPlatform implements UIPlatform {
 	public void dispose() {
 	}
 
-	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getMessageType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public void setMessage(String newMessage, int newType) {
 		if (_pageSite != null) {
 			IStatusLineManager statusLine = _pageSite.getActionBars().getStatusLineManager();
@@ -760,6 +754,17 @@ public class SWTUIPlatform implements UIPlatform {
 					statusLine.setErrorMessage(null);
 					statusLine.setMessage(null);
 				}
+			}
+		} else if (dialog != null) {
+			if (newMessage != null) {
+				if (newType == UIPlatform.ERROR) {
+					dialog.setErrorMessage(newMessage);
+				} else {
+					dialog.setMessage(newMessage, newType);
+				}
+			} else {
+				dialog.setErrorMessage(null);
+				dialog.setMessage(null);
 			}
 		}
 	}
@@ -1194,11 +1199,11 @@ public class SWTUIPlatform implements UIPlatform {
 		ret._ic = ic;
 		ret._page = page;
 		ret._swtuiplatform = this;
-		ret._mc = defaultMC;
-		if (ret._mc == null) {
-			ret._mc = createAbstractModelController(ret._field);
+		ret._running_mc = defaultMC;
+		if (ret._running_mc == null) {
+			ret._running_mc = createAbstractModelController(ret._field);
 		}
-		ret._mc._uiField = ret._field;
+		ret._running_mc._uiField = ret._field;
 
 		this.runningField.put(ret._field, ret);
 		this.pages.setUIField(attributte, ret._field);
