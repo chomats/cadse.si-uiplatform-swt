@@ -88,6 +88,7 @@ import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.core.ui.view.NewContext;
 import fr.imag.adele.cadse.core.util.ArraysUtil;
 import fr.imag.adele.cadse.core.util.CreatedObjectManager;
+import fr.imag.adele.cadse.core.util.JavaCreatedObject;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ActionController;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_BooleanText;
@@ -179,8 +180,10 @@ public class SWTUIPlatform implements UIPlatform {
 	static ItemType	_groupType;
 
 	
-	static 	CreatedObjectManager.JavaCreatedObject defaultRegister = new CreatedObjectManager.JavaCreatedObject(CreatedObjectManager.DEFAULTObjectMANAGER); 
-	{
+	static 	JavaCreatedObject defaultRegister; 
+	static {
+		defaultRegister = new JavaCreatedObject(CreatedObjectManager.DEFAULTObjectMANAGER); 
+		
 		CreatedObjectManager.registerPlatform(SWTUIPlatform.class, defaultRegister);
 		
 		defaultRegister.register(CadseGCST.DTEXT, DTextUI.class);
