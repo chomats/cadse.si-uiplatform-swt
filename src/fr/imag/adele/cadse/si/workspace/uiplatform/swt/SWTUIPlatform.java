@@ -180,6 +180,7 @@ public class SWTUIPlatform implements UIPlatform {
 	private WizardDialog									dialog;
 	private Map<IPage, UIRunningField[]>					_runningPage	= new HashMap<IPage, UIRunningField[]>();
 	private IPage	_currentPage;
+	protected FieldsWizardPage	_currentWizardPage;
 	static ItemType	_groupType;
 
 	
@@ -235,8 +236,8 @@ public class SWTUIPlatform implements UIPlatform {
 			public void pageChanged(PageChangedEvent event) {
 				Object p = event.getSelectedPage();
 				if (p instanceof FieldsWizardPage) {
-					FieldsWizardPage fwp = (FieldsWizardPage) p;
-					_currentPage = fwp.getPage();
+					_currentWizardPage = (FieldsWizardPage) p;
+					_currentPage = _currentWizardPage.getPage();
 					resetVisualValue(_currentPage);
 					setMessage(null, UIPlatform.ERROR);
 					validateFields(null, _currentPage);
@@ -784,6 +785,7 @@ public class SWTUIPlatform implements UIPlatform {
 					}
 					if (newType == UIPlatform.ERROR) {
 						statusLine.setErrorMessage(newImage, newMessage);
+						
 					} else {
 						statusLine.setMessage(newImage, newMessage);
 					}
@@ -796,12 +798,15 @@ public class SWTUIPlatform implements UIPlatform {
 			if (newMessage != null) {
 				if (newType == UIPlatform.ERROR) {
 					dialog.setErrorMessage(newMessage);
+					if (_currentWizardPage != null) _currentWizardPage.setPageComplete(false);
 				} else {
 					dialog.setMessage(newMessage, newType);
+					if (_currentWizardPage != null) _currentWizardPage.setPageComplete(true);
 				}
 			} else {
 				dialog.setErrorMessage(null);
 				dialog.setMessage(null);
+				if (_currentWizardPage != null) _currentWizardPage.setPageComplete(true);
 			}
 		}
 	}
