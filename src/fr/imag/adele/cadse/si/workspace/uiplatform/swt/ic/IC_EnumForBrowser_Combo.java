@@ -24,14 +24,17 @@ import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
 
 public class IC_EnumForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 
-	private Class<?>	values;
+	private Class<?>	_values;
 
+	@Override
+	public void initAfterUI() {
+		super.initAfterUI();
+		EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
+		_values = enumAttribute.getAttributeType();
+	}
+	
 	public Object[] getValues() {
-		if (values == null) {
-			EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
-			values = enumAttribute.getAttributeType();
-		}
-		return values.getEnumConstants();
+		return _values.getEnumConstants();
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class IC_EnumForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 
 	@Override
 	protected Object[] getSelectableValues() {
-		return values.getEnumConstants();
+		return _values.getEnumConstants();
 	}
 
 	public ItemType getType() {
