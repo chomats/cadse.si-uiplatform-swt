@@ -204,6 +204,12 @@ public class SWTUIPlatform implements UIPlatform {
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_BROWSER_COMBO, IC_EnumForBrowser_Combo.class);
 	}
 	
+
+	public static JavaCreatedObject getPlatform() {
+		return defaultRegister;
+	}
+	
+	
 	/**
 	 * Constructor for FieldsWizardPage.
 	 * 
@@ -1540,7 +1546,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public void setParent(Composite parent2) {
 		parent = parent2;
 	}
-	
+
 	
 
 }
