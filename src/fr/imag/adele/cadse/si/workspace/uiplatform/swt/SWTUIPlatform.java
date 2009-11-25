@@ -1547,6 +1547,12 @@ public class SWTUIPlatform implements UIPlatform {
 		parent = parent2;
 	}
 
+
+	@Override
+	public UIField getField(IAttributeType<?> att) {
+		return pages != null ? pages.getUIField(att) : null;
+	}
+
 	
 
 }
