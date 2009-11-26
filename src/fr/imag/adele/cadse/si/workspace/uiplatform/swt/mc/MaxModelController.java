@@ -21,103 +21,16 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.mc;
 
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.IContentProposal;
-import org.eclipse.jface.fieldassist.IContentProposalProvider;
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-
-import fr.imag.adele.cadse.core.CadseException;
-import fr.imag.adele.cadse.core.Item;
-import fr.imag.adele.cadse.core.attribute.IAttributeType;
-import fr.imag.adele.cadse.core.attribute.IntegerAttributeType;
-import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
-import fr.imag.adele.cadse.core.ui.RuningInteractionController;
-import fr.imag.adele.cadse.core.ui.RunningModelController;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_Integer;
 import fr.imag.adele.cadse.core.ui.UIField;
-import fr.imag.adele.cadse.core.util.Convert;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.IFieldContenProposalProvider;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.Proposal;
 
-final public class MaxModelController extends MC_AttributesItem implements RuningInteractionController,
-		IFieldContenProposalProvider, IContentProposalProvider {
+final public class MaxModelController extends MC_Integer  {
 
-	public static final String		MIN					= "min";
-	public static final String		MAX					= "max";
-	private IntegerAttributeType	minAttribute;
-
-	private boolean					_cannotBeUndefined	= false;
-
-	public MaxModelController() {
-		super();
-	}
-
-	public MaxModelController(boolean cannotBeUndefined) {
-		super();
-
-		this._cannotBeUndefined = cannotBeUndefined;
-	}
-
-	public MaxModelController(IntegerAttributeType min) {
-		super();
-		this.minAttribute = min;
-	}
 
 	public static final String	UNBOUNDED	= "unbounded";
 	static final String			MINUS_1		= "-1";
 
-	@Override
-	public boolean validValue(UIField field, Object value) {
-		return validValueChanged(field, value);
-	}
-
-	@Override
-	public boolean validValueChanged(UIField field, Object value) {
-		try {
-			if (value.equals(UNBOUNDED)) {
-				return false;
-			}
-
-			boolean error = super.validValueChanged(field, value);
-			if (error) {
-				return error;
-			}
-
-			IAttributeType<?> attRef = field.getAttributeDefinition();
-			int max = 1;
-			if (attRef != null) {
-				Integer i = (Integer) attRef.convertTo(value);
-				if (i == null) {
-					if (_cannotBeUndefined) {
-						_uiPlatform.setMessageError("The field '" + attRef.getName() + "' must be defined");
-						return true;
-					}
-					return false;
-				}
-				max = i.intValue();
-			} else {
-				if (value == null || "".equals(value) || "null".equals(value)) {
-					return false;
-				}
-
-				max = Integer.parseInt((String) value);
-			}
-			if (max <= 0) {
-				_uiPlatform.setMessageError("The field '" + getUIField().getName() + "' must be > 0");
-				return true;
-			}
-			int min = getMin(getItem());
-			if (max != -1 && max < min) {
-				_uiPlatform.setMessageError("The field '" + getUIField().getName() + "' must be upper or equal at min value ("
-						+ min + ")");
-				return true;
-			}
-		} catch (NumberFormatException e) {
-			_uiPlatform.setMessageError(e.getMessage());
-			return true;
-		}
-
-		return false;
-	}
+	
 
 	@Override
 	public Object getValue() {
@@ -138,6 +51,22 @@ final public class MaxModelController extends MC_AttributesItem implements Runin
 		}
 		super.notifieValueChanged(field, value);
 	}
+	
+	@Override
+	public boolean validValueChanged(UIField field, Object value) {
+		if (value.equals(MaxModelController.UNBOUNDED)) {
+			return false;
+		}
+		return super.validValueChanged(field, value);
+	}
+	
+	@Override
+	public boolean validValue(UIField field, Object value) {
+		if (value.equals(MaxModelController.UNBOUNDED)) {
+			return false;
+		}
+		return super.validValue(field, value);
+	}
 
 	@Override
 	public Object defaultValue() {
@@ -151,115 +80,6 @@ final public class MaxModelController extends MC_AttributesItem implements Runin
 		return 1;
 	}
 
-	public int getMin() {
-		Item item = getItem();
-		if (this.minAttribute != null) {
-			Object value = item.getAttribute(this.minAttribute);
-			Object realvalue = this.minAttribute.convertTo(value);
-			if (realvalue == null) {
-				return -1;
-			}
-			return ((Integer) realvalue).intValue();
-		}
-		return MaxModelController.getMin(item);
-	}
+	
 
-	public static int getMin(Item item) {
-		Object minStr = item.getAttribute(MIN);
-		if (minStr != null) {
-			try {
-				return Convert.toInt(minStr, null);
-			} catch (NumberFormatException e) {
-
-			}
-		}
-		try {
-			item.setAttribute(MIN, 0);
-		} catch (CadseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-
-	}
-
-	public static int getMax(Item item) {
-
-		Object maxStr = item.getAttribute(MAX);
-		if (maxStr != null) {
-			try {
-				return Convert.toInt(maxStr, null);
-			} catch (NumberFormatException e) {
-
-			}
-		}
-		try {
-			item.setAttribute(MAX, -1);
-		} catch (CadseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
-
-	}
-
-	public char[] getAutoActivationCharacters() {
-		IAttributeType<?> attRef = getUIField().getAttributeDefinition();
-		if (attRef != null && attRef.canBeUndefined()) {
-			return new char[] { 'u', 'U', 'n' };
-		}
-		return new char[] { 'u', 'U' };
-	}
-
-	public String getCommandId() {
-		return ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
-	}
-
-	public IContentProposalProvider getContentProposalProvider() {
-		return this;
-	}
-
-	public int getProposalAcceptanceStyle() {
-		return ContentProposalAdapter.PROPOSAL_REPLACE;
-	}
-
-	public Object setControlContents(String newValue) {
-		return newValue;
-	}
-
-	public Object getValueFromProposal(Proposal proposal) {
-		return proposal.getContent();
-	}
-
-	public IContentProposal[] getProposals(String contents, int position) {
-
-		Proposal proposal_value_unbounded = new Proposal(UNBOUNDED, UNBOUNDED, "no limit value", UNBOUNDED.length());
-		if (position == 1 && contents.length() >= 1 && (contents.charAt(0) == 'u' || contents.charAt(0) == 'U')) {
-			return new IContentProposal[] { proposal_value_unbounded };
-		}
-		IAttributeType<?> attRef = getUIField().getAttributeDefinition();
-		Proposal proposal_value_1 = new Proposal("1", "1", "singleton value", 1);
-		if (attRef != null && attRef.canBeUndefined()) {
-			Proposal proposal_value_null = new Proposal("null", "null", "null value", 4);
-			if (position == 1 && contents.length() >= 1 && (contents.charAt(0) == 'n' || contents.charAt(0) == 'N')) {
-				return new IContentProposal[] { proposal_value_null };
-			}
-			return new IContentProposal[] { proposal_value_null, proposal_value_1, proposal_value_unbounded };
-		}
-
-		return new IContentProposal[] { proposal_value_1, proposal_value_unbounded };
-	}
-
-	public RunningModelController getModelController() {
-		return this;
-	}
-
-	public void setModelController(RunningModelController mc) {
-
-	}
-
-	@Override
-	public void init() throws CadseException {
-		
-	}
 }
