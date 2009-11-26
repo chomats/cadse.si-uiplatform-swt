@@ -11,7 +11,7 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 	IAttributeType<Integer> maxAttribute = CadseGCST.LINK_at_MAX_;
 	
 	@Override
-	public boolean validValueChanged(UIField field, Object value) {
+	public boolean validValue(UIField field, Object value) {
 		try {
 			IAttributeType<?> attRef = field.getAttributeDefinition();
 			if (attRef == minAttribute) {
@@ -75,7 +75,8 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 	}
 	
 	public int getMin() {
-		Integer value = _uiPlatform.getItem().getAttribute(this.minAttribute);
+		UIField minfield = _uiPlatform.getField(minAttribute);
+		Integer value = minAttribute.convertTo(_uiPlatform.getVisualValue(minfield));
 		if (value == null) {
 			return 0;
 		}
@@ -84,7 +85,8 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 
 
 	public int getMax() {
-		Integer maxStr = _uiPlatform.getItem().getAttribute(maxAttribute);
+		UIField maxField = _uiPlatform.getField(maxAttribute);
+		Integer maxStr = maxAttribute.convertTo(_uiPlatform.getVisualValue(maxField));
 		if (maxStr != null) {
 			try {
 				return Convert.toInt(maxStr, null);

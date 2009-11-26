@@ -167,6 +167,11 @@ public class SWTUIPlatform implements UIPlatform {
 		public IAttributeType<?>[] getChildren() {
 			return _childrenAtt;
 		}
+		
+		@Override
+		public T convertTo(Object v) {
+			return null;
+		}
 	}
 
 	private Map<UIField, Label>								labels			= new HashMap<UIField, Label>();
@@ -1034,8 +1039,14 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public Object getVisualValue(UIField uiField) {
-		UIRunningField rf = runningField.get(uiField);
-		if (rf != null) {
+		UIRunningField rf;
+		UIRunningField rffirst = rf = runningField.get(uiField);
+		while (rf  != null) {
+			if (rf._page == _currentPage)
+				return rf.getVisualValue();
+			rf = rf._next;
+		}
+		if (_currentPage == null && rffirst != null) {
 			return rf.getVisualValue();
 		}
 		return null;
