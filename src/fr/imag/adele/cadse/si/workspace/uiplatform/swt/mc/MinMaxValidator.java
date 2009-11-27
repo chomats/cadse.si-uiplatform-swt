@@ -55,7 +55,7 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 				}
 				max = i.intValue();
 				
-				if (max <= 0) {
+				if (max <= 0 && max !=-1) {
 					_uiPlatform.setMessageError("The field '" + field.getName() + "' must be > 0");
 					return true;
 				}
