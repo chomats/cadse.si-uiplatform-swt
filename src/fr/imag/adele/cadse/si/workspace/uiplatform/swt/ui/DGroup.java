@@ -24,6 +24,7 @@ public class DGroup<IC extends RuningInteractionController> extends DAbstractFie
 		if (!_field.getFlag(Item.UI_NO_BORDER)) {
 			style |= SWT.BORDER;
 		}
+		gridData.horizontalSpan = hspan;
 		int column = _field.getAttribute(CadseGCST.DGROUP_at_COLUMN_);
 		makeColumnsEqualWidth = _field.getAttributeWithDefaultValue(CadseGCST.DGROUP_at_MAKE_COLUMNS_EQUAL_WIDTH_, false);
 		

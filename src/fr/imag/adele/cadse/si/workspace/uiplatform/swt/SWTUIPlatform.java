@@ -115,6 +115,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckedTreeUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DComboUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGroup;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DListUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSashFormUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSectionUI;
@@ -187,6 +188,7 @@ public class SWTUIPlatform implements UIPlatform {
 			if (ret == null) {
 				ret = new GroupInfo();
 				ret._g = g;
+				_groupToGroupInfo.put(g, ret);
 			}
 			return ret;
 		}
@@ -233,7 +235,7 @@ public class SWTUIPlatform implements UIPlatform {
 		defaultRegister.register(CadseGCST.DCOMBO, DComboUI.class);		
 		defaultRegister.register(CadseGCST.DLIST, DListUI.class);
 		defaultRegister.register(CadseGCST.DTREE, DTreeUI.class);
-		defaultRegister.register(CadseGCST.DGROUP, DGridUI.class);
+		defaultRegister.register(CadseGCST.DGROUP, DGroup.class);
 		defaultRegister.register(CadseGCST.IC_LINK_FOR_BROWSER_COMBO_LIST, IC_LinkForBrowser_Combo_List.class);
 		defaultRegister.register(CadseGCST.IC_BOOLEAN_TEXT, IC_BooleanText.class);
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_LIST, IC_EnumForList.class);
@@ -334,22 +336,24 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	public UIField[] getFields(HierarchicPage page) {
 		IPage[] blocks = page.getBlocks();
-		UIFieldImpl[] ret = new UIFieldImpl[blocks.length];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new UIFieldImpl(CadseGCST.DSECTION, CompactUUID.randomUUID());
-			ret[i].setPositionLabel(EPosLabel.none);
+		ArrayList<UIField> ret = new ArrayList<UIField>();
+		for (int i = 0; i < blocks.length; i++) {
 			IAttributeType<?>[] attributtes = filterGroup(page, blocks[i].getAttributes());
 			if (attributtes.length == 0) continue;
 			
-			ret[i]._attributeRef = createFictifAttributte("#"+blocks[i].getName(), attributtes);
+			UIFieldImpl	uifield = new UIFieldImpl(CadseGCST.DSECTION, CompactUUID.randomUUID());
+			uifield.setPositionLabel(EPosLabel.none);
+			
+			uifield._attributeRef = createFictifAttributte("#"+blocks[i].getName(), attributtes);
 			DSectionUI<?> rF = new DSectionUI<RuningInteractionController>();
-			rF._field = ret[i];
+			rF._field = uifield;
 			rF._page = page;
 			rF._swtuiplatform = this;
-			ret[i].setLabel(blocks[i].getLabel());
-			runningField.put(ret[i], rF);
+			uifield.setLabel(blocks[i].getLabel());
+			runningField.put(uifield, rF);
+			ret.add(uifield);
 		}
-		return ret;
+		return (UIField[]) ret.toArray(new UIField[ret.size()]);
 	}
 
 	private Map<IAttributeType<?>, GroupOfAttributes> getGroupMapGroup() {
@@ -371,7 +375,7 @@ public class SWTUIPlatform implements UIPlatform {
 		List<IAttributeType<?>> attrs = new ArrayList<IAttributeType<?>>();
 		Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
 		PageInfo pi = getPageInfo(p);
-		for (IAttributeType<?> a : attrs) {
+		for (IAttributeType<?> a : attributes) {
 			if (gmaps.containsKey(a)) {
 				GroupOfAttributes g = gmaps.get(a);
 				GroupInfo gi = pi.getGroupInfo(g);
@@ -439,7 +443,7 @@ public class SWTUIPlatform implements UIPlatform {
 			GroupInfo gi = pi.getGroupInfo((GroupOfAttributes) attributeDefinition);
 			return (IAttributeType<?>[]) gi._attrs.toArray(new IAttributeType<?>[gi._attrs.size()]);
 		}
-		return attributeDefinition.getChildren();
+		return filterGroup(p, attributeDefinition.getChildren());
 	}
 
 	public Composite createFieldsControl(IPage page, UIRunningField<?> ui, Composite container, UIField[] fields,
