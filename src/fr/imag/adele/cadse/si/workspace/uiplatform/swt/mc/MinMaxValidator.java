@@ -45,7 +45,7 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 				}
 			} else if (attRef == maxAttribute) {
 				int max = 0;
-				Integer i = (Integer) attRef.convertTo(value);
+				Integer i = (Integer) getMax2();
 				if (i == null) {
 					if (attRef.cannotBeUndefined()) {
 						_uiPlatform.setMessageError("The field '" + attRef.getName() + "' must be defined");
@@ -95,6 +95,13 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 			}
 		}
 		return -1;
+	}
+	
+	public Integer getMax2() {
+		UIField maxField = _uiPlatform.getField(maxAttribute);
+		Integer maxStr = maxAttribute.convertTo(_uiPlatform.getModelValue(maxField));
+		
+		return maxStr;
 	}
 	
 }

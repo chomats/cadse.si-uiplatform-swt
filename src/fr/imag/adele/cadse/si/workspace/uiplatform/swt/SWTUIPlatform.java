@@ -1156,7 +1156,7 @@ public class SWTUIPlatform implements UIPlatform {
 			rf = rf._next;
 		}
 		if (_currentPage == null && rffirst != null) {
-			return rf.getModelValue();
+			return rffirst.getModelValue();
 		}
 		return null;
 	}

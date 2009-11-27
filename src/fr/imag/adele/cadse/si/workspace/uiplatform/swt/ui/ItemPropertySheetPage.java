@@ -27,9 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.Page;
-import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -38,10 +36,12 @@ import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.LinkType;
+import fr.imag.adele.cadse.core.ui.IFieldDescription;
+import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
-import fr.imag.adele.cadse.eclipse.view.AbstractCadseView;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
-import fr.imag.adele.fede.workspace.as.eclipse.SWTService.MyPropertySheetPage;
 
 /**
  * The standard implementation of property sheet page which presents a table of
@@ -70,24 +70,33 @@ import fr.imag.adele.fede.workspace.as.eclipse.SWTService.MyPropertySheetPage;
  * 
  * @see IPropertySource
  */
-public class FieldsPropertySheetPage extends Page implements IPropertySheetPage, SWTService.MyPropertySheetPage {
+public class ItemPropertySheetPage extends Page implements SWTService.MyPropertySheetPage {
 
-	IPropertySheetPage		current;;
-	Item					lastItem;
-	PageBook				pageBook		= null;
-	SWTService _service;
-	private MyPropertySheetPage	propertySource;
+	private Pages			lastItemPages;
+	private SWTUIPlatform	_swtuiPlatform;
 
-	public FieldsPropertySheetPage(SWTService swt) {
-		_service = swt;
+	private IItemNode 		_node;
+	private AbstractCadseTreeViewUI	_view;
+	private Composite	_control;
+
+	public ItemPropertySheetPage(AbstractCadseTreeViewUI view, IItemNode node) {
+		_view = view;
+		_node = node;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
-		pageBook = new PageBook(parent, 0);
-		pageBook.setLayoutData(new GridData(GridData.FILL_BOTH));
+		try {
+			_control = createControl2(parent);
+		} catch (CadseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (_control == null)
+			_control = createEmptyComposite(parent);
 	}
 
+	
 
 	protected Composite createEmptyComposite(Composite parent) {
 		Composite container = new Composite(parent, SWT.NO_BACKGROUND);
@@ -105,12 +114,21 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage,
 
 	@Override
 	public Control getControl() {
-		return pageBook;
+		return _control;
 	}
 
 	@Override
 	public void setFocus() {
-		pageBook.setFocus();
+		_control.setFocus();
+	}
+
+	private LinkType getContainmentLinkTypeParent(Item item) {
+		for (Link l : item.getIncomingLinks()) {
+			if (l.getLinkType().isPart()) {
+				return l.getLinkType();
+			}
+		}
+		return null;
 	}
 
 	protected IItemNode descFormSel(ISelection selection) {
@@ -127,40 +145,50 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage,
 		return iiv;
 	}
 
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		AbstractCadseTreeViewUI view = null;
-		if (part instanceof AbstractCadseView) {
-			view = ((AbstractCadseView) part).getViewController();
-		}
-		IItemNode desc = descFormSel(selection);
-		try {
-			setController(view, desc);
-		} catch (CadseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	private void setController(AbstractCadseTreeViewUI view, IItemNode itemNode) throws CadseException, PartInitException {
-		if (propertySource != null)
-			propertySource.dispose();
+	private Composite createControl2(Composite parent) throws CadseException  {
+		if (_view == null) {
+			return null;
+		}
+		if (_node == null) {
+			return null;
+		}
+		Item item = _node.getItem();
+		if (item == null || !item.isResolved()) {
+			return null;
+		}
+
 		
-		propertySource = _service.createPropertySheetPage(view, itemNode);
-		propertySource.init(getSite());
-		propertySource.createControl(pageBook);
-		pageBook.showPage(propertySource.getControl());
+
+		FilterContext fc = new FilterContext(item, null, item.getType(), _view, null, null, _node, null);
 		
+		lastItemPages = item.getModificationPages(fc);
+		_swtuiPlatform = new SWTUIPlatform();
+		_swtuiPlatform.setPages(lastItemPages);
+		_swtuiPlatform.setParent(parent);
+		_swtuiPlatform.setSite(getSite());
+		_swtuiPlatform.setItem(item);
+		_swtuiPlatform.setVariable(IFieldDescription.PARENT_CONTEXT, item.getPartParent());
+		_swtuiPlatform.setVariable(IFieldDescription.INCOMING_LINK_TYPE, getContainmentLinkTypeParent(item));
+
+		_swtuiPlatform.setFilterContext(fc);
+		
+		return _swtuiPlatform.createControlPage(parent);
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-		pageBook.dispose();
-		if (propertySource != null)
-			propertySource.dispose();
+		
+		if (_swtuiPlatform != null) {
+			_swtuiPlatform.dispose();
+		}
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

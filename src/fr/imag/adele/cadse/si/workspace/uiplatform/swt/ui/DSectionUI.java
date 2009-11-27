@@ -22,7 +22,7 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 	@Override
 	public void createControl(Composite container, int hspan) {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		int style = ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE;
+		int style = ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED;
 		if (!_field.getFlag(Item.UI_NO_BORDER)) {
 			style |= SWT.BORDER;
 		}
@@ -31,7 +31,7 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 		_section.setData(UIField.CADSE_MODEL_KEY, _field);
 		_section.setLayoutData(gridData);
 		_section.setText(getLabel());
-		_section.setExpanded(true);
+		//_section.setExpanded(true);
 		
 		Composite client = new Composite(_section, 0);
 

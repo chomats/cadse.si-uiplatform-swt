@@ -10,17 +10,21 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import fede.workspace.tool.view.WSPlugin;
+import fede.workspace.tool.view.node.ItemNode;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseRuntime;
 import fr.imag.adele.cadse.core.IItemManager;
+import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.ui.Pages;
 import fr.imag.adele.cadse.core.ui.view.NewContext;
+import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.CadseDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FieldsPropertySheetPage;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.ItemPropertySheetPage;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 
 public class SWTServiceImpl implements SWTService {
@@ -96,8 +100,8 @@ public class SWTServiceImpl implements SWTService {
 	}
 
 	@Override
-	public IPropertySheetPage createPropertySheetPage() {
-		return new FieldsPropertySheetPage(new SWTUIPlatform());
+	public MyPropertySheetPage createPropertySheetPage(Object view, IItemNode node) {
+		return new ItemPropertySheetPage((AbstractCadseTreeViewUI) view, node);
 	}
 
 	public static SWTService getInstance() {
