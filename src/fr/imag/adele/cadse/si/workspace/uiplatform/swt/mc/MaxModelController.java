@@ -53,6 +53,14 @@ final public class MaxModelController extends MC_Integer  {
 	}
 	
 	@Override
+	public Object visualToModel(Object visualValue) {
+		if (visualValue.equals(UNBOUNDED)) {
+			visualValue = -1;
+		}
+		return visualValue;
+	}
+	
+	@Override
 	public boolean validValueChanged(UIField field, Object value) {
 		if (value.equals(MaxModelController.UNBOUNDED)) {
 			return false;

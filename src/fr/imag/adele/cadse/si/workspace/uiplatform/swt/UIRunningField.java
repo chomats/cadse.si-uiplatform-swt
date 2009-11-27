@@ -322,4 +322,11 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 		return 1;
 	}
 
+	public Object getModelValue() {
+		Object ret = getVisualValue();
+		if (_running_mc != null)
+			ret = _running_mc.visualToModel(ret);
+		return ret;
+	}
+
 }

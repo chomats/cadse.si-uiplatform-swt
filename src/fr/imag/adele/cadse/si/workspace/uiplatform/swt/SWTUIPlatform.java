@@ -20,6 +20,7 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -373,13 +374,12 @@ public class SWTUIPlatform implements UIPlatform {
 
 	private IAttributeType<?>[] filterGroup(IPage p, IAttributeType<?>[] attributes) {
 		List<IAttributeType<?>> attrs = new ArrayList<IAttributeType<?>>();
-		Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
 		PageInfo pi = getPageInfo(p);
+		Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
 		for (IAttributeType<?> a : attributes) {
 			if (gmaps.containsKey(a)) {
 				GroupOfAttributes g = gmaps.get(a);
 				GroupInfo gi = pi.getGroupInfo(g);
-				gi._attrs.add(a);
 				if (gi.added == false) {
 					gi.added = true;
 					attrs.add(g);
@@ -396,6 +396,23 @@ public class SWTUIPlatform implements UIPlatform {
 			ret = new PageInfo();
 			ret._p = p;
 			_pageToPageInfo.put(p, ret);
+			
+			Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
+			HashSet<IAttributeType<?>> allAttributes = new HashSet<IAttributeType<?>>();
+			p.getAllAttributes(allAttributes);
+			for (IAttributeType<?> a : allAttributes) {
+				if (gmaps.containsKey(a)) {
+					GroupOfAttributes g = gmaps.get(a);
+					GroupInfo gi = ret.getGroupInfo(g);
+					if (gi._attrs.size() > 0) continue;
+					
+					for (IAttributeType<?> ga : g.getAttributes()) {
+						if (allAttributes.contains(ga)) {
+							gi._attrs.add(ga);
+						}
+					}
+				} 
+			}
 		}
 		return ret;
 	}
@@ -1128,16 +1145,18 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	@Override
-	public Object getVisualValue(UIField uiField) {
+	public Object getModelValue(UIField uiField) {
 		UIRunningField rf;
 		UIRunningField rffirst = rf = runningField.get(uiField);
+		
 		while (rf  != null) {
-			if (rf._page == _currentPage)
-				return rf.getVisualValue();
+			if (rf._page == _currentPage) {
+				return rf.getModelValue();
+			}
 			rf = rf._next;
 		}
 		if (_currentPage == null && rffirst != null) {
-			return rf.getVisualValue();
+			return rf.getModelValue();
 		}
 		return null;
 	}

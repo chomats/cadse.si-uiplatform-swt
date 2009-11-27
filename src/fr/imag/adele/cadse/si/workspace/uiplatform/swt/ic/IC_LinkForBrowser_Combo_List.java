@@ -298,7 +298,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	@Override
 	public Object fromString(String value) {
 
-		Link v = (Link) _uiPlatform.getVisualValue(getUIField());
+		Link v = (Link) _uiPlatform.getModelValue(getUIField());
 		if (value == null) {
 			throw new CadseIllegalArgumentException("Argument value is null");
 		}
@@ -389,7 +389,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 
 	@Override
 	public boolean moveDown(Object[] object) {
-		List<Object> values = (List<Object>) _uiPlatform.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform.getModelValue(getUIField());
 		int end = values.size() - 1;
 		for (Object o : object) {
 			Link l = (Link) o;
@@ -412,7 +412,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 
 	@Override
 	public boolean moveUp(Object[] object) {
-		List<Object> values = (List<Object>) _uiPlatform.getVisualValue(getUIField());
+		List<Object> values = (List<Object>) _uiPlatform.getModelValue(getUIField());
 		for (Object o : object) {
 			Link l = (Link) o;
 			int index = values.indexOf(o);

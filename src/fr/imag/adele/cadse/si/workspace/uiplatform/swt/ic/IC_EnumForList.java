@@ -46,7 +46,7 @@ public class IC_EnumForList extends IC_AbstractForList {
 
 	@Override
 	public String canAddObject(Object[] object) {
-		Object visualValue = _uiPlatform.getVisualValue(getUIField());
+		Object visualValue = _uiPlatform.getModelValue(getUIField());
 
 		if (visualValue == null || !(visualValue instanceof List) || object == null) {
 			return null;

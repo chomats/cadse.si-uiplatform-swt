@@ -76,7 +76,7 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 	
 	public int getMin() {
 		UIField minfield = _uiPlatform.getField(minAttribute);
-		Integer value = minAttribute.convertTo(_uiPlatform.getVisualValue(minfield));
+		Integer value = minAttribute.convertTo(_uiPlatform.getModelValue(minfield));
 		if (value == null) {
 			return 0;
 		}
@@ -86,7 +86,7 @@ public class MinMaxValidator extends AbstractUIRunningValidator {
 
 	public int getMax() {
 		UIField maxField = _uiPlatform.getField(maxAttribute);
-		Integer maxStr = maxAttribute.convertTo(_uiPlatform.getVisualValue(maxField));
+		Integer maxStr = maxAttribute.convertTo(_uiPlatform.getModelValue(maxField));
 		if (maxStr != null) {
 			try {
 				return Convert.toInt(maxStr, null);

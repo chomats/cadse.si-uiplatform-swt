@@ -74,7 +74,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 			return null;
 		}
 
-		List v = (List) _uiPlatform.getVisualValue(getUIField());
+		List v = (List) _uiPlatform.getModelValue(getUIField());
 		for (int i = 0; i < object.length; i++) {
 			if (v.contains(object[i])) {
 				return "Cannot add the same value twice";
@@ -161,7 +161,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 	@Override
 	public boolean moveDown(Object[] object) {
 
-		Object v = _uiPlatform.getVisualValue(getUIField());
+		Object v = _uiPlatform.getModelValue(getUIField());
 		if (v instanceof ArrayList) {
 			ArrayList array = (ArrayList) v;
 			boolean modified = false;
@@ -184,7 +184,7 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 
 	@Override
 	public boolean moveUp(Object[] object) {
-		Object v = _uiPlatform.getVisualValue(getUIField());
+		Object v = _uiPlatform.getModelValue(getUIField());
 		if (v instanceof ArrayList) {
 			ArrayList array = (ArrayList) v;
 			boolean modified = false;
