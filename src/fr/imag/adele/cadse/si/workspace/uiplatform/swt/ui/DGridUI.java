@@ -29,7 +29,7 @@ public class DGridUI<IC extends RuningInteractionController> extends DAbstractFi
 
 		GridLayout gridLayout = new GridLayout(0, makeColumnsEqualWidth);
 
-		_swtuiplatform.createChildrenControl(this, composite, gridLayout);
+		_swtuiplatform.createChildrenControl(_page, this, composite, gridLayout);
 	}
 
 	@Override

@@ -22,9 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogPage;
@@ -61,6 +63,7 @@ import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.WorkspaceListener;
 import fr.imag.adele.cadse.core.attribute.BooleanAttributeType;
+import fr.imag.adele.cadse.core.attribute.GroupOfAttributes;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.attribute.IntegerAttributeType;
 import fr.imag.adele.cadse.core.delta.CreateOperation;
@@ -130,10 +133,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 public class SWTUIPlatform implements UIPlatform {
 
-	private final class FictifAttribute<T> extends AttributeType implements IAttributeType<T> {
+	static private class FictifAttribute<T> extends AttributeType implements IAttributeType<T> {
 		private IAttributeType<?>[]	_childrenAtt	= null;
 
-		private FictifAttribute(CompactUUID id, String name, int flag, IAttributeType<?>[]	children) {
+		FictifAttribute(CompactUUID id, String name, int flag, IAttributeType<?>[]	children) {
 			super(id, name, flag);
 			if (children != null && children.length != 0) {
 				for (IAttributeType<?> a : children) {
@@ -150,7 +153,8 @@ public class SWTUIPlatform implements UIPlatform {
 
 		@Override
 		public UIField generateDefaultField() {
-			return new UIFieldImpl(CadseGCST.DISPLAY, newID(), this, getName(), EPosLabel.defaultpos, null, null);
+			return new UIFieldImpl(CadseGCST.DISPLAY, 
+					CompactUUID.randomUUID(), this, getName(), EPosLabel.defaultpos, null, null);
 		}
 
 		@Override
@@ -173,7 +177,28 @@ public class SWTUIPlatform implements UIPlatform {
 			return null;
 		}
 	}
-
+	
+	static private class PageInfo {
+		protected Map<GroupOfAttributes, GroupInfo> _groupToGroupInfo 	= new HashMap<GroupOfAttributes, GroupInfo>();
+		public IPage	_p;
+		
+		public GroupInfo getGroupInfo(GroupOfAttributes g) {
+			GroupInfo ret = _groupToGroupInfo.get(g);
+			if (ret == null) {
+				ret = new GroupInfo();
+				ret._g = g;
+			}
+			return ret;
+		}
+	}
+	
+	static private class GroupInfo {
+		GroupOfAttributes _g;
+		UIField _f;
+		ArrayList<IAttributeType<?>> _attrs = new ArrayList<IAttributeType<?>>();
+		boolean added = false;
+		
+	}
 	private Map<UIField, Label>								labels			= new HashMap<UIField, Label>();
 	private Pages											pages;
 	private Map<IAttributeType<?>, UIRunningValidator[]>	_listen			= new HashMap<IAttributeType<?>, UIRunningValidator[]>();
@@ -186,7 +211,12 @@ public class SWTUIPlatform implements UIPlatform {
 	private Map<IPage, UIRunningField[]>					_runningPage	= new HashMap<IPage, UIRunningField[]>();
 	private IPage	_currentPage;
 	protected FieldsWizardPage	_currentWizardPage;
-	static ItemType	_groupType;
+	
+	
+	protected Map<IAttributeType<?>, GroupOfAttributes> _attToGroup 	= null;
+	protected Map<IPage, PageInfo> _pageToPageInfo 	= new HashMap<IPage, PageInfo>();
+	
+
 
 	
 	static 	JavaCreatedObject defaultRegister; 
@@ -203,6 +233,7 @@ public class SWTUIPlatform implements UIPlatform {
 		defaultRegister.register(CadseGCST.DCOMBO, DComboUI.class);		
 		defaultRegister.register(CadseGCST.DLIST, DListUI.class);
 		defaultRegister.register(CadseGCST.DTREE, DTreeUI.class);
+		defaultRegister.register(CadseGCST.DGROUP, DGridUI.class);
 		defaultRegister.register(CadseGCST.IC_LINK_FOR_BROWSER_COMBO_LIST, IC_LinkForBrowser_Combo_List.class);
 		defaultRegister.register(CadseGCST.IC_BOOLEAN_TEXT, IC_BooleanText.class);
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_LIST, IC_EnumForList.class);
@@ -224,9 +255,6 @@ public class SWTUIPlatform implements UIPlatform {
 	public SWTUIPlatform(Pages desc, Composite parent) {
 		this.pages = desc;
 		this.parent = parent;
-		
-		
-		
 	}
 
 	public SWTUIPlatform() {
@@ -308,45 +336,85 @@ public class SWTUIPlatform implements UIPlatform {
 		IPage[] blocks = page.getBlocks();
 		UIFieldImpl[] ret = new UIFieldImpl[blocks.length];
 		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new UIFieldImpl(getCompositeType(), CompactUUID.randomUUID());
+			ret[i] = new UIFieldImpl(CadseGCST.DSECTION, CompactUUID.randomUUID());
 			ret[i].setPositionLabel(EPosLabel.none);
-			ret[i]._attributeRef = createFictifAttributte("#"+blocks[i].getName(), blocks[i].getAttributes());
+			IAttributeType<?>[] attributtes = filterGroup(page, blocks[i].getAttributes());
+			if (attributtes.length == 0) continue;
+			
+			ret[i]._attributeRef = createFictifAttributte("#"+blocks[i].getName(), attributtes);
 			DSectionUI<?> rF = new DSectionUI<RuningInteractionController>();
 			rF._field = ret[i];
 			rF._page = page;
 			rF._swtuiplatform = this;
 			ret[i].setLabel(blocks[i].getLabel());
 			runningField.put(ret[i], rF);
-			if (i == 0) {
-				
+		}
+		return ret;
+	}
+
+	private Map<IAttributeType<?>, GroupOfAttributes> getGroupMapGroup() {
+		if (_attToGroup != null) return _attToGroup;
+		_attToGroup = new HashMap<IAttributeType<?>, GroupOfAttributes>();
+		
+		for (GroupOfAttributes g : pages.getGroupOfAttributes()) {
+			IAttributeType<?>[] attrs = g.getAttributes();
+			if (attrs == null) continue;
+			for (IAttributeType<?> iAttributeType : attrs) {
+				if (_attToGroup.containsKey(iAttributeType)) continue;
+				_attToGroup.put(iAttributeType, g);
 			}
+		}
+		return _attToGroup;
+	}
+
+	private IAttributeType<?>[] filterGroup(IPage p, IAttributeType<?>[] attributes) {
+		List<IAttributeType<?>> attrs = new ArrayList<IAttributeType<?>>();
+		Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
+		PageInfo pi = getPageInfo(p);
+		for (IAttributeType<?> a : attrs) {
+			if (gmaps.containsKey(a)) {
+				GroupOfAttributes g = gmaps.get(a);
+				GroupInfo gi = pi.getGroupInfo(g);
+				gi._attrs.add(a);
+				if (gi.added == false) {
+					gi.added = true;
+					attrs.add(g);
+				}
+			} else 
+				attrs.add(a);
+		}
+		return (IAttributeType<?>[]) attrs.toArray(new IAttributeType<?>[attrs.size()]);
+	}
+	
+	private PageInfo getPageInfo(IPage p) {
+		PageInfo ret = _pageToPageInfo.get(p);
+		if (ret == null) {
+			ret = new PageInfo();
+			ret._p = p;
+			_pageToPageInfo.put(p, ret);
 		}
 		return ret;
 	}
 
 
-	private ItemType getCompositeType() {
-		if (_groupType == null) {
-			CadseRuntime cadseName = CadseCore.getLogicalWorkspace().getCadseRuntime()[0];
-			_groupType = CadseCore.getLogicalWorkspace().createItemType(null, cadseName, null, -1, CompactUUID.randomUUID(), "DGroup", "DGroup", false, false, new DefaultItemManager());
-		}
-		return _groupType;
-	}
-
 	public UIField[] getFields(IPage page) {
 		if (page instanceof HierarchicPage) {
 			return getFields(((HierarchicPage)page));
 		} else {
-			IAttributeType<?>[] attrs = page.getAttributes();
-			return getFields(attrs);
+			return getFields(page, filterGroup(page, page.getAttributes()));
 		}
 	}
 
-	private UIField[] getFields(IAttributeType<?>[] attrs) {
+	private UIField[] getFields(IPage page, IAttributeType<?>[] attrs) {
 		List<UIField> fields = new ArrayList<UIField>();
 		for (IAttributeType<?> at : attrs) {
 			if (at == null) {
 				throw new NullPointerException();
+			}
+			
+			if (at instanceof GroupOfAttributes) {
+				fields.add(at.generateDefaultField());
+				continue;
 			}
 			UIField f = pages.getUIField(at);
 			if (f != null) {
@@ -356,9 +424,22 @@ public class SWTUIPlatform implements UIPlatform {
 		return fields.toArray(new UIField[fields.size()]);
 	}
 
-	public void createChildrenControl(UIRunningField<?> ui, Composite container, GridLayout layout) {
-		createFieldsControl(ui._page, ui, container, getFields(ui._field.getAttributeDefinition().getChildren()),
+	public void createChildrenControl(IPage page, UIRunningField<?> ui, Composite container, GridLayout layout) {
+		createFieldsControl(ui._page, ui, container, getFields(page, getAttributes(page, ui)),
 				layout);
+	}
+
+
+	private IAttributeType<?>[] getAttributes(IPage p, UIRunningField<?> ui) {
+		
+		UIField field = ui._field;
+		IAttributeType<?> attributeDefinition = field.getAttributeDefinition();
+		if (field.getType() ==CadseGCST.DGROUP && attributeDefinition.getType() == CadseGCST.GROUP_OF_ATTRIBUTES) {
+			PageInfo pi = getPageInfo(p);
+			GroupInfo gi = pi.getGroupInfo((GroupOfAttributes) attributeDefinition);
+			return (IAttributeType<?>[]) gi._attrs.toArray(new IAttributeType<?>[gi._attrs.size()]);
+		}
+		return attributeDefinition.getChildren();
 	}
 
 	public Composite createFieldsControl(IPage page, UIRunningField<?> ui, Composite container, UIField[] fields,
@@ -387,6 +468,7 @@ public class SWTUIPlatform implements UIPlatform {
 		layout.numColumns = maxHspan;
 		layout.verticalSpacing = 5; // 9
 
+		
 		ArrayList<UIRunningField> children = new ArrayList<UIRunningField>(fields.length);
 		int i = 0;
 		for (UIField mf : fields) {
@@ -1312,7 +1394,7 @@ public class SWTUIPlatform implements UIPlatform {
 		return ret;
 	}
 
-	protected IAttributeType<?> createFictifAttributte(String name, IAttributeType<?>...children) {
+	protected FictifAttribute<?> createFictifAttributte(String name, IAttributeType<?>...children) {
 		return new FictifAttribute(newID(), name, 0, children);
 	}
 

@@ -5,40 +5,36 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
+import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 
-public class DSectionUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
+public class DGroup<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
+	Composite	composite;
 	boolean		makeColumnsEqualWidth	= false;
-	private Section	_section;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		int style = ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE;
+		int style = SWT.NULL;
 		if (!_field.getFlag(Item.UI_NO_BORDER)) {
 			style |= SWT.BORDER;
 		}
-		_section = _swtuiplatform.getToolkit().createSection(container, style);
+		int column = _field.getAttribute(CadseGCST.DGROUP_at_COLUMN_);
+		makeColumnsEqualWidth = _field.getAttributeWithDefaultValue(CadseGCST.DGROUP_at_MAKE_COLUMNS_EQUAL_WIDTH_, false);
 		
-		_section.setData(UIField.CADSE_MODEL_KEY, _field);
-		_section.setLayoutData(gridData);
-		_section.setText(getLabel());
-		_section.setExpanded(true);
+		composite = _swtuiplatform.getToolkit().createGroup(container, getLabel());
 		
-		Composite client = new Composite(_section, 0);
+		composite.setData(UIField.CADSE_MODEL_KEY, _field);
+		composite.setLayoutData(gridData);
 
-		GridLayout gridLayout = new GridLayout(0, makeColumnsEqualWidth);
+		GridLayout gridLayout = new GridLayout(column, makeColumnsEqualWidth);
 
-		_swtuiplatform.createChildrenControl(_page, this, client, gridLayout);
-		_section.setClient(client);
+		_swtuiplatform.createChildrenControl(_page, this, composite, gridLayout);
 	}
 
 	@Override
@@ -64,7 +60,7 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 
 	@Override
 	public Control getMainControl() {
-		return this._section;
+		return this.composite;
 	}
 
 	@Override

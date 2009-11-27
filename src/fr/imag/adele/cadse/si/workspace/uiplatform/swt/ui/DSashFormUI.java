@@ -26,7 +26,7 @@ public class DSashFormUI<IC extends RuningInteractionController> extends DAbstra
 		sashForm.setData(UIField.CADSE_MODEL_KEY, _field);
 
 		GridLayout gridLayout = new GridLayout(hspan, false);
-		_swtuiplatform.createChildrenControl(this, sashForm, gridLayout);
+		_swtuiplatform.createChildrenControl(_page, this, sashForm, gridLayout);
 		Assert.isNotNull(_children);
 		Assert.isTrue(_children.length == 2);
 		// must set after create two children
