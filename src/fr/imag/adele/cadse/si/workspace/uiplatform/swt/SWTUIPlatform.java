@@ -469,7 +469,11 @@ public class SWTUIPlatform implements UIPlatform {
 				maxHspan = h;
 			}
 		}
-		layout.numColumns = maxHspan;
+		if (layout.numColumns > 1)
+			layout.numColumns = maxHspan *layout.numColumns;
+		else
+			layout.numColumns = maxHspan;
+		
 		layout.verticalSpacing = 5; // 9
 
 		
