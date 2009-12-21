@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import adele.util.io.ZipUtil;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseRuntime;
-import fr.imag.adele.cadse.core.CompactUUID;
+import java.util.UUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.Link;
@@ -49,7 +49,7 @@ public class ExportImportCadseFunction {
 
 	final HashSet<Item>				items						= new HashSet<Item>();
 
-	HashMap<String, CompactUUID>	projectsMap					= new HashMap<String, CompactUUID>();
+	HashMap<String, UUID>	projectsMap					= new HashMap<String, UUID>();
 
 	HashMap<File, String>			files;
 
@@ -109,7 +109,7 @@ public class ExportImportCadseFunction {
 			// ByteArrayInputStream(cadsedef.getId().toString().getBytes()),
 			// MELUSINE_DIR_CADSENAME_ID, -1);
 
-			ArrayList<CompactUUID> requireCadseIds = new ArrayList<CompactUUID>();
+			ArrayList<UUID> requireCadseIds = new ArrayList<UUID>();
 			for (CadseRuntime cr : requireCadse) {
 				if (items.contains(cr)) {
 					continue;
@@ -121,7 +121,7 @@ public class ExportImportCadseFunction {
 			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(requireCadseIds)), REQUIRE_CADSEs,
 					-1);
 
-			ArrayList<CompactUUID> requireItemIds = new ArrayList<CompactUUID>();
+			ArrayList<UUID> requireItemIds = new ArrayList<UUID>();
 			for (ItemType cr : requireItemType) {
 				if (items.contains(cr)) {
 					continue;
@@ -287,8 +287,8 @@ public class ExportImportCadseFunction {
 				}
 			}
 			Collection<ProjectAssociation> projectAssociationSet = new ArrayList<ProjectAssociation>();
-			projectsMap = (HashMap<String, CompactUUID>) readObject(pf, PROJECTS);
-			for (Map.Entry<String, CompactUUID> e : projectsMap.entrySet()) {
+			projectsMap = (HashMap<String, UUID>) readObject(pf, PROJECTS);
+			for (Map.Entry<String, UUID> e : projectsMap.entrySet()) {
 				ProjectAssociation pa = new ProjectAssociation(e.getValue(), e.getKey());
 				projectAssociationSet.add(pa);
 			}

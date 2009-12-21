@@ -57,7 +57,7 @@ import org.eclipse.ui.part.IPageSite;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.CadseRuntime;
-import fr.imag.adele.cadse.core.CompactUUID;
+import java.util.UUID;
 import fr.imag.adele.cadse.core.DefaultItemManager;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
@@ -138,7 +138,7 @@ public class SWTUIPlatform implements UIPlatform {
 	static private class FictifAttribute<T> extends AttributeType implements IAttributeType<T> {
 		private IAttributeType<?>[]	_childrenAtt	= null;
 
-		FictifAttribute(CompactUUID id, String name, int flag, IAttributeType<?>[]	children) {
+		FictifAttribute(UUID id, String name, int flag, IAttributeType<?>[]	children) {
 			super(id, name, flag);
 			if (children != null && children.length != 0) {
 				for (IAttributeType<?> a : children) {
@@ -156,7 +156,7 @@ public class SWTUIPlatform implements UIPlatform {
 		@Override
 		public UIField generateDefaultField() {
 			return new UIFieldImpl(CadseGCST.DISPLAY, 
-					CompactUUID.randomUUID(), this, getName(), EPosLabel.defaultpos, null, null);
+					UUID.randomUUID(), this, getName(), EPosLabel.defaultpos, null, null);
 		}
 
 		@Override
@@ -342,7 +342,7 @@ public class SWTUIPlatform implements UIPlatform {
 			IAttributeType<?>[] attributtes = filterGroup(page, blocks[i].getAttributes());
 			if (attributtes.length == 0) continue;
 			
-			UIFieldImpl	uifield = new UIFieldImpl(CadseGCST.DSECTION, CompactUUID.randomUUID());
+			UIFieldImpl	uifield = new UIFieldImpl(CadseGCST.DSECTION, UUID.randomUUID());
 			uifield.setPositionLabel(EPosLabel.none);
 			
 			uifield._attributeRef = createFictifAttributte("#"+blocks[i].getName(), attributtes);
@@ -1311,8 +1311,8 @@ public class SWTUIPlatform implements UIPlatform {
 				.toString(defaultValue));
 	}
 
-	private CompactUUID newID() {
-		return CompactUUID.randomUUID();
+	private UUID newID() {
+		return UUID.randomUUID();
 	}
 
 	public <IC extends RuningInteractionController> DCheckBoxUI<IC> createCheckBox(IPage page,
@@ -1326,7 +1326,7 @@ public class SWTUIPlatform implements UIPlatform {
 			AbstractModelController defaultMC, IC ic, T ret, ItemType it, UIRunningField<?>... children) {
 		ret._field = createDefaultField(attributte);
 		if (ret._field == null) {
-			ret._field = new UIFieldImpl(it, CompactUUID.randomUUID());
+			ret._field = new UIFieldImpl(it, UUID.randomUUID());
 			((UIFieldImpl) ret._field)._attributeRef = attributte;
 		} else {
 			if (((UIFieldImpl) ret._field)._attributeRef == null)

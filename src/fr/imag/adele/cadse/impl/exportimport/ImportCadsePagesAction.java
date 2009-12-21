@@ -42,7 +42,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 import fede.workspace.tool.view.WSPlugin;
-import fr.imag.adele.cadse.core.CompactUUID;
+import java.util.UUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
@@ -322,7 +322,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 	 * @throws JAXBException
 	 *             the JAXB exception
 	 */
-	public CompactUUID readCadseUUID(File f) throws IOException, JAXBException {
+	public UUID readCadseUUID(File f) throws IOException, JAXBException {
 		JarFile jis = new JarFile(f);
 		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
 		if (entry == null) {
@@ -333,7 +333,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		}
 		InputStream imput = jis.getInputStream(entry);
 		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
-		return new CompactUUID(isr.readLine());
+		return new UUID(isr.readLine());
 	}
 
 	/**
