@@ -1,0 +1,76 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: UI platform Swt
+Bundle-SymbolicName: fr.imag.adele.cadse.si.workspace.uiplatform.swt
+Bundle-Activator: fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator
+Bundle-Version: 1.0.0.qualifier
+Export-Package: fr.imag.adele.cadse.si.workspace.uiplatform.swt,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.actions,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.mc,
+ fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui
+Import-Package: adele.util.io,
+ fede.plugin.workspace.filters,
+ fede.workspace.model.manager.properties.impl.mc,
+ fede.workspace.role.initmodel,
+ fede.workspace.tool,
+ fede.workspace.tool.view,
+ fede.workspace.tool.view.actions,
+ fede.workspace.tool.view.actions.delete,
+ fede.workspace.tool.view.node,
+ fr.imag.adele.cadse.core,
+ fr.imag.adele.cadse.core.attribute,
+ fr.imag.adele.cadse.core.delta,
+ fr.imag.adele.cadse.core.impl,
+ fr.imag.adele.cadse.core.impl.attribute,
+ fr.imag.adele.cadse.core.impl.internal.ui,
+ fr.imag.adele.cadse.core.impl.ui,
+ fr.imag.adele.cadse.core.impl.ui.ic,
+ fr.imag.adele.cadse.core.impl.ui.mc,
+ fr.imag.adele.cadse.core.internal,
+ fr.imag.adele.cadse.core.transaction,
+ fr.imag.adele.cadse.core.ui,
+ fr.imag.adele.cadse.core.ui.view,
+ fr.imag.adele.cadse.core.util,
+ fr.imag.adele.cadse.eclipse.view,
+ fr.imag.adele.fede.workspace.as.eclipse,
+ fr.imag.adele.fede.workspace.as.initmodel,
+ org.apache.felix.ipojo;version="1.2.0",
+ org.apache.felix.ipojo.architecture;version="1.2.0",
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.forms.widgets,
+ org.eclipse.ui.model,
+ org.eclipse.ui.texteditor,
+ org.eclipse.ui.views.properties,
+ org.osgi.service.cm;version="1.2",
+ org.osgi.service.log;version="1.3"
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Created-By: iPOJO  1.2.0
+iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
+ le.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $factory="fr.imag
+ .adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" $architecture
+ ="true" provides { $specification="fr.imag.adele.fede.workspace.as.ecl
+ ipse.SWTService" }manipulation { method { $name="$init" }method { $arg
+ uments="{boolean}" $name="openDialog" $return="fr.imag.adele.cadse.cor
+ e.CadseRuntime[]" }method { $arguments="{org.eclipse.swt.widgets.Shell
+ ,fr.imag.adele.cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.im
+ ag.adele.cadse.core.ItemType}" $name="showCreateWizard" $return="boole
+ an" }method { $arguments="{org.eclipse.swt.widgets.Shell,fr.imag.adele
+ .cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cadse
+ .core.ItemType}" $name="showCreateWizardWithError" }method { $argument
+ s="{java.lang.Object,fr.imag.adele.cadse.core.IItemNode}" $name="creat
+ ePropertySheetPage" $return="fr.imag.adele.fede.workspace.as.eclipse.S
+ WTService$MyPropertySheetPage" }method { $name="getInstance" $return="
+ fr.imag.adele.fede.workspace.as.eclipse.SWTService" }interface { $name
+ ="fr.imag.adele.fede.workspace.as.eclipse.SWTService" }}}instance { $c
+ omponent="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceIm
+ pl" $name="fr.imag.adele.fede.workspace.as.eclipse.SWTService.instance
+ " }
+ipojo-auto-start: true
+
