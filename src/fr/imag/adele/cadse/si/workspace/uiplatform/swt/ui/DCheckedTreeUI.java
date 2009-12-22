@@ -44,7 +44,7 @@ import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
-import fr.imag.adele.cadse.core.util.ArraysUtil;
+import fr.imag.adele.cadse.util.ArraysUtil;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 
 /**
