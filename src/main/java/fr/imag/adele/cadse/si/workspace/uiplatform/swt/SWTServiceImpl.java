@@ -25,7 +25,6 @@ import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.CadseDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.FieldsPropertySheetPage;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.ItemPropertySheetPage;
-import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 
 public class SWTServiceImpl implements SWTService {
 

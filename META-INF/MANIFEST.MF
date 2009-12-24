@@ -65,12 +65,8 @@ iPOJO-Components: component { $immediate="true" $classname="fr.imag.ade
  .cadse.core.Item,fr.imag.adele.cadse.core.LinkType,fr.imag.adele.cadse
  .core.ItemType}" $name="showCreateWizardWithError" }method { $argument
  s="{java.lang.Object,fr.imag.adele.cadse.core.IItemNode}" $name="creat
- ePropertySheetPage" $return="fr.imag.adele.fede.workspace.as.eclipse.S
- WTService$MyPropertySheetPage" }method { $name="getInstance" $return="
- fr.imag.adele.fede.workspace.as.eclipse.SWTService" }interface { $name
- ="fr.imag.adele.fede.workspace.as.eclipse.SWTService" }}}instance { $c
- omponent="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceIm
- pl" $name="fr.imag.adele.fede.workspace.as.eclipse.SWTService.instance
- " }
+ ePropertySheetPage" $return="MyPropertySheetPage" }}}instance { $compo
+ nent="fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTServiceImpl" 
+ $name="fr.imag.adele.fede.workspace.as.eclipse.SWTService.instance" }
 ipojo-auto-start: true
 
