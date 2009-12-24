@@ -38,6 +38,9 @@ import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.ProjectAssociation;
 import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import fr.imag.adele.cadse.core.impl.CadseCore;
 
 public class ExportImportCadseFunction {
 
