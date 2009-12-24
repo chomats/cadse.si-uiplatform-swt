@@ -22,7 +22,6 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 
@@ -58,7 +57,8 @@ final public class ItemLabelProvider extends LabelProvider {
 	 * @return the image
 	 */
 	private Image createImage(ItemType it, Item item) {
-		return WSPlugin.getDefault().getImageFrom(it, item);
+		//return WSPlugin.getDefault().getImageFrom(it, item);
+		return null;
 	}
 
 	/*

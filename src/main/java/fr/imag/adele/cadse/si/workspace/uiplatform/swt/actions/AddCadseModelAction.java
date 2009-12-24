@@ -20,13 +20,13 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.actions;
 
 import java.util.ArrayList;
 
-import fede.workspace.role.initmodel.ErrorWhenLoadedModel;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.CadseRuntime;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.ui.MenuAction;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.CadseDialog;
+import fr.imag.adele.fede.workspace.as.initmodel.ErrorWhenLoadedModel;
 import fr.imag.adele.fede.workspace.as.initmodel.IInitModel;
 
 public class AddCadseModelAction extends MenuAction {
