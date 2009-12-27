@@ -32,11 +32,8 @@
                         <Export-Package>fr.imag.adele.cadse.si.workspace.uiplatform.swt*,fr.imag.adele.cadse.impl.exportimport*</Export-Package>
                         <Private-Package></Private-Package>
                         <Import-Package>*</Import-Package>
-                        <Include-Resource>
-              plugin.xml=plugin.xml,
-              plugin.properties=plugin.properties,
-              schema=schema
-            </Include-Resource>
+                        <Bundle-Activator>fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator</Bundle-Activator>
+                        <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
             </plugin>
@@ -158,6 +155,37 @@
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.equinox.registry</artifactId>
         	<version>3.4.100.v20090520-1800</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.ui.ide</artifactId>
+        	<version>3.5.1.M20090826-0800</version>
+        </dependency>
+        <dependency>
+        	<groupId>fr.imag.adele.cadse</groupId>
+        	<artifactId>custom.filter</artifactId>
+        	<version>2.3.0-SNAPSHOT</version>
+        	<type>bundle</type>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.ui.forms</artifactId>
+        	<version>3.4.1.v20090714_35x</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.jface.text</artifactId>
+        	<version>3.5.1.r351_v20090708-0800</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.text</artifactId>
+        	<version>3.5.0.v20090513-2000</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
+        	<version>3.5.0.v20090603</version>
         </dependency>
     </dependencies>
 </project>

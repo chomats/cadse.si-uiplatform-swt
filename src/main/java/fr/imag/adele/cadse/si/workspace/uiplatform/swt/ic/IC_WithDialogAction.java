@@ -19,8 +19,8 @@ public class IC_WithDialogAction extends ICRunningField {
 	@Override
 	public void init() throws CadseException {
 		if (_ic != null) {
-			_title = _ic.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_TITLE_);
-			_message = _ic.getAttribute(CadseGCST.IC_ABSTRACT_TREE_DIALOG_FOR_LIST_BROWSER_COMBO_at_MESSAGE_);
+			_title = _ic.getAttribute(CadseGCST.IC_WITH_TITLE_FOR_DIALOG_at_SELECT_TITLE_);
+			_message = _ic.getAttribute(CadseGCST.IC_WITH_TITLE_FOR_DIALOG_at_SELECT_MESSAGE_);
 		}
 	}
 

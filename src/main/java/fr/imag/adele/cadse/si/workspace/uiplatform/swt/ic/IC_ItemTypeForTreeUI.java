@@ -19,14 +19,17 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 import org.eclipse.swt.graphics.Image;
 
 import fede.workspace.tool.Messages;
 import fede.workspace.tool.view.WSPlugin;
 import fr.imag.adele.cadse.core.CadseDomain;
+import fr.imag.adele.cadse.core.ExtendedType;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
+import fr.imag.adele.cadse.core.TypeDefinition;
 
 public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 
@@ -62,14 +65,17 @@ public class IC_ItemTypeForTreeUI extends ICRunningField implements IC_Tree {
 	}
 
 	public Object[] getChildren(Object obj) {
-		ItemType superItemType;
 		if (obj instanceof LinkType) {
-			superItemType = ((LinkType) obj).getDestination();
-		} else {
-			superItemType = (ItemType) obj;
+			obj = ((LinkType) obj).getDestination();
+		} 
+		if (obj instanceof ItemType) {
+			return ((ItemType)obj).getSubTypes();
 		}
-
-		return superItemType.getSubTypes();
+		if (obj instanceof ExtendedType) {
+			return ((ExtendedType)obj).getExendsItemType();
+		}
+			
+		return new Object[0];
 	}
 
 	public ItemType getType() {
