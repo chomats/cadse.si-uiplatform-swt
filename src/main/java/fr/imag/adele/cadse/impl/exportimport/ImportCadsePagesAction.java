@@ -333,7 +333,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		}
 		InputStream imput = jis.getInputStream(entry);
 		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
-		return new UUID(isr.readLine());
+		return UUID.fromString(isr.readLine());
 	}
 
 	/**
