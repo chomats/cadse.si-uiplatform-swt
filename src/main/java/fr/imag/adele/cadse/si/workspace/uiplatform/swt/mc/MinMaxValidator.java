@@ -7,8 +7,8 @@ import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.util.Convert;
 
 public class MinMaxValidator extends AbstractUIRunningValidator {
-	IAttributeType<Integer> minAttribute = CadseGCST.LINK_at_MIN_;
-	IAttributeType<Integer> maxAttribute = CadseGCST.LINK_at_MAX_;
+	IAttributeType<Integer> minAttribute = CadseGCST.LINK_TYPE_at_MIN_;
+	IAttributeType<Integer> maxAttribute = CadseGCST.LINK_TYPE_at_MAX_;
 	
 	@Override
 	public boolean validValue(UIField field, Object value) {

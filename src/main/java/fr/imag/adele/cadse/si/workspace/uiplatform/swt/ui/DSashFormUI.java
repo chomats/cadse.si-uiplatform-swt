@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Control;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
-import fr.imag.adele.cadse.core.util.Assert;
+import fr.imag.adele.cadse.util.Assert;
 
 public class DSashFormUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 

@@ -212,7 +212,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	}
 
 	protected Item getItemFromShortName(String newValue) {
-		Item item = CadseCore.getLogicalWorkspace().getItemByShortName(getLinkType().getDestination(), newValue);
+		Item item = CadseCore.getLogicalWorkspace().getItemByName(getLinkType().getDestination(), newValue);
 		return item;
 	}
 

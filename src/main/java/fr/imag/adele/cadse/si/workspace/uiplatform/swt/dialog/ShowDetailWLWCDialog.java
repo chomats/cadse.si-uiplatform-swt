@@ -70,6 +70,8 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DGridUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DSashFormUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTreeModelUI;
+import org.eclipse.ui.IContributorResourceAdapter;
+import fede.plugin.workspace.filters.INameable;
 
 /**
  * Dialog used for asking delete of items to commit. Informations provided by
