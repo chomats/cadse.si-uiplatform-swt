@@ -42,7 +42,7 @@ import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseView;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService.MyPropertySheetPage;
-
+import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 /**
  * The standard implementation of property sheet page which presents a table of
  * property names and values obtained from the current selection in the active
