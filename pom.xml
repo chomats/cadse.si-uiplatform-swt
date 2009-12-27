@@ -8,25 +8,58 @@
     <artifactId>si.uiplatform.swt</artifactId>
     <name>fr.imag.adele.cadse.si.uiplatform.swt</name>
     <version>2.3.0-SNAPSHOT</version>
+    <organization>
+        <name>Adele/LIG/ Grenoble University, France</name>
+        <url>http://www-adele.imag.fr/</url>
+    </organization>
     <build>
-        <finalName>${project.name}_${project.version}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-Name>${pom.name}</Bundle-Name>
+                        <Bundle-Description>${pom.description}</Bundle-Description>
+                        <Export-Package>fr.imag.adele.cadse.si.workspace.uiplatform.swt*,fr.imag.adele.cadse.impl.exportimport*</Export-Package>
+                        <Private-Package></Private-Package>
+                        <Import-Package>*</Import-Package>
+                        <Include-Resource>
+              plugin.xml=plugin.xml,
+              plugin.properties=plugin.properties,
+              schema=schema
+            </Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${basedir}/META-INF/" />
+                                <copy todir="${basedir}/META-INF/" preservelastmodified="true">
+                                    <fileset dir="${basedir}/target/classes/META-INF"/>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <useDefaultManifestFile>true</useDefaultManifestFile>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <repositories>
@@ -92,6 +125,22 @@
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.core.runtime</artifactId>
         	<version>3.5.0.v20090525</version>
+        </dependency>
+        <dependency>
+        	<groupId>fr.imag.adele.cadse</groupId>
+        	<artifactId>util.io</artifactId>
+        	<version>2.3.0-SNAPSHOT</version>
+        	<type>bundle</type>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.equinox.preferences</artifactId>
+        	<version>3.2.300.v20090520-1800</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse</groupId>
+        	<artifactId>org.eclipse.ui.views</artifactId>
+        	<version>3.4.1.M20090826-0800</version>
         </dependency>
     </dependencies>
 </project>
