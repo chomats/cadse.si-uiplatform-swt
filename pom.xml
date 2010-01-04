@@ -8,19 +8,15 @@
     <artifactId>si.uiplatform.swt</artifactId>
     <name>fr.imag.adele.cadse.si.uiplatform.swt</name>
     <version>2.3.0-SNAPSHOT</version>
-    <organization>
-        <name>Adele/LIG/ Grenoble University, France</name>
-        <url>http://www-adele.imag.fr/</url>
-    </organization>
+    <parent>
+		<artifactId>fr.imag.adele.cadse.parent.ipojo</artifactId>
+		<groupId>fr.imag.adele.cadse</groupId>
+		<version>2.3.0-SNAPSHOT</version>
+		<relativePath>../fr.imag.adele.cadse.parent.ipojo</relativePath>
+	</parent>
+	
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -28,158 +24,117 @@
                 <configuration>
                 	<manifestLocation>META-INF</manifestLocation>
                     <instructions>
-                        <Bundle-Name>${pom.name}</Bundle-Name>
-                        <Bundle-Description>${pom.description}</Bundle-Description>
                         <Export-Package>fr.imag.adele.cadse.si.workspace.uiplatform.swt*,fr.imag.adele.cadse.impl.exportimport*</Export-Package>
-                        <Private-Package></Private-Package>
-                        <Import-Package>*</Import-Package>
                         <Bundle-Activator>fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator</Bundle-Activator>
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-                        <Ipojo-auto-start>true</Ipojo-auto-start>
-                       	<_removeheaders>Bnd-LastModified</_removeheaders>
-                    </instructions>
+                   </instructions>
                 </configuration>
             </plugin>
-<!-- iPOJO Maven Plugin Configuration : nothing to do -->
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-ipojo-plugin</artifactId>
-				<version>1.4.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>ipojo-bundle</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
     <dependencies>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.metadata</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>org.eclipse.jface</artifactId>
-            <version>3.5.1.M20090826-0800</version>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>as.cu</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
         	<groupId>${project.groupId}</groupId>
         	<artifactId>cu.core</artifactId>
-        	<version>${project.version}</version>
         </dependency>
         <dependency>
         	<groupId>${project.groupId}</groupId>
         	<artifactId>util.io</artifactId>
-        	<version>${project.version}</version>
         </dependency>
         <dependency>
         	<groupId>${project.groupId}</groupId>
         	<artifactId>as.eclipse</artifactId>
-        	<version>${project.version}</version>
         </dependency>
         <dependency>
-        	<groupId>fr.imag.adele.cadse</groupId>
+        	<groupId>${project.groupId}</groupId>
         	<artifactId>si.view</artifactId>
-        	<version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.metadata</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>org.osgi.compendium</artifactId>
+            		<groupId>org.osgi</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>org.osgi.foundation</artifactId>
+            		<groupId>org.apache.felix</groupId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>org.eclipse.jface</artifactId>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.core.resources</artifactId>
-        	<version>3.5.1.R35x_v20090826-0451</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.equinox.common</artifactId>
-        	<version>3.5.1.R35x_v20090807-1100</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.ui.workbench</artifactId>
-        	<version>3.5.1.M20090826-0800a</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>swt</artifactId>
-        	<version>3.5.1.v3555a</version>
         	<type>pom</type>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.core.commands</artifactId>
-        	<version>3.5.0.I20090525-2000</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.core.jobs</artifactId>
-        	<version>3.4.100.v20090429-1800</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.core.runtime</artifactId>
-        	<version>3.5.0.v20090525</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.equinox.preferences</artifactId>
-        	<version>3.2.300.v20090520-1800</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.ui.views</artifactId>
-        	<version>3.4.1.M20090826-0800</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.equinox.registry</artifactId>
-        	<version>3.4.100.v20090520-1800</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.ui.ide</artifactId>
-        	<version>3.5.1.M20090826-0800</version>
         </dependency>
         <dependency>
         	<groupId>fr.imag.adele.cadse</groupId>
         	<artifactId>custom.filter</artifactId>
-        	<version>2.3.0-SNAPSHOT</version>
-        	<type>bundle</type>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.ui.forms</artifactId>
-        	<version>3.4.1.v20090714_35x</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.jface.text</artifactId>
-        	<version>3.5.1.r351_v20090708-0800</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.text</artifactId>
-        	<version>3.5.0.v20090513-2000</version>
         </dependency>
         <dependency>
         	<groupId>org.eclipse</groupId>
         	<artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-        	<version>3.5.0.v20090603</version>
         </dependency>
     </dependencies>
 </project>

@@ -42,6 +42,8 @@ import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
+import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
+import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
 
 /**
  * The standard implementation of property sheet page which presents a table of
