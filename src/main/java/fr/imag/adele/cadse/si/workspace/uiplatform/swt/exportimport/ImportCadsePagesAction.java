@@ -17,22 +17,32 @@
  * under the License.
  */
 
-package fr.imag.adele.cadse.impl.exportimport;
+package fr.imag.adele.cadse.si.workspace.uiplatform.swt.exportimport;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
+import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.osgi.service.prefs.BackingStoreException;
 
+import fede.workspace.tool.view.WSPlugin;
+import java.util.UUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
@@ -41,24 +51,21 @@ import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
-import fr.imag.adele.cadse.util.Assert;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.SWTDialog;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
-import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI;
 
 /**
- * The Class ExportCadsePagesAction.
+ * The Class ImportCadsePagesAction.
  * 
  * @author <a href="mailto:stephane.chomat@imag.fr">Stephane Chomat</a>
  */
-public class ExportCadsePagesAction extends SWTDialog {
+public class ImportCadsePagesAction extends SWTDialog {
 
-	public ExportCadsePagesAction(SWTUIPlatform swtuiPlatforms, String title, String label) {
+	public ImportCadsePagesAction(SWTUIPlatform swtuiPlatforms, String title, String label) {
 		super(swtuiPlatforms, title, label);
-		addLast(createNameField(), createImportField(), createTimeStampField());
+		addLast(createImportField());
 	}
 
 	@Override
@@ -80,8 +87,24 @@ public class ExportCadsePagesAction extends SWTDialog {
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
+			if (element instanceof IFile) {
+				IFile file = (IFile) element;
+				return (file.getName().endsWith(".zip"));
+			}
 			if (element instanceof IContainer) {
-				return true;
+				IContainer folder = (IContainer) element;
+				IResource[] listFiles = null;
+				try {
+					listFiles = folder.members();
+				} catch (CoreException e) {
+				}
+				if (listFiles != null) {
+					for (int i = 0; i < listFiles.length; i++) {
+						if (select(viewer, folder, listFiles[i])) {
+							return true;
+						}
+					}
+				}
 			}
 			return false;
 		}
@@ -89,135 +112,21 @@ public class ExportCadsePagesAction extends SWTDialog {
 	}
 
 	/** The select jar. */
-	IPath				selectJar;
+	IPath				selectJar			= new Path("");
 
 	/** The file. */
 	File				file;
 
-	/** The tstamp. */
-	boolean				tstamp				= true;
-
-	String				name				= "";
+	/** The cadse. */
+	String				cadse;
 
 	/** The cadse viewer filter. */
 	public ViewerFilter	cadseViewerFilter	= new CadseViewerFilter();
 
 	/**
-	 * The Class MC_TSTamp.
-	 */
-	class MC_TSTamp extends AbstractModelController {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see fr.imag.adele.cadse.core.ui.IModelController#getValue()
-		 */
-		@Override
-		public Object getValue() {
-			return tstamp;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
-		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
-		 */
-		@Override
-		public void notifieValueChanged(UIField field, Object value) {
-			tstamp = (Boolean) value;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
-		 */
-		@Override
-		public void notifieValueDeleted(UIField field, Object oldvalue) {
-			tstamp = true;
-		}
-
-		public ItemType getType() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Object defaultValue() {
-			return true;
-		}
-
-	}
-
-	/**
-	 * The Class MC_TSTamp.
-	 */
-	class MC_name extends AbstractModelController {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see fr.imag.adele.cadse.core.ui.IModelController#getValue()
-		 */
-		@Override
-		public Object getValue() {
-			return name;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
-		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
-		 */
-		@Override
-		public void notifieValueChanged(UIField field, Object value) {
-			name = (String) value;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
-		 */
-		@Override
-		public void notifieValueDeleted(UIField field, Object oldvalue) {
-		}
-
-		public ItemType getType() {
-			return null;
-		}
-
-		@Override
-		public Object defaultValue() {
-			return "";
-		}
-
-	}
-
-	/**
 	 * The Class MC_Import.
 	 */
 	class MC_Import extends AbstractModelController {
-		IEclipsePreferences	node;
-
-		@Override
-		public void init(UIPlatform uiPlatform) {
-			super.init(uiPlatform);
-			// 1. get config pref node
-			node = new ConfigurationScope().getNode("fr.imag.adele.cadse.export-cadse");
-			String path = node.get("export-path", "");
-			if (path != null) {
-				selectJar = new org.eclipse.core.runtime.Path(path);
-			}
-		}
 
 		/*
 		 * (non-Javadoc)
@@ -239,13 +148,28 @@ public class ExportCadsePagesAction extends SWTDialog {
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
 			selectJar = (IPath) value;
-			node.put("export-path", selectJar.toPortableString());
-			try {
-				node.flush();
-			} catch (BackingStoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded
+		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 */
+		@Override
+		public void notifieSubValueAdded(UIField field, Object added) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @seefr.imag.adele.cadse.core.ui.AbstractModelController#
+		 * notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
+		 * java.lang.Object)
+		 */
+		@Override
+		public void notifieSubValueRemoved(UIField field, Object removed) {
 		}
 
 		/*
@@ -260,6 +184,11 @@ public class ExportCadsePagesAction extends SWTDialog {
 			selectJar = null;
 		}
 
+		@Override
+		public Object defaultValue() {
+			return selectJar;
+		}
+
 		/**
 		 * Valid value changed.
 		 * 
@@ -271,11 +200,32 @@ public class ExportCadsePagesAction extends SWTDialog {
 		@Override
 		public boolean validValueChanged(UIField field, Object value) {
 			file = getFile((IPath) value);
-			if (file == null || !file.exists() || !file.isDirectory()) {
-				_uiPlatform.setMessageError("Select a folder");
+			if (file == null || !file.exists() || file.isDirectory()) {
+				_swtuiPlatforms.setMessageError("Select a valid cadse zip file");
+				return true;
+			}
+			try {
+				cadse = readCadse(file);
+				if (cadse == null) {
+					_swtuiPlatforms.setMessageError("Select a valid cadse zip file");
+					return true;
+				}
+
+			} catch (IOException e) {
+				WSPlugin.logException(e);
+				_swtuiPlatforms.setMessageError("Select a valid cadse jar : " + e.getMessage());
+				return true;
+			} catch (JAXBException e) {
+				WSPlugin.logException(e);
+				_swtuiPlatforms.setMessageError("Select a valid cadse jar : " + e.getMessage());
 				return true;
 			}
 			return false;
+		}
+
+		public ItemType getType() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
@@ -284,6 +234,18 @@ public class ExportCadsePagesAction extends SWTDialog {
 	 * The Class IC_Import.
 	 */
 	class IC_Import extends IC_ForChooseFile {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
+		 * getFileFilter()
+		 */
+		@Override
+		protected String[] getFileFilter() {
+			return new String[] { "*.zip" };
+		}
 
 		/*
 		 * (non-Javadoc)
@@ -306,7 +268,7 @@ public class ExportCadsePagesAction extends SWTDialog {
 		 */
 		@Override
 		public int getKind() {
-			return FOLDER_EXT + WORKSPACE;
+			return FILE_EXT;
 		}
 	}
 
@@ -315,44 +277,63 @@ public class ExportCadsePagesAction extends SWTDialog {
 	 * 
 	 * @return the d choose file ui
 	 */
-	public DTextUI createNameField() {
-		return _swtuiPlatforms.createTextUI(_page, "name", "name:", EPosLabel.left, new MC_name(), null, 1, false,
-				false, false, false, false);
-	}
-
-	/**
-	 * Creates the import field.
-	 * 
-	 * @return the d choose file ui
-	 */
 	public DChooseFileUI<IC_Import> createImportField() {
-		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Select folder", EPosLabel.left,
-				new MC_Import(), new IC_Import(), "Select folder");
+		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Select cadse deployed zip", EPosLabel.left,
+				new MC_Import(), new IC_Import(), "Select cadse deployed zip");
 	}
 
 	/**
-	 * Creates the time stamp field.
+	 * Read cadse.
 	 * 
-	 * @return the uI field
+	 * @param f
+	 *            the f
+	 * 
+	 * @return the string
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JAXBException
+	 *             the JAXB exception
 	 */
-	public DCheckBoxUI createTimeStampField() {
-		return _swtuiPlatforms.createCheckBoxUI(_page, "tstamp", "add time stamp", EPosLabel.none, new MC_TSTamp(),
-				null);
+	public String readCadse(File f) throws IOException, JAXBException {
+		JarFile jis = new JarFile(f);
+		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+		if (entry == null) {
+			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+			if (entry == null) {
+				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+			}
+		}
+		InputStream imput = jis.getInputStream(entry);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return isr.readLine();
 	}
 
-	/** The cadsedef. */
-	Item[]	cadsedef;
-
 	/**
-	 * Sets the cadsedef.
+	 * Read cadse uuid.
 	 * 
-	 * @param cadsedef
-	 *            the new cadsedef
+	 * @param f
+	 *            the f
+	 * 
+	 * @return the compact uuid
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JAXBException
+	 *             the JAXB exception
 	 */
-	public void setCadsedef(Item[] cadsedef) {
-		Assert.isTrue(cadsedef != null && cadsedef.length > 0);
-		this.cadsedef = cadsedef;
-		this.name = cadsedef[0].getQualifiedName();
+	public UUID readCadseUUID(File f) throws IOException, JAXBException {
+		JarFile jis = new JarFile(f);
+		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+		if (entry == null) {
+			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+			if (entry == null) {
+				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+			}
+		}
+		InputStream imput = jis.getInputStream(entry);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return UUID.fromString(isr.readLine());
 	}
 
 	/**
@@ -375,15 +356,16 @@ public class ExportCadsePagesAction extends SWTDialog {
 	}
 
 	/** The its. */
-	private HashMap<Item, File>	its;
+	HashMap<String, Item>	its;
 
 	class MyAction extends AbstractActionPage {
 		@Override
 		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			super.doFinish(uiPlatform, monitor);
+
 			IProgressMonitor pmo = (IProgressMonitor) monitor;
-			ExportImportCadseFunction e = new ExportImportCadseFunction();
-			e.exportItems(pmo, file, name, tstamp, cadsedef);
+			ExportImportCadseFunction i = new ExportImportCadseFunction();
+			i.importCadseItems(pmo, file);
 		}
 	}
 
@@ -396,6 +378,9 @@ public class ExportCadsePagesAction extends SWTDialog {
 	 * @return the file
 	 */
 	private File getFile(IPath selectJar2) {
+		if (selectJar2 == null) {
+			return null;
+		}
 		IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(selectJar2);
 		if (r != null) {
 			return r.getLocation().toFile();
