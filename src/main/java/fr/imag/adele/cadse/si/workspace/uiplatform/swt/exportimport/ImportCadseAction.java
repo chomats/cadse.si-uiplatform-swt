@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package fr.imag.adele.cadse.impl.exportimport;
+package fr.imag.adele.cadse.si.workspace.uiplatform.swt.exportimport;
 
 import java.net.URL;
 

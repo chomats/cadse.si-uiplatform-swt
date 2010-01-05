@@ -1,4 +1,4 @@
-package fr.imag.adele.cadse.impl.exportimport;
+package fr.imag.adele.cadse.si.workspace.uiplatform.swt.exportimport;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

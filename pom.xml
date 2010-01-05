@@ -24,7 +24,7 @@
                 <configuration>
                 	<manifestLocation>META-INF</manifestLocation>
                     <instructions>
-                        <Export-Package>fr.imag.adele.cadse.si.workspace.uiplatform.swt*,fr.imag.adele.cadse.impl.exportimport*</Export-Package>
+                        <Export-Package>fr.imag.adele.cadse.si.workspace.uiplatform.swt*</Export-Package>
                         <Bundle-Activator>fr.imag.adele.cadse.si.workspace.uiplatform.swt.Activator</Bundle-Activator>
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                    </instructions>
