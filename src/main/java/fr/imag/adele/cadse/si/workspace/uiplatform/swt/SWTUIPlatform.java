@@ -703,6 +703,11 @@ public class SWTUIPlatform implements UIPlatform {
 			rmc._desc = mc;
 			
 			rf._running_mc = rmc;
+			try {
+				rf.init();
+			} catch (CadseException e) {
+				log("Cannot call init "+field.getType()+":"+field.getName()+":"+field.getAttributeDefinition().getType(), e);
+			}
 		}
 		container = createLabelField(rf, container, hspan);
 
