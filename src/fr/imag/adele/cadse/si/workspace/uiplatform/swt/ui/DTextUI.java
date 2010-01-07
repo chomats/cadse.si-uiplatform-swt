@@ -73,7 +73,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		}
 
 		_textControl = _swtuiplatform.getToolkit().createText(ocontainer, "", style);
-		_textControl.setData(UIField.CADSE_MODEL_KEY, _field);
+		_textControl.setData(UIField.CADSE_MODEL_KEY, this);
 		if (_field.isEditable() && proposer != null) {
 			IControlContentAdapter contentAdapter = new ProposerTextContentAdapter(this, _swtuiplatform, proposer);
 			_contentAssistField = new ContentAssistCommandAdapter(_textControl, contentAdapter, proposer
