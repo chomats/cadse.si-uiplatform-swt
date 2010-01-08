@@ -1180,7 +1180,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public <T> T create(Item desc) {
 		if (desc == null) 
 			return null;
-		return CreatedObjectManager.getManager(desc, SWTUIPlatform.class).create(desc);
+		return (T) CreatedObjectManager.getManager(desc, SWTUIPlatform.class).create(desc);
 	}
 
 	/*
