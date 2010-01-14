@@ -650,6 +650,11 @@ public class SWTUIPlatform implements UIPlatform {
 				v.init(this);
 			}
 		}
+		for (IPage p : pages.getPages()) {
+			IActionPage actionPage = p.getActionPage();
+			if (actionPage == null) continue;
+			actionPage.init(this);
+		}
 	}
 
 	public void addListener(IAttributeType<?> attr, UIRunningValidator v) {
