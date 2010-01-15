@@ -18,6 +18,7 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 
+import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.attribute.EnumAttributeType;
@@ -26,9 +27,10 @@ public class IC_EnumForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 
 	private Class<?>	_values;
 
+	
 	@Override
-	public void initAfterUI() {
-		super.initAfterUI();
+	public void init() throws CadseException {
+		super.init();
 		EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
 		_values = enumAttribute.getAttributeType();
 	}
