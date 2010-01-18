@@ -52,7 +52,7 @@ public class ImportCadseAction extends IMenuAction {
 	 * @see fr.imag.adele.cadse.core.IMenuAction#getImage()
 	 */
 	@Override
-	public URL getImage() {
+	public String getImage() {
 		return null;
 	}
 
