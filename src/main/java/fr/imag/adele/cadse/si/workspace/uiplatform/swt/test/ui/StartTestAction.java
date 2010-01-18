@@ -35,7 +35,7 @@ public class StartTestAction extends IMenuAction {
 	}
 
 	@Override
-	public URL getImage() {
+	public String getImage() {
 		return null;
 	}
 
