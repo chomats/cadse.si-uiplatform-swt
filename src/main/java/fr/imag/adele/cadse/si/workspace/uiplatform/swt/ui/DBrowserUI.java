@@ -93,7 +93,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		} else {
 			swtControl = _textControl = new Text(container, style);
 		}
-		_textControl.setData(UIField.CADSE_MODEL_KEY, _field);
+		_textControl.setData(UIField.CADSE_MODEL_KEY, this);
 		// swtControl.setData(CADSE_MODEL_KEY, this);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan - 1;
