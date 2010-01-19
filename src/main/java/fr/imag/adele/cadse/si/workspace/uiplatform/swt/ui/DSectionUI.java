@@ -35,7 +35,8 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 		Composite client = new Composite(_section, 0);
 
 		GridLayout gridLayout = new GridLayout(0, makeColumnsEqualWidth);
-
+		
+		_swtuiplatform.getToolkit().adapt(client);
 		_swtuiplatform.createChildrenControl(_page, this, client, gridLayout);
 		_section.setClient(client);
 	}
