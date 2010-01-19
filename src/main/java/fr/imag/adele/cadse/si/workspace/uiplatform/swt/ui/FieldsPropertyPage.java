@@ -18,6 +18,7 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -92,9 +93,14 @@ public class FieldsPropertyPage extends PropertyPage {
 		this._swtuiplatform = new SWTUIPlatform(pages, null);
 		_swtuiplatform.setItem(item);
 		setController(pages);
-		URL url = im.getImage(item);
+		String url = im.getImage(item);
 		if (url != null) {
-			setImageDescriptor(ImageDescriptor.createFromURL(url));
+			try {
+				setImageDescriptor(ImageDescriptor.createFromURL(new URL(url)));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		setTitle(item.getType().getDisplayName());
 
