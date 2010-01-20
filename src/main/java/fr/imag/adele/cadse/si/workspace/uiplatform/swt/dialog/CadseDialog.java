@@ -106,6 +106,18 @@ public class CadseDialog extends SWTDialog {
 		public void notifieValueChanged(UIField field, Object value) {
 			// read only value
 		}
+		
+		@Override
+		public boolean validValueChanged(UIField field, Object visualValue) {
+			// read only value
+			return false;
+		}
+		
+		@Override
+		public boolean validValue(UIField field, Object value) {
+			// read only value
+			return false;
+		}
 	}
 
 	public class MyActionPage extends AbstractActionPage {
@@ -306,8 +318,9 @@ public class CadseDialog extends SWTDialog {
 
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
-					if (element instanceof Item) {
-						return ((Item) element).getType() != CadseGCST.CADSE_DEFINITION;
+					if (element instanceof ItemNode) {
+						Item item = ((ItemNode)element).getItem();
+						return item != null && item.getType() != CadseGCST.CADSE_DEFINITION;
 					}
 					return true;
 				}
