@@ -41,6 +41,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import fr.imag.adele.cadse.core.CadseGCST;
+import fr.imag.adele.cadse.core.CadseIllegalArgumentException;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
@@ -459,6 +460,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	 * @return the label provider
 	 */
 	protected ILabelProvider getLabelProvider() {
+		if (_ic == null) 
+			throw new CadseIllegalArgumentException("Ic not found : "+this);
 		return _ic.getLabelProvider();
 	}
 
