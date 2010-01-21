@@ -77,8 +77,11 @@ import fr.imag.adele.cadse.core.impl.ui.UIFieldImpl;
 import fr.imag.adele.cadse.core.impl.ui.mc.LinkModelController;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_DefaultForList;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_Descriptor;
+import fr.imag.adele.cadse.core.impl.ui.mc.UIValidator_Descriptor;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransactionListener;
+import fr.imag.adele.cadse.core.ui.AbstractUIRunningValidator;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.HierarchicPage;
 import fr.imag.adele.cadse.core.ui.IActionPage;
@@ -105,6 +108,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_LinkForBrowser_Combo_List;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_StaticArrayOfObjectForBrowser_Combo;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
@@ -241,6 +245,8 @@ public class SWTUIPlatform implements UIPlatform {
 		defaultRegister.register(CadseGCST.IC_BOOLEAN_TEXT, IC_BooleanText.class);
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_LIST, IC_EnumForList.class);
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_BROWSER_COMBO, IC_EnumForBrowser_Combo.class);
+		defaultRegister.register(CadseGCST.IC_STRING_LIST_FOR_LIST, IC_DefaultForList.class);
+		
 	}
 	
 
@@ -714,13 +720,18 @@ public class SWTUIPlatform implements UIPlatform {
 				ric._uiPlatform = this;
 				ric._uirunningField = rf;
 				rf._ic = (T) ric;
+				
+				if (ric instanceof UIRunningValidator)
+					addItemListener(ic, (UIRunningValidator) ric);
 			}
+			
 
 			Item mc = field.getModelController();
 			AbstractModelController rmc = create(mc);
 			if (rmc == null) {
 				rmc = createAbstractModelController(field);
 			}
+			addItemListener(mc, rmc);
 			
 			rmc._uiField = field;
 			rmc._uiPlatform = this;
@@ -737,6 +748,18 @@ public class SWTUIPlatform implements UIPlatform {
 
 		rf.createControl(container, hspan_label);
 		return rf;
+	}
+
+
+	private void addItemListener(Item mc, UIRunningValidator rmc) {
+		if (mc instanceof UIValidator_Descriptor) {
+			IAttributeType<?>[] attrs = ((UIValidator_Descriptor)mc).getListenAttributes();
+			if (attrs != null) {
+				for (IAttributeType<?> a : attrs) {
+					addListener(a, rmc);
+				}
+			}
+		}
 	}
 
 	private <T extends RuningInteractionController> UIRunningField<T> find(IPage page, UIField field) {
