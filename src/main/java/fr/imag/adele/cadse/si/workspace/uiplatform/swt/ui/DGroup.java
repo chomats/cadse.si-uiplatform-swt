@@ -28,13 +28,19 @@ public class DGroup<IC extends RuningInteractionController> extends DAbstractFie
 		int column = _field.getAttribute(CadseGCST.DGROUP_at_COLUMN_);
 		makeColumnsEqualWidth = _field.getAttributeWithDefaultValue(CadseGCST.DGROUP_at_MAKE_COLUMNS_EQUAL_WIDTH_, false);
 		
-		composite = _swtuiplatform.getToolkit().createGroup(container, getLabel());
+		composite = getLabel() == null ?
+				_swtuiplatform.getToolkit().createComposite(container, style)
+				: _swtuiplatform.getToolkit().createGroup(container, getLabel());
 		
 		composite.setData(UIField.CADSE_MODEL_KEY, _field);
 		composite.setLayoutData(gridData);
 
 		GridLayout gridLayout = new GridLayout(column, makeColumnsEqualWidth);
 
+		if (_field.getFlag(Item.UI_NO_BORDER)) {
+			gridLayout.marginWidth = 0;
+			gridLayout.marginHeight = 0;
+		}
 		_swtuiplatform.createChildrenControl(_page, this, composite, gridLayout);
 	}
 

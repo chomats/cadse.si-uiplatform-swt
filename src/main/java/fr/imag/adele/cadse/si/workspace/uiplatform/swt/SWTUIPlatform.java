@@ -205,7 +205,7 @@ public class SWTUIPlatform implements UIPlatform {
 	private Map<UIField, Label>								labels			= new HashMap<UIField, Label>();
 	private Pages											pages;
 	private Map<IAttributeType<?>, UIRunningValidator[]>	_listen			= new HashMap<IAttributeType<?>, UIRunningValidator[]>();
-	private Map<UIField, UIRunningField>					runningField	= new HashMap<UIField, UIRunningField>();
+	private Map<UIField, UIRunningField>					_runningFields	= new HashMap<UIField, UIRunningField>();
 	private Composite										parent;
 
 	private Map<String, Object>								_vars			= new HashMap<String, Object>();
@@ -351,7 +351,7 @@ public class SWTUIPlatform implements UIPlatform {
 			rF._page = page;
 			rF._swtuiplatform = this;
 			uifield.setLabel(blocks[i].getLabel());
-			runningField.put(uifield, rF);
+			_runningFields.put(uifield, rF);
 			ret.add(uifield);
 		}
 		return (UIField[]) ret.toArray(new UIField[ret.size()]);
@@ -362,14 +362,20 @@ public class SWTUIPlatform implements UIPlatform {
 		_attToGroup = new HashMap<IAttributeType<?>, GroupOfAttributes>();
 		
 		for (GroupOfAttributes g : pages.getGroupOfAttributes()) {
-			IAttributeType<?>[] attrs = g.getAttributes();
-			if (attrs == null) continue;
-			for (IAttributeType<?> iAttributeType : attrs) {
-				if (_attToGroup.containsKey(iAttributeType)) continue;
-				_attToGroup.put(iAttributeType, g);
-			}
+			parsegroup(g, g);
 		}
 		return _attToGroup;
+	}
+	private void parsegroup(GroupOfAttributes g, GroupOfAttributes firstLevelG) {
+		IAttributeType<?>[] attrs = g.getAttributes();
+		if (attrs == null) return;
+		for (IAttributeType<?> iAttributeType : attrs) {
+			if (!_attToGroup.containsKey(iAttributeType))
+				_attToGroup.put(iAttributeType, firstLevelG);
+			if (iAttributeType instanceof GroupOfAttributes) {
+				parsegroup((GroupOfAttributes) iAttributeType, firstLevelG);
+			}
+		}
 	}
 
 	private IAttributeType<?>[] filterGroup(IPage p, IAttributeType<?>[] attributes) {
@@ -403,18 +409,31 @@ public class SWTUIPlatform implements UIPlatform {
 			for (IAttributeType<?> a : allAttributes) {
 				if (gmaps.containsKey(a)) {
 					GroupOfAttributes g = gmaps.get(a);
-					GroupInfo gi = ret.getGroupInfo(g);
-					if (gi._attrs.size() > 0) continue;
-					
-					for (IAttributeType<?> ga : g.getAttributes()) {
-						if (allAttributes.contains(ga)) {
-							gi._attrs.add(ga);
-						}
-					}
+					computeGroupInfo(ret, gmaps, allAttributes, g);
 				} 
 			}
 		}
 		return ret;
+	}
+
+
+	private void computeGroupInfo(PageInfo ret,
+			Map<IAttributeType<?>, GroupOfAttributes> gmaps,
+			HashSet<IAttributeType<?>> allAttributes, GroupOfAttributes g) {
+		
+		GroupInfo gi = ret.getGroupInfo(g);
+		if (gi._attrs.size() > 0) return;
+		
+		for (IAttributeType<?> ga : g.getAttributes()) {
+			if (ga instanceof GroupOfAttributes) {
+				gi._attrs.add(ga);
+				computeGroupInfo(ret, gmaps, allAttributes, (GroupOfAttributes) ga);
+				continue;
+			}
+			if (allAttributes.contains(ga)) {
+				gi._attrs.add(ga);
+			}
+		}
 	}
 
 
@@ -685,8 +704,8 @@ public class SWTUIPlatform implements UIPlatform {
 			rf._field = field;
 			rf._page = page;
 			rf._swtuiplatform = this;
-			rf._next = runningField.get(field);
-			runningField.put(field, rf);
+			rf._next = _runningFields.get(field);
+			_runningFields.put(field, rf);
 
 			Item ic = field.getInteractionControllerBASE();
 			ICRunningField ric = create(ic);
@@ -721,7 +740,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	private <T extends RuningInteractionController> UIRunningField<T> find(IPage page, UIField field) {
-		UIRunningField<?> rf = runningField.get(field);
+		UIRunningField<?> rf = _runningFields.get(field);
 		while (rf != null) {
 			if (rf._page == page) {
 				return (UIRunningField<T>) rf;
@@ -802,7 +821,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	private AbstractModelController getModelController(UIField field) {
-		return runningField.get(field)._running_mc;
+		return _runningFields.get(field)._running_mc;
 	}
 
 	public boolean broadcastSubValueRemoved(IPage page, UIField field, Object removed) {
@@ -842,7 +861,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public void broadcastThisFieldHasChanged(final UIField fd) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
-				UIRunningField rfields = runningField.get(fd);
+				UIRunningField rfields = _runningFields.get(fd);
 				while (rfields != null) {
 					rfields.updateValue();
 					rfields = rfields._next;
@@ -977,7 +996,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public void resetVisualValue(UIField uiField) {
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.resetVisualValue();
 			rf = rf._next;
@@ -986,7 +1005,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public void setEnabled(UIField uiField, boolean b) {
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.setEnabled(b);
 			rf = rf._next;
@@ -994,7 +1013,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 	
 	public void setEditable(UIField uiField, boolean b) {
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.setEditable(b);
 			rf = rf._next;
@@ -1008,7 +1027,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public void setTextLabel(UIField uiField, String label) {
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.setLabel(label);
 			rf = rf._next;
@@ -1022,7 +1041,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public void setVisible(UIField uiField, boolean b) {
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.setVisible(b);
 			rf = rf._next;
@@ -1040,10 +1059,13 @@ public class SWTUIPlatform implements UIPlatform {
 		if (uiField == null) {
 			return;
 		}
-		UIRunningField rf = runningField.get(uiField);
+		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
+			rf.setVisualValue(visualValue);
 			rf = rf._next;
 		}
+		if (b)
+			sendChangedValue(uiField, visualValue);
 	}
 
 	public void sendChangedValue(UIField field, Object visualValue) {
@@ -1157,7 +1179,7 @@ public class SWTUIPlatform implements UIPlatform {
 	@Override
 	public Object getModelValue(UIField uiField) {
 		UIRunningField rf;
-		UIRunningField rffirst = rf = runningField.get(uiField);
+		UIRunningField rffirst = rf = _runningFields.get(uiField);
 		
 		while (rf  != null) {
 			if (rf._page == _currentPage) {
@@ -1167,6 +1189,23 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 		if (_currentPage == null && rffirst != null) {
 			return rffirst.getModelValue();
+		}
+		return null;
+	}
+	
+	@Override
+	public Object getVisualValue(UIField uiField) {
+		UIRunningField rf;
+		UIRunningField rffirst = rf = _runningFields.get(uiField);
+		
+		while (rf  != null) {
+			if (rf._page == _currentPage) {
+				return rf.getVisualValue();
+			}
+			rf = rf._next;
+		}
+		if (_currentPage == null && rffirst != null) {
+			return rffirst.getVisualValue();
 		}
 		return null;
 	}
@@ -1357,7 +1396,7 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 		ret._running_mc._uiField = ret._field;
 
-		this.runningField.put(ret._field, ret);
+		this._runningFields.put(ret._field, ret);
 		this.pages.setUIField(attributte, ret._field);
 		if (children.length != 0) {
 			ret._children = children;
