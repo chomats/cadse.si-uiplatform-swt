@@ -325,6 +325,23 @@ public class SWTUIPlatform implements UIPlatform {
 		dialog.setPageSize(width, height);
 		return dialog.open();
 	}
+	
+	public int open(Shell parentShell, IActionPage dialogAction, int width, int height,
+			boolean openDetailDialog, WizardController wc) throws CadseException {
+		init();
+		parent = parentShell;
+		if (dialogAction != null) {
+			pages.setAction(dialogAction);
+		}
+		if (openDetailDialog) {
+			dialog = new DetailWizardDialog(parentShell, wc);
+
+		} else {
+			dialog = new WizardDialog(parentShell, wc);
+		}
+		dialog.setPageSize(width, height);
+		return dialog.open();
+	}
 
 	public Composite createPage(IPage page, Composite parentPage) {
 		Composite container = getToolkit().createComposite(parentPage);
@@ -1436,6 +1453,12 @@ public class SWTUIPlatform implements UIPlatform {
 			ret._running_mc = createAbstractModelController(ret._field);
 		}
 		ret._running_mc._uiField = ret._field;
+		if (ic instanceof ICRunningField) {
+			ICRunningField ru_ic = (ICRunningField) ic;
+			ru_ic._ic = null;
+			ru_ic._uiPlatform = this;
+			ru_ic._uirunningField = ret;
+		}
 
 		this._runningFields.put(ret._field, ret);
 		this.pages.setUIField(attributte, ret._field);

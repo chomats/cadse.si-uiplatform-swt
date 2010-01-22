@@ -19,7 +19,7 @@ public class ICRunningField implements RuningInteractionController {
 
 	@Override
 	final public UIField getUIField() {
-		return ((IC_Descriptor) _ic).getUIField();
+		return _uirunningField.getUIField();
 	}
 
 	@Override
