@@ -439,24 +439,26 @@ public class SWTUIPlatform implements UIPlatform {
 		return ret;
 	}
 
-
-	private void computeGroupInfo(PageInfo ret,
+	private GroupInfo computeGroupInfo(PageInfo ret,
 			Map<IAttributeType<?>, GroupOfAttributes> gmaps,
 			HashSet<IAttributeType<?>> allAttributes, GroupOfAttributes g) {
 		
 		GroupInfo gi = ret.getGroupInfo(g);
-		if (gi._attrs.size() > 0) return;
+		if (gi._attrs.size() > 0) return gi;
 		
 		for (IAttributeType<?> ga : g.getAttributes()) {
 			if (ga instanceof GroupOfAttributes) {
-				gi._attrs.add(ga);
-				computeGroupInfo(ret, gmaps, allAttributes, (GroupOfAttributes) ga);
+				GroupOfAttributes ga2 = (GroupOfAttributes) ga;
+				GroupInfo gaGroupeInfo = computeGroupInfo(ret, gmaps, allAttributes, ga2);
+				if (gaGroupeInfo._attrs.size() != 0)
+					gi._attrs.add(ga);
 				continue;
 			}
 			if (allAttributes.contains(ga)) {
 				gi._attrs.add(ga);
 			}
 		}
+		return gi;
 	}
 
 
