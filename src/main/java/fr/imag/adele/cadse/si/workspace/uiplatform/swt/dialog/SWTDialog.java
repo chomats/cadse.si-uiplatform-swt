@@ -10,6 +10,7 @@ import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.UIRunningField;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 public abstract class SWTDialog {
 
@@ -42,6 +43,20 @@ public abstract class SWTDialog {
 			public void run() {
 				try {
 					_swtuiPlatforms.open(shell, _page, getFinishAction(), _pageWidth, _pageHeight, false);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void open(final Shell shell, final WizardController wc) {
+		Display d = PlatformUI.getWorkbench().getDisplay();
+
+		d.syncExec(new Runnable() {
+			public void run() {
+				try {
+					_swtuiPlatforms.open(shell, getFinishAction(), _pageWidth, _pageHeight, false, wc);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
