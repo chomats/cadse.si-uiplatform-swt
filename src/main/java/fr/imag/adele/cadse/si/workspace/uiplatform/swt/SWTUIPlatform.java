@@ -1576,14 +1576,9 @@ public class SWTUIPlatform implements UIPlatform {
 		ret._field.setFlag(Item.UI_TEXT_MULTI_LINE, multiLine);
 		ret._field.setFlag(Item.UI_NO_BORDER, noBorder);
 		ret._field.setFlag(Item.UI_TEXT_WRAP_LINE, wrapLine);
-		try {
-			ret._field.setAttribute(CadseGCST.DTEXT_at_MULTI_LINE_, multiLine);
-			ret._field.setAttribute(CadseGCST.DTEXT_at_NO_BORDER_, noBorder);
-			ret._field.setAttribute(CadseGCST.DTEXT_at_WRAP_LINE_, wrapLine);
-		} catch (CadseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ret._field.commitSetAttribute(CadseGCST.DTEXT_at_MULTI_LINE_, multiLine);
+		ret._field.commitSetAttribute(CadseGCST.DTEXT_at_NO_BORDER_, noBorder);
+		ret._field.commitSetAttribute(CadseGCST.DTEXT_at_WRAP_LINE_, wrapLine);
 		ret._field.setFlag(Item.UI_HSCROLL, hscroll);
 		ret._field.setFlag(Item.UI_VSCROLL, vscroll);
 		ret._vspan = vspan;
