@@ -1027,12 +1027,30 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	@Override
+	public void setEnabled(IAttributeType<?> att, boolean b) {
+		UIField uiField = pages.getUIField(att);
+		if (uiField == null) {
+			return;
+		}
+		setEnabled(uiField, b);
+	}
+	
+	@Override
 	public void setEnabled(UIField uiField, boolean b) {
 		UIRunningField rf = _runningFields.get(uiField);
 		while (rf != null) {
 			rf.setEnabled(b);
 			rf = rf._next;
 		}
+	}
+	
+	@Override
+	public void setEditable(IAttributeType<?> att, boolean b) {
+		UIField uiField = pages.getUIField(att);
+		if (uiField == null) {
+			return;
+		}
+		setEnabled(uiField, b);
 	}
 	
 	public void setEditable(UIField uiField, boolean b) {
