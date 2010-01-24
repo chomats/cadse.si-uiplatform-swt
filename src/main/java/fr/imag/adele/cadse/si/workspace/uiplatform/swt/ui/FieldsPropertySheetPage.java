@@ -90,7 +90,7 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage,
 
 
 	protected Composite createEmptyComposite(Composite parent) {
-		Composite container = new Composite(parent, SWT.NO_BACKGROUND);
+		Composite container = new Composite(parent, SWT.BACKGROUND);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		GridLayout layout = new GridLayout();
