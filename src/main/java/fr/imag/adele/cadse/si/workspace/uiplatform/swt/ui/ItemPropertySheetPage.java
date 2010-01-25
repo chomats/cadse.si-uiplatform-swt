@@ -101,7 +101,7 @@ public class ItemPropertySheetPage extends Page implements SWTService.MyProperty
 	
 
 	protected Composite createEmptyComposite(Composite parent) {
-		Composite container = new Composite(parent, SWT.NO_BACKGROUND);
+		Composite container = new Composite(parent, SWT.BACKGROUND);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		GridLayout layout = new GridLayout();
