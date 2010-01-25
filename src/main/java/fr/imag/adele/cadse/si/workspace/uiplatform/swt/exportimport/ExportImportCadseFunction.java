@@ -1,5 +1,6 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.exportimport;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
@@ -20,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXBException;
@@ -32,15 +37,19 @@ import adele.util.io.ZipUtil;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseRuntime;
 import java.util.UUID;
+
+import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.Link;
+import fr.imag.adele.cadse.core.LogicalWorkspace;
 import fr.imag.adele.cadse.core.ProjectAssociation;
+import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.impl.CadseCore;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-import fr.imag.adele.cadse.core.impl.CadseCore;
+import fr.imag.adele.cadse.core.transaction.delta.ItemDelta;
+import fr.imag.adele.cadse.core.transaction.delta.LinkDelta;
+import fr.imag.adele.cadse.core.transaction.delta.SetAttributeOperation;
 
 public class ExportImportCadseFunction {
 
@@ -105,34 +114,36 @@ public class ExportImportCadseFunction {
 			ZipUtil.zip(files, outputStream);
 
 			pmo.worked(2);
-			// ZipUtil.addEntryZip(outputStream, new
-			// ByteArrayInputStream(qname.getBytes()), MELUSINE_DIR_CADSENAME,
-			// -1);
-			// ZipUtil.addEntryZip(outputStream, new
-			// ByteArrayInputStream(cadsedef.getId().toString().getBytes()),
-			// MELUSINE_DIR_CADSENAME_ID, -1);
 
-			ArrayList<UUID> requireCadseIds = new ArrayList<UUID>();
+			ArrayList<Object> requireCadseIds = new ArrayList<Object>();
 			for (CadseRuntime cr : requireCadse) {
 				if (items.contains(cr)) {
 					continue;
 				}
 
 				requireCadseIds.add(cr.getId());
+				requireCadseIds.add(cr.getName());
+				requireCadseIds.add(cr.getQualifiedName());
+				requireCadseIds.add(cr.getVersion());
 			}
 
-			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(requireCadseIds)), REQUIRE_CADSEs,
+			// format  UUID, name, qname, int version
+			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(requireCadseIds.toArray())), REQUIRE_CADSEs,
 					-1);
 
-			ArrayList<UUID> requireItemIds = new ArrayList<UUID>();
+			ArrayList<Object> requireItemIds = new ArrayList<Object>();
 			for (ItemType cr : requireItemType) {
 				if (items.contains(cr)) {
 					continue;
 				}
 				requireItemIds.add(cr.getId());
+				requireItemIds.add(cr.getName());
+				requireItemIds.add(cr.getQualifiedName());
+				requireItemIds.add(cr.getVersion());
 			}
 
-			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(requireItemIds)),
+			// format  UUID, name, qname, int version
+			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(requireItemIds.toArray())),
 					REQUIRE_ITEM_TYPEs, -1);
 
 			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(projectsMap)), PROJECTS, -1);
@@ -260,8 +271,12 @@ public class ExportImportCadseFunction {
 	 * @throws ClassNotFoundException
 	 */
 	public Object readObject(File pf, String key) throws IOException, ClassNotFoundException {
-
-		ObjectInputStream isr = new ObjectInputStream(new FileInputStream(new File(pf, key)));
+		if (!pf.exists())
+			return null;
+		File data = new File(pf, key);
+		if (!data.exists())
+			return null;
+		ObjectInputStream isr = new ObjectInputStream(new FileInputStream(data));
 		try {
 			Object o = isr.readObject();
 			return o;
@@ -270,16 +285,130 @@ public class ExportImportCadseFunction {
 		}
 	}
 
-	public void importCadseItems(IProgressMonitor pmo, File file) throws IOException, MalformedURLException,
+	public Item importCadseItems(IProgressMonitor pmo, File file) throws IOException, MalformedURLException,
 			JAXBException, CadseException, ClassNotFoundException {
 		CadseCore.getCadseDomain().beginOperation("Import cadse");
 		try {
-			// File f =
-			// ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
-			File pf = File.createTempFile("cadse-temp", ".dir");
+			File pf;
+			File dir = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+			pf = createTempDirectory(dir);
 			pf.mkdirs();
 
 			ZipUtil.unzipFile(file, pf);
+			String cadse = readCadseFolder(pf);
+			if (cadse == null) {
+				pf.renameTo(new File(dir, cadse));
+				pf = new File(dir, cadse);
+			}
+			
+			File melusineDir = new File(pf, ".melusine-dir");
+			File[] filesserxml = melusineDir.listFiles();
+			Collection<URL> itemdescription = new ArrayList<URL>();
+			for (File fser : filesserxml) {
+				if (fser.getName().endsWith(".ser")) {
+					itemdescription.add(fser.toURI().toURL());
+				}
+			}
+			
+			LogicalWorkspace lw = CadseCore.getLogicalWorkspace();
+			if (cadse == null) {
+				Object[] requireCadseIds = (Object[]) readObject(pf,
+						REQUIRE_CADSEs);
+				for (int i = 0; i < requireCadseIds.length;) {
+					UUID id = (UUID) requireCadseIds[i++];
+					String name = (String) requireCadseIds[i++];
+					String qname = (String) requireCadseIds[i++];
+					Integer version = (Integer) requireCadseIds[i++];
+					Item cr = lw.getItem(id);
+					if (cr == null) {
+						throw new CadseException(
+								"Missing cadse {0} version {1} ({2}, {3})",
+								name, version, qname, id);
+					}
+					if (!(cr instanceof CadseRuntime)) {
+						throw new CadseException(
+								"Item {0} version {1} is not a cadse ! ({2}, {3})",
+								name, version, qname, id);
+					}
+				}
+				Object[] requireItemTypeIds = (Object[]) readObject(pf,
+						REQUIRE_ITEM_TYPEs);
+				for (int i = 0; i < requireItemTypeIds.length;) {
+					UUID id = (UUID) requireItemTypeIds[i++];
+					String name = (String) requireItemTypeIds[i++];
+					String qname = (String) requireItemTypeIds[i++];
+					Integer version = (Integer) requireItemTypeIds[i++];
+					Item cr = lw.getItem(id);
+					if (cr == null) {
+						throw new CadseException(
+								"Missing item type {0} version {1} ({2}, {3})",
+								name, version, qname, id);
+					}
+					if (!(cr instanceof ItemType)) {
+						throw new CadseException(
+								"Item {0} version {1} is not an item type ! ({2}, {3})",
+								name, version, qname, id);
+					}
+				}
+			}
+			Collection<ProjectAssociation> projectAssociationSet = new ArrayList<ProjectAssociation>();
+			projectsMap = (HashMap<String, UUID>) readObject(pf, PROJECTS);
+			if (projectsMap != null) {
+				for (Map.Entry<String, UUID> e : projectsMap.entrySet()) {
+					ProjectAssociation pa = new ProjectAssociation(
+							e.getValue(), e.getKey());
+					projectAssociationSet.add(pa);
+					new File(pf, e.getKey()).renameTo(new File(dir, e.getKey()));
+				}
+			} else {
+				UUID uuid = readCadseUUIDFolder(pf);
+				ProjectAssociation pa = new ProjectAssociation(uuid, cadse);
+				projectAssociationSet.add(pa);
+			}
+			LogicalWorkspaceTransaction transaction = lw.createTransaction();
+			transaction.loadItems(itemdescription);
+			
+			migrate(transaction);
+			UUID uuid = readCadseUUIDFolder(pf);
+			ItemDelta cadseDef = transaction.getItem(uuid);
+			transaction.commit(false, true, false, projectAssociationSet);
+			checkAction(transaction);
+			return cadseDef.getBaseItem();			
+		} catch (RuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} finally {
+			CadseCore.getCadseDomain().endOperation();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param cadse
+	 *            the name of the cadse : can be null, it read from
+	 * @param input
+	 * @return
+	 * @throws IOException
+	 * @throws CadseException
+	 */
+	static public Item importCadse(String cadse, InputStream input) throws IOException, CadseException {
+		CadseCore.getCadseDomain().beginOperation("Import cadse");
+		try {
+			File pf;
+			File dir = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+			if (cadse != null)
+				pf = new File(dir, cadse);
+			else
+				pf = createTempDirectory(dir);
+
+			ZipUtil.unzip(input, pf);
+			UUID uuid = readCadseUUIDFolder(pf);
+			if (cadse == null) {
+				cadse = readCadseFolder(pf);
+				pf.renameTo(new File(dir, cadse));
+				pf = new File(dir, cadse);
+			}
 
 			File melusineDir = new File(pf, ".melusine-dir");
 			File[] filesserxml = melusineDir.listFiles();
@@ -290,22 +419,260 @@ public class ExportImportCadseFunction {
 				}
 			}
 			Collection<ProjectAssociation> projectAssociationSet = new ArrayList<ProjectAssociation>();
-			projectsMap = (HashMap<String, UUID>) readObject(pf, PROJECTS);
-			for (Map.Entry<String, UUID> e : projectsMap.entrySet()) {
-				ProjectAssociation pa = new ProjectAssociation(e.getValue(), e.getKey());
-				projectAssociationSet.add(pa);
-			}
-
+			ProjectAssociation pa = new ProjectAssociation(uuid, cadse);
+			projectAssociationSet.add(pa);
 			LogicalWorkspaceTransaction transaction = CadseCore.getLogicalWorkspace().createTransaction();
 
 			transaction.loadItems(itemdescription);
+			migrate(transaction);
+			ItemDelta cadseDef = transaction.getItem(uuid);
 			transaction.commit(false, true, false, projectAssociationSet);
-		} catch (RuntimeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			checkAction(transaction);
+			return cadseDef.getBaseItem();
 		} finally {
 			CadseCore.getCadseDomain().endOperation();
 		}
 	}
+	
+	/**
+	 * Read cadse.
+	 * 
+	 * @param f
+	 *            the f
+	 * 
+	 * @return the string
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JAXBException
+	 *             the JAXB exception
+	 */
+	static public String readCadse(File f) throws IOException, JAXBException {
+		JarFile jis = new JarFile(f);
+		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+		if (entry == null) {
+			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+			if (entry == null) {
+				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+			}
+		}
+		InputStream imput = jis.getInputStream(entry);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return isr.readLine();
+	}
+
+	static public String readCadseFolder(File f) throws IOException {
+		File cadseNameFile = new File(f, ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+		if (!cadseNameFile.exists()) {
+			return null;
+		}
+		InputStream imput = new FileInputStream(cadseNameFile);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return isr.readLine();
+	}
+	
+	/**
+	 * Read cadse uuid.
+	 * 
+	 * @param f
+	 *            the f
+	 * 
+	 * @return the compact uuid
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JAXBException
+	 *             the JAXB exception
+	 */
+	public UUID readCadseUUID(File f) throws IOException, JAXBException {
+		JarFile jis = new JarFile(f);
+		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+		if (entry == null) {
+			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+			if (entry == null) {
+				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+			}
+		}
+		InputStream imput = jis.getInputStream(entry);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return UUID.fromString(isr.readLine());
+	}
+
+	/**
+	 * Read cadse uuid.
+	 * 
+	 * @param f
+	 *            the f
+	 * 
+	 * @return the compact uuid
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JAXBException
+	 *             the JAXB exception
+	 */
+	static public UUID readCadseUUIDFolder(File f) throws IOException {
+		File uuid = new File(f, ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+
+		if (!uuid.exists()) {
+			throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+
+		}
+		InputStream imput = new FileInputStream(uuid);
+		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+		return UUID.fromString(isr.readLine());
+	}
+
+	static private void migrate(LogicalWorkspaceTransaction transaction) throws CadseException {
+		Collection<ItemDelta> operations = transaction.getItemOperations();
+		for (ItemDelta itemDelta : operations) {
+
+			if (itemDelta.getType() == null) {
+				if (itemDelta.getBaseItem() != null) {
+					itemDelta.setType(itemDelta.getBaseItem().getType());
+				} else
+					System.out.println("type has no type " + itemDelta);
+			}
+
+			if (!itemDelta.isLoaded())
+				continue;
+
+//			SetAttributeOperation uuid_att = itemDelta.getSetAttributeOperation("UUID_ATTRIBUTE");
+//			if (uuid_att != null) {
+//				if (itemDelta.getType() == null) {
+//					System.out.println("Import error type is null");
+//				} else if (itemDelta.getType() == CadseGCST.CADSE_DEFINITION) {
+//					itemDelta.setAttribute(CadseGCST.CADSE_DEFINITION_at_ID_RUNTIME_, uuid_att.getCurrentValue());
+//				} else if (itemDelta.isInstanceOf(CadseGCST.PAGE)) {
+//					itemDelta.setAttribute(CadseGCST.PAGE_at_ID_RUNTIME_, uuid_att.getCurrentValue());
+//				} else if (itemDelta.isInstanceOf(CadseGCST.ATTRIBUTE)) {
+//					itemDelta.setAttribute(CadseGCST.ATTRIBUTE_at_ID_RUNTIME_, uuid_att.getCurrentValue());
+//				} else if (itemDelta.isInstanceOf(CadseGCST.TYPE_DEFINITION)) {
+//					itemDelta.setAttribute(CadseGCST.TYPE_DEFINITION_at_ID_RUNTIME_, uuid_att.getCurrentValue());
+//				} else {
+//					System.out.println("Cannot set UUID_ATTRIBUTE for type " + itemDelta.getType().getName());
+//				}
+//				// remove old valeur
+//				itemDelta.setAttribute("UUID_ATTRIBUTE", null);
+//			}
+			if (itemDelta.getType() == CadseGCST.LINK_TYPE) {
+				if (itemDelta.getName().startsWith("#invert_part")) {
+					itemDelta.delete(false);
+					for (Link l : itemDelta.getIncomingLinks()) {
+						l.delete();
+					}
+				}
+				LinkDelta l = itemDelta.getOutgoingLink(CadseGCST.LINK_TYPE_lt_INVERSE_LINK);
+				if (l != null && l.getDestination().getName().startsWith("#invert_part")) {
+					l.delete();
+				}
+			}
+			SetAttributeOperation committed_date_value = itemDelta
+					.getSetAttributeOperation(CadseGCST.ITEM_at_COMMITTED_DATE_);
+			if (committed_date_value != null) {
+				if (committed_date_value.getCurrentValue() instanceof Date) {
+					Date d = (Date) committed_date_value.getCurrentValue();
+					itemDelta.setAttribute(CadseGCST.ITEM_at_COMMITTED_DATE_, d.getTime());
+				}
+			}
+		}
+
+		for (ItemDelta itemDelta : operations) {
+			if (!itemDelta.isLoaded())
+				continue;
+			for (LinkDelta l : itemDelta.getOutgoingLinkOperations()) {
+				if (l.getLinkTypeName().startsWith("#parent:") || l.getLinkTypeName().startsWith("#invert_part")) {
+					if (itemDelta.getPartParent() == null) {
+						itemDelta.setParent(l.getDestination(), null);
+					}
+					if (itemDelta.getOutgoingLink(CadseGCST.ITEM_lt_PARENT) == null) {
+						itemDelta.createLink(CadseGCST.ITEM_lt_PARENT, l.getDestination());
+					}
+					l.delete();
+				} else if (l.getDestination().getName().contains("#invert_part_")) {
+					l.delete();
+				}
+				if (l.getLinkType() != null && l.getLinkType().isPart() && l.getDestination().getPartParent() == null) {
+					l.getDestination().setParent(l.getSource(), l.getLinkType());
+				}
+			}
+			for (LinkDelta l : itemDelta.getOutgoingLinkOperations(CadseGCST.ITEM_lt_MODIFIED_ATTRIBUTES)) {
+				if (!l.isLoaded())
+					continue;
+				if (l.getDestination().getType() == null) {
+					IAttributeType<?> att = l.getSource().getLocalAttributeType(l.getDestinationName());
+					
+					if (att != null) {
+						LinkDelta latt = itemDelta.getOutgoingLink(CadseGCST.ITEM_lt_MODIFIED_ATTRIBUTES, att.getId());
+						if (latt != null) {
+							l.delete();
+						} else
+							l.changeDestination(att);
+					} else
+						l.delete();
+				}
+			}
+		}
+		for (ItemDelta itemDelta : operations) {
+			if (!itemDelta.isLoaded())
+				continue;
+			if (itemDelta.getPartParent() == null && itemDelta.getType() != null && itemDelta.getType().isPartType()) {
+				System.out.println("Error cannot found parent for " + itemDelta.getQualifiedName());
+			}
+		}
+	}
+
+	static private void checkAction(LogicalWorkspaceTransaction transaction) {
+		Collection<ItemDelta> operations = transaction.getItemOperations();
+		LogicalWorkspace lw = CadseCore.getLogicalWorkspace();
+		for (ItemDelta itemDelta : operations) {
+			Item gI = lw.getItem(itemDelta.getId());
+			if (gI == null) {
+				System.err.println("Cannot found commited item " + itemDelta);
+				continue;
+			}
+			Item parent = gI.getPartParent();
+			if (parent == null && itemDelta.getPartParent() != null) {
+				System.err.println("Parent not setted " + itemDelta + " -> " + itemDelta.getPartParent());
+			} else {
+				if (parent != null && itemDelta.getPartParent() != null) {
+					if (!parent.getId().equals(itemDelta.getPartParent().getId())) {
+						System.err.println("Parent not same " + itemDelta + " -> " + itemDelta.getPartParent() + "<>"
+								+ parent);
+					}
+				}
+			}
+
+		}
+
+	}
+
+	
+
+	/**
+	 * 
+	 * @param dir
+	 *            can be null : see
+	 *            {@link File#createTempFile(String, String, File)}.
+	 * @return a tempory folder
+	 * @throws IOException
+	 */
+
+	public static File createTempDirectory(File dir) throws IOException {
+		final File temp;
+
+		temp = File.createTempFile("temp", Long.toString(System.nanoTime()), dir);
+
+		if (!(temp.delete())) {
+			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
+		}
+
+		if (!(temp.mkdir())) {
+			throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
+		}
+
+		return (temp);
+	}
+
 
 }

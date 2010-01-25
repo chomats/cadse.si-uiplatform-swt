@@ -49,6 +49,7 @@ import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
 import fr.imag.adele.cadse.core.ui.IActionPage;
+import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
@@ -81,9 +82,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
-		 * .Viewer, java.lang.Object, java.lang.Object)
+		 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+		 *      java.lang.Object, java.lang.Object)
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -141,9 +141,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
-		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
@@ -153,9 +152,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueAdded(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueAdded(UIField field, Object added) {
@@ -164,9 +162,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @seefr.imag.adele.cadse.core.ui.AbstractModelController#
-		 * notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
-		 * java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieSubValueRemoved(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieSubValueRemoved(UIField field, Object removed) {
@@ -175,9 +172,8 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueDeleted(UIField field, Object oldvalue) {
@@ -205,7 +201,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 				return true;
 			}
 			try {
-				cadse = readCadse(file);
+				cadse = ExportImportCadseFunction.readCadse(file);
 				if (cadse == null) {
 					_swtuiPlatforms.setMessageError("Select a valid cadse zip file");
 					return true;
@@ -238,9 +234,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
-		 * getFileFilter()
+		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getFileFilter()
 		 */
 		@Override
 		protected String[] getFileFilter() {
@@ -250,9 +244,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
-		 * getViewerFilter()
+		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getViewerFilter()
 		 */
 		@Override
 		protected ViewerFilter getViewerFilter() {
@@ -262,9 +254,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#
-		 * getKind()
+		 * @see fede.workspace.model.manager.properties.impl.ic.IC_ForChooseFile#getKind()
 		 */
 		@Override
 		public int getKind() {
@@ -278,63 +268,13 @@ public class ImportCadsePagesAction extends SWTDialog {
 	 * @return the d choose file ui
 	 */
 	public DChooseFileUI<IC_Import> createImportField() {
-		return _swtuiPlatforms.createDChooseFileUI(_page, "selectJar", "Select cadse deployed zip", EPosLabel.left,
+		return _swtuiPlatforms.createDChooseFileUI(_page, "#selectJar", "Select cadse deployed zip", EPosLabel.left,
 				new MC_Import(), new IC_Import(), "Select cadse deployed zip");
 	}
 
-	/**
-	 * Read cadse.
-	 * 
-	 * @param f
-	 *            the f
-	 * 
-	 * @return the string
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws JAXBException
-	 *             the JAXB exception
-	 */
-	public String readCadse(File f) throws IOException, JAXBException {
-		JarFile jis = new JarFile(f);
-		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
-		if (entry == null) {
-			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
-			if (entry == null) {
-				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
-			}
-		}
-		InputStream imput = jis.getInputStream(entry);
-		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
-		return isr.readLine();
-	}
+	
 
-	/**
-	 * Read cadse uuid.
-	 * 
-	 * @param f
-	 *            the f
-	 * 
-	 * @return the compact uuid
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws JAXBException
-	 *             the JAXB exception
-	 */
-	public UUID readCadseUUID(File f) throws IOException, JAXBException {
-		JarFile jis = new JarFile(f);
-		ZipEntry entry = jis.getEntry(ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
-		if (entry == null) {
-			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
-			if (entry == null) {
-				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
-			}
-		}
-		InputStream imput = jis.getInputStream(entry);
-		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
-		return UUID.fromString(isr.readLine());
-	}
+	
 
 	/**
 	 * Gets the select jar.

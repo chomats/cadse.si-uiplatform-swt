@@ -22,6 +22,7 @@ package fr.imag.adele.cadse.si.workspace.uiplatform.swt.exportimport;
 import java.net.URL;
 
 import fr.imag.adele.cadse.core.CadseException;
+import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.IMenuAction;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
@@ -53,7 +54,7 @@ public class ImportCadseAction extends IMenuAction {
 	 */
 	@Override
 	public String getImage() {
-		return null;
+		return CadseGCST.CADSE_DEFINITION.getImage();
 	}
 
 	/*

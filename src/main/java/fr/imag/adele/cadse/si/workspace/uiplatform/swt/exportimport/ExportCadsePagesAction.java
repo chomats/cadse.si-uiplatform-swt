@@ -44,6 +44,7 @@ import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.util.Assert;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.dialog.SWTDialog;
+import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.ICRunningField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DCheckBoxUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DChooseFileUI;
@@ -74,9 +75,8 @@ public class ExportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
-		 * .Viewer, java.lang.Object, java.lang.Object)
+		 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+		 *      java.lang.Object, java.lang.Object)
 		 */
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -120,9 +120,8 @@ public class ExportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
-		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
@@ -132,9 +131,8 @@ public class ExportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueDeleted(UIField field, Object oldvalue) {
@@ -232,9 +230,8 @@ public class ExportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr
-		 * .imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.IEventListener#notifieValueChanged(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueChanged(UIField field, Object value) {
@@ -251,9 +248,8 @@ public class ExportCadsePagesAction extends SWTDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted
-		 * (fr.imag.adele.cadse.core.ui.UIField, java.lang.Object)
+		 * @see fr.imag.adele.cadse.core.ui.AbstractModelController#notifieValueDeleted(fr.imag.adele.cadse.core.ui.UIField,
+		 *      java.lang.Object)
 		 */
 		@Override
 		public void notifieValueDeleted(UIField field, Object oldvalue) {
@@ -335,7 +331,7 @@ public class ExportCadsePagesAction extends SWTDialog {
 	 * 
 	 * @return the uI field
 	 */
-	public DCheckBoxUI createTimeStampField() {
+	public DCheckBoxUI<ICRunningField> createTimeStampField() {
 		return _swtuiPlatforms.createCheckBoxUI(_page, "tstamp", "add time stamp", EPosLabel.none, new MC_TSTamp(),
 				null);
 	}
@@ -376,7 +372,7 @@ public class ExportCadsePagesAction extends SWTDialog {
 
 	/** The its. */
 	private HashMap<Item, File>	its;
-
+	
 	class MyAction extends AbstractActionPage {
 		@Override
 		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
