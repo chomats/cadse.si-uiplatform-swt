@@ -296,7 +296,7 @@ public class ExportImportCadseFunction {
 
 			ZipUtil.unzipFile(file, pf);
 			String cadse = readCadseFolder(pf);
-			if (cadse == null) {
+			if (cadse != null) {
 				pf.renameTo(new File(dir, cadse));
 				pf = new File(dir, cadse);
 			}

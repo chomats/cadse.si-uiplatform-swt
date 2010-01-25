@@ -1703,6 +1703,7 @@ public class SWTUIPlatform implements UIPlatform {
 		DChooseFileUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic,
 				new DChooseFileUI<IC>(), CadseGCST.FIELD);
 		ret.choosemsg = title;
+		ret._field.setHSpan(3);
 		return ret;
 	}
 
