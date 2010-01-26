@@ -495,7 +495,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 
-	private IAttributeType<?>[] getAttributes(IPage p, UIRunningField<?> ui) {
+	public IAttributeType<?>[] getAttributes(IPage p, UIRunningField<?> ui) {
 		
 		UIField field = ui._field;
 		IAttributeType<?> attributeDefinition = field.getAttributeDefinition();
