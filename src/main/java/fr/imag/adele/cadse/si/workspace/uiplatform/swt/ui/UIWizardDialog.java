@@ -69,7 +69,7 @@ public class UIWizardDialog extends WizardDialog {
 	public void create() {
 		super.create();
 		WizardController wizardController = (WizardController) getWizard();
-		getShell().setData(UIField.CADSE_MODEL_KEY, wizardController.pages);
+		getShell().setData(UIField.CADSE_MODEL_KEY, wizardController._uiPlatform);
 	}
 
 }

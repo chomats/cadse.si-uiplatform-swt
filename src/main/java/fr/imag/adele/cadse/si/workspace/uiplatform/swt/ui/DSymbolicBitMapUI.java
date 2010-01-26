@@ -84,7 +84,7 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 		GridData gd;
 
 		g = _swtuiplatform.getToolkit().createGroup(container, getLabel());
-		g.setData(UIField.CADSE_MODEL_KEY, _field);
+		g.setData(UIField.CADSE_MODEL_KEY, this);
 		g.setLayout(new GridLayout(col, false));
 		controls = new Button[labels.length];
 		for (int i = 0; i < labels.length; i++) {
@@ -94,7 +94,7 @@ public class DSymbolicBitMapUI<IC extends RuningInteractionController> extends D
 			}
 			controls[i] = _swtuiplatform.getToolkit().createButton(g, labels[i], SWT.CHECK);
 			controls[i].setData(i);
-			controls[i].setData(UIField.CADSE_MODEL_KEY, _field);
+			controls[i].setData(UIField.CADSE_MODEL_KEY, this);
 			controls[i].addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
 					_swtuiplatform.broadcastValueChanged(_page, _field, getVisualValue());

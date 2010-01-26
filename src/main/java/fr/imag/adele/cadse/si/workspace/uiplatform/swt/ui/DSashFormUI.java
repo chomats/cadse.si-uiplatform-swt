@@ -23,7 +23,7 @@ public class DSashFormUI<IC extends RuningInteractionController> extends DAbstra
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		sashForm = new SashForm(container, horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
 		sashForm.setLayoutData(gridData);
-		sashForm.setData(UIField.CADSE_MODEL_KEY, _field);
+		sashForm.setData(UIField.CADSE_MODEL_KEY, this);
 
 		GridLayout gridLayout = new GridLayout(hspan, false);
 		_swtuiplatform.createChildrenControl(_page, this, sashForm, gridLayout);

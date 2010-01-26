@@ -27,7 +27,7 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 		}
 		_section = _swtuiplatform.getToolkit().createSection(container, style);
 		
-		_section.setData(UIField.CADSE_MODEL_KEY, _field);
+		_section.setData(UIField.CADSE_MODEL_KEY, this);
 		_section.setLayoutData(gridData);
 		_section.setText(getLabel());
 		//_section.setExpanded(true);
