@@ -18,12 +18,15 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic;
 
+import java.util.List;
+
+import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 
 public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 
-	private Object[]	values;
+	private Object[]	_values;
 
 	public IC_StaticArrayOfObjectForBrowser_Combo() {
 	}
@@ -31,11 +34,25 @@ public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowse
 	public IC_StaticArrayOfObjectForBrowser_Combo(String title, String message, String[] lastCommitMsgTab) {
 		this._title = title;
 		this._message = message;
-		values = lastCommitMsgTab;
+		_values = lastCommitMsgTab;
 	}
 
+	
+	@Override
+	public void init() throws CadseException {
+		super.init();
+		if (_ic != null) {
+			Object values = _ic.getAttribute(CadseGCST.IC_STATIC_ARRAY_OF_OBJECT_FOR_BROWSER_COMBO_at_VALUES_);
+			if (values instanceof List) {
+				_values = ((List)values).toArray();
+			} else if (values instanceof Object[]) {
+				_values = (Object[]) values;
+			}
+		}
+	}
+	
 	public Object[] getValues() {
-		return values;
+		return _values;
 	}
 
 	@Override
@@ -45,7 +62,7 @@ public class IC_StaticArrayOfObjectForBrowser_Combo extends IC_AbstractForBrowse
 
 	@Override
 	protected Object[] getSelectableValues() {
-		return values;
+		return _values;
 	}
 
 	public ItemType getType() {
