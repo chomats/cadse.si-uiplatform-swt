@@ -139,7 +139,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.WizardController;
 
 public class SWTUIPlatform implements UIPlatform {
 
-	static private class FictifAttribute<T> extends AttributeType implements IAttributeType<T> {
+	static public class FictifAttribute<T> extends AttributeType implements IAttributeType<T> {
 		private IAttributeType<?>[]	_childrenAtt	= null;
 
 		FictifAttribute(UUID id, String name, int flag, IAttributeType<?>[]	children) {
