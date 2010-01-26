@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistField;
 
 import fr.imag.adele.cadse.core.CadseGCST;
+import fr.imag.adele.cadse.core.CadseIllegalArgumentException;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
@@ -99,6 +100,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		gd.horizontalSpan = hspan - 1;
 		swtControl.setLayoutData(gd);
 
+		if (_ic == null)
+			throw new CadseIllegalArgumentException("Cannot create ic for {0}({1})", this, getAttributeDefinition());
 		if (_ic.hasDeleteFunction()) {
 			_textControl.addKeyListener(new KeyListener() {
 
