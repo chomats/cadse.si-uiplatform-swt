@@ -246,7 +246,7 @@ public class SWTUIPlatform implements UIPlatform {
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_LIST, IC_EnumForList.class);
 		defaultRegister.register(CadseGCST.IC_ENUM_FOR_BROWSER_COMBO, IC_EnumForBrowser_Combo.class);
 		defaultRegister.register(CadseGCST.IC_STRING_LIST_FOR_LIST, IC_DefaultForList.class);
-		
+		defaultRegister.register(CadseGCST.IC_STATIC_ARRAY_OF_OBJECT_FOR_BROWSER_COMBO, IC_StaticArrayOfObjectForBrowser_Combo.class);
 	}
 	
 
