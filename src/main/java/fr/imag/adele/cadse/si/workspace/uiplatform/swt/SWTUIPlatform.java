@@ -742,6 +742,9 @@ public class SWTUIPlatform implements UIPlatform {
 				
 				if (ric instanceof UIRunningValidator)
 					addItemListener(ic, (UIRunningValidator) ric);
+			} else {
+				if (ic != null)
+					log("Cannot create ic "+field.getType()+":"+field.getName()+":"+field.getAttributeDefinition().getType(), null);
 			}
 			
 
