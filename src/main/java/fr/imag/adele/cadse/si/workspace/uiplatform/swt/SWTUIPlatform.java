@@ -343,17 +343,26 @@ public class SWTUIPlatform implements UIPlatform {
 		return dialog.open();
 	}
 
-	public Composite createPage(IPage page, Composite parentPage) {
+	public Composite createPage(IPage page, Composite parentPage, boolean initAfterUi) {
 		Composite container = getToolkit().createComposite(parentPage);
 		Composite ret = createFieldsControl(page, null, container, getFields(page), null);
-		try {
-			initAfterUI(page);
-		} catch (CadseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (initAfterUi) {
+			try {
+				initAfterUI(page);
+			} catch (CadseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// Reset visual value. and set UI_running at true
+			resetVisualValue(page);
+			
+			if (pages.getUIValidators() != null) {
+				for (UIRunningValidator v : pages.getUIValidators()) {
+					v.initAfterUI();
+				}
+			}
 		}
-		// Reset visual value. and set UI_running at true
-		resetVisualValue(page);
 		return ret;
 
 	}
@@ -592,8 +601,10 @@ public class SWTUIPlatform implements UIPlatform {
 			TabItem ti = new TabItem(container, SWT.NONE);
 			ti.setText(title);
 			// TODO set an image...
-			ti.setControl(createPage(mf, container));
+			ti.setControl(createPage(mf, container, false));
 		}
+		
+		
 		for (IPage page : pages.getPages()) {
 			initAfterUI(page);
 		}
@@ -601,7 +612,11 @@ public class SWTUIPlatform implements UIPlatform {
 		for (IPage page : pages.getPages()) {
 			resetVisualValue(page);
 		}
-
+		if (pages.getUIValidators() != null) {
+			for (UIRunningValidator v : pages.getUIValidators()) {
+				v.initAfterUI();
+			}
+		}
 		setMessage(null, UIPlatform.ERROR);
 		validateFields(null, null);
 
@@ -663,6 +678,7 @@ public class SWTUIPlatform implements UIPlatform {
 				uiRunningField._running_mc.init(this);
 			uiRunningField.initAfterUI();
 		}
+		
 	}
 
 	private void resetVisualValue(IPage page) {

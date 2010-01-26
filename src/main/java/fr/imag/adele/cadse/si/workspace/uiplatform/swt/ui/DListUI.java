@@ -481,6 +481,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		TreeViewer viewer = packageTable.getViewer();
 		if (viewer.getContentProvider() != null) {
 			viewer.setInput(fElements);
+			viewer.refresh();
 		} else {
 
 		}

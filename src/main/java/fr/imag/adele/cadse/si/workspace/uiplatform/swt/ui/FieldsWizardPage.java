@@ -61,7 +61,7 @@ public class FieldsWizardPage extends WizardPage {
 		this.init = true;
 
 		try {
-			setControl(_swtuiPlatform.createPage(page, parent));
+			setControl(_swtuiPlatform.createPage(page, parent, true));
 		} catch (Throwable e) {
 			_swtuiPlatform.log("fields wizard page", e);
 		}
