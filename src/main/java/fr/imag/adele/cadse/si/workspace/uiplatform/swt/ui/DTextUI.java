@@ -71,7 +71,8 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		if (!_field.isEditable()) {
 			style |= SWT.READ_ONLY;
 		}
-
+		_toolTips = _field.getAttribute(CadseGCST.DTEXT_at_TOOL_TIP_);
+		
 		_textControl = _swtuiplatform.getToolkit().createText(ocontainer, "", style);
 		_textControl.setData(UIField.CADSE_MODEL_KEY, this);
 		if (_field.isEditable() && proposer != null) {
