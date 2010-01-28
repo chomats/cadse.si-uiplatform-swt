@@ -47,9 +47,16 @@ public class SWTServiceImpl implements SWTService {
 			return false;
 		}
 		NewContext nc = new NewContext(parent, lt, destItemType);
-		nc.initTransaction(destItemType.getLogicalWorkspace());
 		
 		
+		
+		return showCreateWizard(parentShell, nc);
+	}
+	
+	@Override
+	public boolean showCreateWizard(Shell parentShell, NewContext nc)
+			throws CadseException {
+		nc.initTransaction(nc.getDestinationType().getLogicalWorkspace());
 		Pages f = nc.getNewItem().getCreationPages(nc);
 
 		if (f != null) {
@@ -62,6 +69,41 @@ public class SWTServiceImpl implements SWTService {
 		}
 
 		return false;
+	}
+	
+	@Override
+	public void showCreateWizardWithError(Shell parentShell, NewContext c)
+			throws CadseException {
+		try {
+
+			if (showCreateWizard(parentShell, c)) {
+				return;
+			}
+			String message;
+			if (c.getPartParent() != null) {
+				message = MessageFormat.format(
+						"Cannot create an item of type {0} from {1} of type {2} the link {3} : no pages found",
+						c.getDestinationType().getName(), c.getPartParent().getName(), c.getPartParent().getType().getName(), c.getPartLinkType().getName());
+			} else {
+				message = MessageFormat.format("Cannot create an item of type {0} : no pages found", c.getDestinationType()
+						.getName());
+			}
+
+			MessageDialog.openError(parentShell, "Cannot create wizard  : no pages found", message);
+			WSPlugin.log(new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, message, null));
+		} catch (Throwable e1) {
+			e1.printStackTrace();
+			String message;
+			if (c.getPartParent() != null) {
+				message = MessageFormat.format("Cannot create an item of type {0} from {1} of type {2} the link {3}",
+						c.getDestinationType().getName(), c.getPartParent().getName(), c.getPartParent().getType().getName(), c.getPartLinkType().getName());
+			} else {
+				message = MessageFormat.format("Cannot create an item of type {0}", c.getDestinationType().getName());
+			}
+
+			MessageDialog.openError(parentShell, "Cannot create wizard", message);
+			WSPlugin.log(new Status(IStatus.ERROR, WSPlugin.PLUGIN_ID, 0, message, e1));
+		}
 	}
 
 	@Override
