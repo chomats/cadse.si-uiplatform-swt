@@ -15,6 +15,19 @@ public class DGridUI<IC extends RuningInteractionController> extends DAbstractFi
 
 	Composite	composite;
 	boolean		makeColumnsEqualWidth	= false;
+	int 		columnNb = 0;
+
+	public int getColumnNb() {
+		return columnNb;
+	}
+
+	public void setColumnNb(int columnNb) {
+		this.columnNb = columnNb;
+	}
+
+	public boolean isMakeColumnsEqualWidth() {
+		return makeColumnsEqualWidth;
+	}
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -27,7 +40,7 @@ public class DGridUI<IC extends RuningInteractionController> extends DAbstractFi
 		composite.setData(UIField.CADSE_MODEL_KEY, _field);
 		composite.setLayoutData(gridData);
 
-		GridLayout gridLayout = new GridLayout(0, makeColumnsEqualWidth);
+		GridLayout gridLayout = new GridLayout(columnNb, makeColumnsEqualWidth);
 
 		_swtuiplatform.createChildrenControl(_page, this, composite, gridLayout);
 	}
