@@ -202,11 +202,6 @@ public class ImportCadsePagesAction extends SWTDialog {
 			}
 			try {
 				cadse = ExportImportCadseFunction.readCadse(file);
-				if (cadse == null) {
-					_swtuiPlatforms.setMessageError("Select a valid cadse zip file");
-					return true;
-				}
-
 			} catch (IOException e) {
 				WSPlugin.logException(e);
 				_swtuiPlatforms.setMessageError("Select a valid cadse jar : " + e.getMessage());
