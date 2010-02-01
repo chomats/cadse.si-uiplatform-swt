@@ -530,13 +530,6 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fede.workspace.model.manager.properties.impl.ui.DAbstractField#setVisible
-	 * (boolean)
-	 */
 	@Override
 	public void setVisible(boolean v) {
 		packageTable.setEnabled(v);

@@ -102,7 +102,7 @@ public class ExportImportCadseFunction {
 			pmo.beginTask("export cadse items ", 3);
 
 			File wsFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
-			File melusineDir = new File(wsFile, ".melusine");
+			File melusineDir = new File(wsFile, ".cadse");
 			for (Item rootItem : rootItems) {
 				pmo.setTaskName(rootItem.getName());
 				getPersistanceFileAll(melusineDir, rootItem);
@@ -172,7 +172,7 @@ public class ExportImportCadseFunction {
 	private void includesContents(IProgressMonitor pmo, Set<IProject> projects, HashMap<File, String> files) {
 		for (IProject p : projects) {
 			File eclipseProjectFile = p.getLocation().toFile();
-			files.put(eclipseProjectFile, p.getName());
+			files.put(eclipseProjectFile, p.getName()+"/");
 		}
 	}
 
@@ -288,8 +288,8 @@ public class ExportImportCadseFunction {
 	public Item importCadseItems(IProgressMonitor pmo, File file) throws IOException, MalformedURLException,
 			JAXBException, CadseException, ClassNotFoundException {
 		CadseCore.getCadseDomain().beginOperation("Import cadse");
+		File pf = null;
 		try {
-			File pf;
 			File dir = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 			pf = createTempDirectory(dir);
 			pf.mkdirs();
@@ -358,7 +358,12 @@ public class ExportImportCadseFunction {
 					ProjectAssociation pa = new ProjectAssociation(
 							e.getValue(), e.getKey());
 					projectAssociationSet.add(pa);
-					new File(pf, e.getKey()).renameTo(new File(dir, e.getKey()));
+					File destProject = new File(dir, e.getKey());
+					if (destProject.exists()) {
+						destProject.delete();
+					}
+						
+					new File(pf, e.getKey()).renameTo(destProject);
 				}
 			} else {
 				UUID uuid = readCadseUUIDFolder(pf);
@@ -379,6 +384,8 @@ public class ExportImportCadseFunction {
 			e.printStackTrace();
 			return null;
 		} finally {
+			if (pf != null)
+				pf.delete();
 			CadseCore.getCadseDomain().endOperation();
 		}
 	}
@@ -453,7 +460,7 @@ public class ExportImportCadseFunction {
 		if (entry == null) {
 			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
 			if (entry == null) {
-				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME);
+				return null;
 			}
 		}
 		InputStream imput = jis.getInputStream(entry);
@@ -490,7 +497,7 @@ public class ExportImportCadseFunction {
 		if (entry == null) {
 			entry = jis.getEntry("/" + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
 			if (entry == null) {
-				throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
+				return null;
 			}
 		}
 		InputStream imput = jis.getInputStream(entry);
@@ -515,8 +522,7 @@ public class ExportImportCadseFunction {
 		File uuid = new File(f, ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
 
 		if (!uuid.exists()) {
-			throw new IOException("Cannot found " + ExportImportCadseFunction.MELUSINE_DIR_CADSENAME_ID);
-
+			return null;
 		}
 		InputStream imput = new FileInputStream(uuid);
 		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
