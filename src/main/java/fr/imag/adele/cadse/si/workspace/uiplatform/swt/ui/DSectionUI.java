@@ -20,7 +20,7 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 
 	@Override
 	public void createControl(Composite container, int hspan) {
-		GridData gridData = new GridData(GridData.FILL_BOTH);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		int style = ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED;
 		if (!_field.getFlag(Item.UI_NO_BORDER)) {
 			style |= SWT.BORDER;
