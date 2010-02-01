@@ -491,8 +491,12 @@ public class SWTUIPlatform implements UIPlatform {
 				continue;
 			}
 			UIField f = pages.getUIField(at);
+			if (f == null)
+				f = at.generateDefaultField();
 			if (f != null) {
 				fields.add(f);
+			} else {
+				log("Cannot found field for attribute "+at,null);
 			}
 		}
 		return fields.toArray(new UIField[fields.size()]);
