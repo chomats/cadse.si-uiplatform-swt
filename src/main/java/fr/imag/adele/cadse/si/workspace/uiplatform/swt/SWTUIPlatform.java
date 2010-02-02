@@ -750,6 +750,7 @@ public class SWTUIPlatform implements UIPlatform {
 			rf._page = page;
 			rf._swtuiplatform = this;
 			rf._next = _runningFields.get(field);
+			
 			_runningFields.put(field, rf);
 
 			Item ic = field.getInteractionControllerBASE();
@@ -789,7 +790,16 @@ public class SWTUIPlatform implements UIPlatform {
 		container = createLabelField(rf, container, hspan);
 
 		rf.createControl(container, hspan_label);
+		if (isReadOnly(field.getAttributeDefinition())) {
+			rf.setEditable(false);
+			rf.setEnabled(false);
+		}
 		return rf;
+	}
+
+
+	public boolean isReadOnly(IAttributeType<?> attributeDefinition) {
+		return pages.getReadOnlyAttributes().contains(attributeDefinition);
 	}
 
 
