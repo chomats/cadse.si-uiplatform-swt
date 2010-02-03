@@ -274,4 +274,8 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 
 	}
 
+	@Override
+	public int getVSpan() {
+		return _vspan;
+	}
 }
