@@ -40,6 +40,7 @@ import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
@@ -1020,21 +1021,30 @@ public class SWTUIPlatform implements UIPlatform {
 			if (newMessage != null) {
 				if (newType == UIPlatform.ERROR) {
 					dialog.setErrorMessage(newMessage);
-					if (_currentWizardPage != null) _currentWizardPage.setPageComplete(false);
+					IWizardPage page = dialog.getCurrentPage();
+					if (page instanceof WizardPage)
+						((WizardPage) page).setPageComplete(true);
 				} else {
 					dialog.setMessage(newMessage, newType);
-					if (_currentWizardPage != null) _currentWizardPage.setPageComplete(true);
+					IWizardPage page = dialog.getCurrentPage();
+					if (page instanceof WizardPage)
+						((WizardPage) page).setPageComplete(true);
 				}
 			} else {
 				dialog.setErrorMessage(null);
 				dialog.setMessage(null);
-				if (_currentWizardPage != null) _currentWizardPage.setPageComplete(true);
+				
+				IWizardPage page = dialog.getCurrentPage();
+				if (page instanceof WizardPage)
+					((WizardPage) page).setPageComplete(true);
+				
 			}
 		}
 	}
 
 	@Override
 	public void addListener(final Item item, final WorkspaceListener listener, int eventFilter) {
+		if (item == null) return ;
 		item.addListener(listener, eventFilter);
 		if (_removeListener == null)
 			_removeListener = new ArrayList<RemoveListener>();
@@ -1048,8 +1058,7 @@ public class SWTUIPlatform implements UIPlatform {
 	@Override
 	public void addLogicalWorkspaceTransactionListener(
 			LogicalWorkspaceTransactionListener logicalWorkspaceTransactionListener) {
-		// TODO Auto-generated method stub
-
+		//Null pointeur : if (getCopy() != null) getCopy().addLogicalWorkspaceTransactionListener(logicalWorkspaceTransactionListener);
 	}
 
 	@Override
@@ -1070,12 +1079,17 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	@Override
-	public void resetVisualValue(UIField uiField) {
-		UIRunningField rf = _runningFields.get(uiField);
-		while (rf != null) {
-			rf.resetVisualValue();
-			rf = rf._next;
-		}
+	public void resetVisualValue(final UIField uiField) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				UIRunningField rf = _runningFields.get(uiField);
+				while (rf != null) {
+					rf.resetVisualValue();
+					rf = rf._next;
+				}
+			}
+		});
 	}
 
 	@Override
