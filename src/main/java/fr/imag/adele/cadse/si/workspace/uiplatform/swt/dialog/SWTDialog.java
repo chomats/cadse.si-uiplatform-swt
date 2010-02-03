@@ -88,4 +88,8 @@ public abstract class SWTDialog {
 	}
 
 	protected abstract IActionPage getFinishAction();
+	
+	public SWTUIPlatform getSWTUIPlatform() {
+		return _swtuiPlatforms;
+	}
 }
