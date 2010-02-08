@@ -65,6 +65,7 @@ import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.WorkspaceListener;
 import fr.imag.adele.cadse.core.attribute.BooleanAttributeType;
+import fr.imag.adele.cadse.core.attribute.CheckStatus;
 import fr.imag.adele.cadse.core.attribute.GroupOfAttributes;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.attribute.IntegerAttributeType;
@@ -181,6 +182,11 @@ public class SWTUIPlatform implements UIPlatform {
 		
 		@Override
 		public T convertTo(Object v) {
+			return null;
+		}
+		
+		@Override
+		public CheckStatus check(Item item, Object value) {
 			return null;
 		}
 	}
