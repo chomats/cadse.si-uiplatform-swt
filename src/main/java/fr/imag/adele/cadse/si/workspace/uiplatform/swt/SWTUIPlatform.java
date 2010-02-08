@@ -1591,12 +1591,25 @@ public class SWTUIPlatform implements UIPlatform {
 			EPosLabel posLabel, AbstractModelController mc, IC ic, boolean checkBox) {
 		return createTreeModelUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, checkBox);
 	}
+	
+	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, String attributte, String label,
+			EPosLabel posLabel, AbstractModelController mc, IC ic, boolean checkBox, boolean useColumns, String[] columns) {
+		return createTreeModelUI(page, createFictifAttributte(attributte), label, posLabel, mc, ic, checkBox, useColumns, columns);
+	}
 
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, IAttributeType<?> attributte,
 			String label, EPosLabel posLabel, AbstractModelController mc, IC ic, boolean checkBox) {
+		return createTreeModelUI(page, attributte, label, posLabel, mc, ic, checkBox, false, null);
+	}
+	
+	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, IAttributeType<?> attributte,
+			String label, EPosLabel posLabel, AbstractModelController mc, IC ic, boolean checkBox, boolean useColumns, String[] columns) {
 		DTreeModelUI<IC> ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic,
 				new DTreeModelUI<IC>(), CadseGCST.DTREE);
 		ret._useCheckBox = checkBox;
+		ret._useColumns = useColumns;
+		if (useColumns)
+			ret._columns = columns;
 		return ret;
 	}
 
