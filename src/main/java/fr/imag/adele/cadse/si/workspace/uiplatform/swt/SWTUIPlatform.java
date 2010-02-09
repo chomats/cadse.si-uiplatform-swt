@@ -784,6 +784,7 @@ public class SWTUIPlatform implements UIPlatform {
 			addItemListener(mc, rmc);
 			
 			rmc._uiField = field;
+			rmc._ruiField = rf;
 			rmc._uiPlatform = this;
 			rmc._desc = mc;
 			
