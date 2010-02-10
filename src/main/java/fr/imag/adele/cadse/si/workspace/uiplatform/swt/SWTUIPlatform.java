@@ -229,6 +229,7 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	protected Map<IAttributeType<?>, GroupOfAttributes> _attToGroup 	= null;
 	protected Map<IPage, PageInfo> _pageToPageInfo 	= new HashMap<IPage, PageInfo>();
+	private boolean _disposed;
 	
 
 
@@ -280,8 +281,19 @@ public class SWTUIPlatform implements UIPlatform {
 	public Pages getPages() {
 		return pages;
 	}
+	
+	public void openCreationWizard(Shell parentShell, Pages f) throws CadseException {
+		try {
+			setPages(f);
+			WizardDialog dialog = createCreationWizard(parentShell);
+			dialog.open();
+		} finally {
+			dispose();
+		}
+	}
+	
 
-	public WizardDialog createCreationWizard(Shell parentShell) throws CadseException {
+	private WizardDialog createCreationWizard(Shell parentShell) throws CadseException {
 		parent = parentShell;
 		dialog = new UIWizardDialog(parentShell, new WizardController(this));
 		init();
@@ -318,36 +330,28 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public int open(Shell parentShell, IPage page, IActionPage dialogAction, int width, int height,
 			boolean openDetailDialog) throws CadseException {
-		init();
-		parent = parentShell;
-		if (dialogAction != null) {
-			pages.setAction(dialogAction);
-		}
-		if (openDetailDialog) {
-			dialog = new DetailWizardDialog(parentShell, new WizardController(this));
-
-		} else {
-			dialog = new WizardDialog(parentShell, new WizardController(this));
-		}
-		dialog.setPageSize(width, height);
-		return dialog.open();
+		return open(parentShell, dialogAction, width, height, openDetailDialog, new WizardController(this));
 	}
 	
 	public int open(Shell parentShell, IActionPage dialogAction, int width, int height,
 			boolean openDetailDialog, WizardController wc) throws CadseException {
-		init();
-		parent = parentShell;
-		if (dialogAction != null) {
-			pages.setAction(dialogAction);
-		}
-		if (openDetailDialog) {
-			dialog = new DetailWizardDialog(parentShell, wc);
+		try {
+			init();
+			parent = parentShell;
+			if (dialogAction != null) {
+				pages.setAction(dialogAction);
+			}
+			if (openDetailDialog) {
+				dialog = new DetailWizardDialog(parentShell, wc);
 
-		} else {
-			dialog = new WizardDialog(parentShell, wc);
+			} else {
+				dialog = new WizardDialog(parentShell, wc);
+			}
+			dialog.setPageSize(width, height);
+			return dialog.open();
+		} finally {
+			dispose();
 		}
-		dialog.setPageSize(width, height);
-		return dialog.open();
 	}
 
 	public Composite createPage(IPage page, Composite parentPage, boolean initAfterUi) {
@@ -992,6 +996,11 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public void dispose() {
+		_disposed = true;
+		if (_removeListener != null)
+			for (RemoveListener rl : _removeListener) {
+				rl.dispose();
+			}
 	}
 
 	public void setMessage(String newMessage, int newType) {
@@ -1283,7 +1292,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 
 	public boolean isDisposed() {
-		return false;
+		return _disposed;
 	}
 
 	public void log(String msg, Throwable e) {
@@ -1850,7 +1859,4 @@ public class SWTUIPlatform implements UIPlatform {
 	public UIField getField(IAttributeType<?> att) {
 		return pages != null ? pages.getUIField(att) : null;
 	}
-
-	
-
 }
