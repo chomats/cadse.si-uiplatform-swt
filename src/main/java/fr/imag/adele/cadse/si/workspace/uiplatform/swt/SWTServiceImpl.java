@@ -61,15 +61,14 @@ public class SWTServiceImpl implements SWTService {
 
 		if (f != null) {
 			SWTUIPlatform swtuiPlatform = new SWTUIPlatform();
-
-			swtuiPlatform.setPages(f);
-			WizardDialog dialog = swtuiPlatform.createCreationWizard(parentShell);
-			dialog.open();
+			swtuiPlatform.openCreationWizard(parentShell, f);
 			return true;
 		}
 
 		return false;
 	}
+
+	
 	
 	@Override
 	public void showCreateWizardWithError(Shell parentShell, NewContext c)
