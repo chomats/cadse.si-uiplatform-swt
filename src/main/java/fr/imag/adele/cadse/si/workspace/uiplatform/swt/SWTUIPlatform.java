@@ -1039,7 +1039,7 @@ public class SWTUIPlatform implements UIPlatform {
 					dialog.setErrorMessage(newMessage);
 					IWizardPage page = dialog.getCurrentPage();
 					if (page instanceof WizardPage)
-						((WizardPage) page).setPageComplete(true);
+						((WizardPage) page).setPageComplete(false);
 				} else {
 					dialog.setMessage(newMessage, newType);
 					IWizardPage page = dialog.getCurrentPage();
