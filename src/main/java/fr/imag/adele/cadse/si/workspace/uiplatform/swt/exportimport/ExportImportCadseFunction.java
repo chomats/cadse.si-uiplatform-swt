@@ -378,7 +378,7 @@ public class ExportImportCadseFunction {
 			ItemDelta cadseDef = transaction.getItem(uuid);
 			transaction.commit(false, true, false, projectAssociationSet);
 			checkAction(transaction);
-			return cadseDef.getBaseItem();			
+			return cadseDef.getBaseItem();			//FIXME: cadseDef is null !!!
 		} catch (RuntimeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
