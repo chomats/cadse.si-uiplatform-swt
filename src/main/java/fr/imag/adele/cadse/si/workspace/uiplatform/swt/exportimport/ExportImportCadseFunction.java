@@ -73,6 +73,8 @@ public class ExportImportCadseFunction {
 
 	/** The Constant MELUSINE_DIR_CADSENAME_ID. */
 	public static final String		MELUSINE_DIR_CADSENAME_ID	= ".melusine-dir/cadsename.id";
+	
+	public static final String		MELUSINE_DIR_CADSENAME_IDS	= ".melusine-dir/cadsename.ids";
 
 	/** The Constant MELUSINE_DIR_CADSENAME_ID. */
 	public static final String		REQUIRE_CADSEs				= ".melusine-dir/require-cadses";
@@ -103,9 +105,12 @@ public class ExportImportCadseFunction {
 
 			File wsFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 			File melusineDir = new File(wsFile, ".cadse");
+			UUID[] uuidRoot = new UUID[rootItems.length];
+			int i = 0;
 			for (Item rootItem : rootItems) {
 				pmo.setTaskName(rootItem.getName());
 				getPersistanceFileAll(melusineDir, rootItem);
+				uuidRoot[i++] = rootItem.getId();
 			}
 
 			includesContents(pmo, projects, files);
@@ -147,6 +152,9 @@ public class ExportImportCadseFunction {
 					REQUIRE_ITEM_TYPEs, -1);
 
 			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(projectsMap)), PROJECTS, -1);
+			
+			ZipUtil.addEntryZip(outputStream, new ByteArrayInputStream(toByteArray(uuidRoot)), MELUSINE_DIR_CADSENAME_IDS, -1);
+			
 
 			pmo.worked(3);
 			outputStream.close();
@@ -285,7 +293,7 @@ public class ExportImportCadseFunction {
 		}
 	}
 
-	public Item importCadseItems(IProgressMonitor pmo, File file) throws IOException, MalformedURLException,
+	public void importCadseItems(IProgressMonitor pmo, File file) throws IOException, MalformedURLException,
 			JAXBException, CadseException, ClassNotFoundException {
 		CadseCore.getCadseDomain().beginOperation("Import cadse");
 		File pf = null;
@@ -372,17 +380,13 @@ public class ExportImportCadseFunction {
 			}
 			LogicalWorkspaceTransaction transaction = lw.createTransaction();
 			transaction.loadItems(itemdescription);
-			
 			migrate(transaction);
-			UUID uuid = readCadseUUIDFolder(pf);
-			ItemDelta cadseDef = transaction.getItem(uuid);
 			transaction.commit(false, true, false, projectAssociationSet);
 			checkAction(transaction);
-			return cadseDef.getBaseItem();			//FIXME: cadseDef is null !!!
+			
 		} catch (RuntimeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
 		} finally {
 			if (pf != null)
 				pf.delete();
