@@ -1688,8 +1688,8 @@ public class SWTUIPlatform implements UIPlatform {
 		return ret;
 	}
 
-	public IPage createPageDescription(String title, String label) {
-		PageImpl pageImpl = new PageImpl("p1", label, title, title, true);
+	public IPage createPageDescription(String title, String description) {
+		PageImpl pageImpl = new PageImpl("p1", "Page p1", title, description, true);
 		pages.addPage(pageImpl);
 		return pageImpl;
 	}
