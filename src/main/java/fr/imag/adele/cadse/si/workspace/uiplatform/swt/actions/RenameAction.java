@@ -67,7 +67,7 @@ public class RenameAction extends AbstractEclipseMenuAction implements IInputVal
 			try {
 				String shortName = item.getName();
 				InputDialog id = new InputDialog(viewer.getShell(), "Rename the item " + item.getName(),
-						"Enter a new short name", shortName, this);
+						"Enter a new name", shortName, this);
 
 				id.open();
 				if (id.getReturnCode() == Window.OK) {
