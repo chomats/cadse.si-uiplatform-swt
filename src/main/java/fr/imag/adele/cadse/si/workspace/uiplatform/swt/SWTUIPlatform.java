@@ -230,6 +230,7 @@ public class SWTUIPlatform implements UIPlatform {
 	protected Map<IAttributeType<?>, GroupOfAttributes> _attToGroup 	= null;
 	protected Map<IPage, PageInfo> _pageToPageInfo 	= new HashMap<IPage, PageInfo>();
 	private boolean _disposed;
+	private UIRunningValidator[] _allListen;
 	
 
 
@@ -639,17 +640,28 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public boolean validateFields(UIField uiField, IPage page) {
-		
-			
+		boolean error = false;
 		if (page != null) {
 			UIRunningField[] uiRunningFields = _runningPage.get(page);
-			boolean error = false;
 			for (UIRunningField uiRunningField : uiRunningFields) {
 				UIField uiField2 = uiRunningField.getUIField();
 				if (uiField2 == uiField) continue;
 				error = validateField(uiRunningField, uiField2);
 				if (error)
 					return true;
+			}
+		}
+		if (_allListen != null) {
+			for (UIRunningValidator v : _allListen) {
+				try {
+					error = v.validValue(uiField, null);
+					if (error) {
+						return true;
+					}
+				} catch (Throwable e) {
+					log("Validator "+v, e);
+					v.incrementError();
+				}
 			}
 		}
 		setMessage(null, NONE);
@@ -714,14 +726,18 @@ public class SWTUIPlatform implements UIPlatform {
 		if (pages.getUIValidators() != null) {
 			for (UIRunningValidator v : pages.getUIValidators()) {
 				UIValidator desc = (UIValidator) v.getDescriptor();
+				boolean add = true;
 				if (desc != null) {
 					IAttributeType<?>[] attr = desc.getListenAttributeType();
-					if (attr != null) {
+					if (attr != null && attr.length !=0) {
+						add = false;
 						for (IAttributeType<?> a : attr) {
 							addListener(a, v);
 						}
 					}
 				}
+				if (add)
+					_allListen = ArraysUtil.add(UIRunningValidator.class, _allListen, v);
 				v.init(this);
 			}
 		}
