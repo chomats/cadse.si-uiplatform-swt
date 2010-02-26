@@ -44,13 +44,13 @@ public class FieldsWizardPage extends WizardPage {
 	 * @param theCurrentItem
 	 * @throws CadseException
 	 */
-	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page) throws CadseException {
+	public FieldsWizardPage(SWTUIPlatform swtuiPlatform, IPage page, boolean isPageComplete) throws CadseException {
 		super("wizardPage");
 		this.page = page;
 		// pageDesc.put("wizard-page",this);
 		setTitle(page.getTitle());
 		setDescription(page.getDescription());
-		setPageComplete(page.isPageComplete());
+		setPageComplete(isPageComplete);
 		_swtuiPlatform = swtuiPlatform;
 	}
 
