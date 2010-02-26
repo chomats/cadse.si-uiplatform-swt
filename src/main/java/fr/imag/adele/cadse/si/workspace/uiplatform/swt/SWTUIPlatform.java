@@ -223,6 +223,7 @@ public class SWTUIPlatform implements UIPlatform {
 	private List<RemoveListener>							_removeListener;
 	private WizardDialog									dialog;
 	private Map<IPage, UIRunningField[]>					_runningPage	= new HashMap<IPage, UIRunningField[]>();
+	private Map<IPage, FieldsWizardPage>					_wizardsPage	= new HashMap<IPage, FieldsWizardPage>();
 	private IPage	_currentPage;
 	protected FieldsWizardPage	_currentWizardPage;
 	
@@ -642,14 +643,9 @@ public class SWTUIPlatform implements UIPlatform {
 	public boolean validateFields(UIField uiField, IPage page) {
 		boolean error = false;
 		if (page != null) {
-			UIRunningField[] uiRunningFields = _runningPage.get(page);
-			for (UIRunningField uiRunningField : uiRunningFields) {
-				UIField uiField2 = uiRunningField.getUIField();
-				if (uiField2 == uiField) continue;
-				error = validateField(uiRunningField, uiField2);
-				if (error)
-					return true;
-			}
+			error = validateFieldsInPage(uiField, page);
+			if (error)
+				return true;
 		}
 		if (_allListen != null) {
 			for (UIRunningValidator v : _allListen) {
@@ -664,7 +660,32 @@ public class SWTUIPlatform implements UIPlatform {
 				}
 			}
 		}
+		if (!isModification()) {
+			for(IPage p : _runningPage.keySet()) {
+				if (p == page) continue;
+				final FieldsWizardPage fieldsWizardPage = _wizardsPage.get(p);
+				if (fieldsWizardPage == null) continue;
+				
+				error = validateFieldsInPage(uiField, p);
+				fieldsWizardPage.setPageComplete(!error);
+			}
+		}
+			
 		setMessage(null, NONE);
+		return false;
+	}
+
+
+	private boolean validateFieldsInPage(UIField uiField, IPage page ) {
+		boolean error = false;
+		UIRunningField[] uiRunningFields = _runningPage.get(page);
+		for (UIRunningField uiRunningField : uiRunningFields) {
+			UIField uiField2 = uiRunningField.getUIField();
+			if (uiField2 == uiField) continue;
+			error = validateField(uiRunningField, uiField2);
+			if (error)
+				return true;
+		}
 		return false;
 	}
 
@@ -1444,7 +1465,9 @@ public class SWTUIPlatform implements UIPlatform {
 		for (IPage afd : this.pages.getPages()) {
 			try {
 				init(afd);
-				wizardController.addPage(new FieldsWizardPage(this, afd));
+				final FieldsWizardPage page = new FieldsWizardPage(this, afd, true);
+				_wizardsPage.put(afd, page);
+				wizardController.addPage(page);
 			} catch (CadseException e) {
 				log("Cannot create page " + afd.getLabel(), e);
 			}
