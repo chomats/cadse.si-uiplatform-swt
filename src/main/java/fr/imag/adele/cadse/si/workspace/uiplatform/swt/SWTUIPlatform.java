@@ -1311,19 +1311,24 @@ public class SWTUIPlatform implements UIPlatform {
 	 * @see fr.imag.adele.cadse.core.ui.UIField#getValueForVisual()
 	 */
 	public Object getValueForVisual(UIField field) {
-		AbstractModelController getFct = getModelController(field);
-		if (getFct == null) {
+		try {
+			AbstractModelController getFct = getModelController(field);
+			if (getFct == null) {
+				return null;
+			}
+			Object abstratcObject = getFct.getValue();
+			if (abstratcObject == null) {
+				Object defaultValue = getFct.defaultValue();
+				if (defaultValue != null) {
+					getFct.notifieValueChanged(field, defaultValue);
+				}
+				return defaultValue;
+			}
+			return abstratcObject;
+		} catch (Throwable e) {
+			log("Cannot get a value for "+field, e);
 			return null;
 		}
-		Object abstratcObject = getFct.getValue();
-		if (abstratcObject == null) {
-			Object defaultValue = getFct.defaultValue();
-			if (defaultValue != null) {
-				getFct.notifieValueChanged(field, defaultValue);
-			}
-			return defaultValue;
-		}
-		return abstratcObject;
 	}
 
 
