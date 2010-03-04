@@ -477,9 +477,15 @@ public class ExportImportCadseFunction {
 		if (!cadseNameFile.exists()) {
 			return null;
 		}
-		InputStream imput = new FileInputStream(cadseNameFile);
-		BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
-		return isr.readLine();
+		InputStream imput = null;
+		try {
+			imput = new FileInputStream(cadseNameFile);
+			BufferedReader isr = new BufferedReader(new InputStreamReader(imput));
+			return isr.readLine();
+		} finally {
+			if (imput != null)
+				imput.close();
+		}
 	}
 	
 	/**
