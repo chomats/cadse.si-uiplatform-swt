@@ -552,7 +552,10 @@ public class ExportImportCadseFunction {
 
 			if (!itemDelta.isLoaded())
 				continue;
-
+			if (itemDelta.isInstanceOf(CadseGCST.PAGE) || itemDelta.isInstanceOf(CadseGCST.FIELD) || itemDelta.isInstanceOf(CadseGCST.INTERACTION_CONTROLLER) || itemDelta.isInstanceOf(CadseGCST.MODEL_CONTROLLER) || itemDelta.isInstanceOf(CadseGCST.DISPLAY)) {
+				itemDelta.delete(false);
+			}
+	
 			if (itemDelta.getType() == CadseGCST.LINK_TYPE) {
 				if (itemDelta.getName().startsWith("#invert_part")) {
 					itemDelta.delete(false);
