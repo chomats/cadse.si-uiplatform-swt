@@ -1150,7 +1150,7 @@ public class SWTUIPlatform implements UIPlatform {
 	@Override
 	public boolean contains(IAttributeType<?> att) {
 		UIField uiField = pages.getUIField(att);
-		return uiField != null;
+		return uiField != null ? _runningFields.containsKey(uiField): false;
 	}
 	
 	@Override
