@@ -114,7 +114,11 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
-			visualValue = Boolean.FALSE;
+			if (_control != null && !_control.isDisposed()) {
+				(_control).setGrayed(true);
+			}
+			_value = null;
+			return;
 		}
 		assert visualValue instanceof Boolean;
 
