@@ -491,6 +491,8 @@ public class SWTUIPlatform implements UIPlatform {
 			return getFields(page, filterGroup(page, page.getAttributes()));
 		}
 	}
+	
+	
 
 	private UIField[] getFields(IPage page, IAttributeType<?>[] attrs) {
 		List<UIField> fields = new ArrayList<UIField>();
@@ -1145,6 +1147,12 @@ public class SWTUIPlatform implements UIPlatform {
 		});
 	}
 
+	@Override
+	public boolean contains(IAttributeType<?> att) {
+		UIField uiField = pages.getUIField(att);
+		return uiField != null;
+	}
+	
 	@Override
 	public void setEnabled(IAttributeType<?> att, boolean b) {
 		UIField uiField = pages.getUIField(att);
