@@ -328,5 +328,9 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 			ret = _running_mc.visualToModel(ret);
 		return ret;
 	}
+	
+	public SWTUIPlatform getSwtUiplatform() {
+		return _swtuiplatform;
+	}
 
 }
