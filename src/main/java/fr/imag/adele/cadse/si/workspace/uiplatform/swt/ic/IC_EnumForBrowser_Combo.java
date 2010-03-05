@@ -46,6 +46,12 @@ public class IC_EnumForBrowser_Combo extends IC_AbstractForBrowser_Combo {
 		}
 		return value.toString();
 	}
+	
+	@Override
+	public Object fromString(String value) {
+		EnumAttributeType<?> enumAttribute = (EnumAttributeType<?>) getUIField().getAttributeDefinition();
+		return enumAttribute.convertTo(value);
+	}
 
 	@Override
 	protected Object[] getSelectableValues() {

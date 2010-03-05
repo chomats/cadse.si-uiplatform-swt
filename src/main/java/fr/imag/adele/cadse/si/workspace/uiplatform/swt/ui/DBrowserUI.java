@@ -325,6 +325,10 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		}
 
 		Object goodValue = fromString(value);
+		if (goodValue == null) {
+			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
+			_swtuiplatform.validateValueChanged(_field, value);
+		}
 		if (Convert.equals(goodValue, _value)) {
 			return;
 		}
