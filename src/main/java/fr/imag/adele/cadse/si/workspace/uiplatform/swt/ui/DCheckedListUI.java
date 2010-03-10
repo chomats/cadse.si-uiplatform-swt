@@ -46,24 +46,22 @@ import fr.imag.adele.cadse.core.ui.UIPlatform;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForCheckedViewer;
 
 /**
- * This class handles a tabbed panel containing a list of selected items
- * belonging to the configuration, choosen from the associated domain.
+ * This class handles a tabbed panel containing a list of selected items belonging to the configuration, choosen from
+ * the associated domain.
  * 
  * @author vega
- * 
  */
 public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractField<IC> implements SelectionListener {
 
-	private Object[]				_sources;
-	private Set<Object>				_sources_selected	= new HashSet<Object>();
-	private Map<Object, TreeItem>	_treeItems;
-	private Tree					_treeObjects;
+	private Object[] _sources;
+	private final Set<Object> _sources_selected = new HashSet<Object>();
+	private Map<Object, TreeItem> _treeItems;
+	private Tree _treeObjects;
 
-	private int						_heightHint			= 200;
-	private int						_widthHint			= 400;
+	private final int _heightHint = 200;
+	private final int _widthHint = 400;
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object deselectionne.
 	 * @return Un message d'erreur si impossible or null.
@@ -73,7 +71,6 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 	}
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object selectionne.
 	 * @return Un message d'erreur si impossible or null.
@@ -88,7 +85,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 
 		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
-		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
+		_treeObjects.setData(UIField.CADSE_MODEL_KEY, this);
 
 		boolean edit = _field.isEditable();// ",false);
 
@@ -113,7 +110,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 				selectAll();
 			}
 		});
-		selectAll.setData(UIField.CADSE_MODEL_KEY, _field);
+		selectAll.setData(UIField.CADSE_MODEL_KEY, this);
 
 		Button deselectAll = _swtuiplatform.getToolkit().createButton(container, UIField.DESELECT_ALL_BUTTON, SWT.PUSH);
 		gd = new GridData(GridData.CENTER);
@@ -126,7 +123,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 				deselectAll();
 			}
 		});
-		deselectAll.setData(UIField.CADSE_MODEL_KEY, _field);
+		deselectAll.setData(UIField.CADSE_MODEL_KEY, this);
 
 		if (edit) {
 			Button editButton = _swtuiplatform.getToolkit().createButton(container, UIField.EDIT_BUTTON, SWT.PUSH);
@@ -140,7 +137,7 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 					edit();
 				}
 			});
-			editButton.setData(UIField.CADSE_MODEL_KEY, _field);
+			editButton.setData(UIField.CADSE_MODEL_KEY, this);
 		}
 	}
 
@@ -250,7 +247,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 		ti.setChecked(sel);
 		if (sel) {
 			_sources_selected.add(object);
-		} else {
+		}
+		else {
 			_sources_selected.remove(object);
 		}
 	}
@@ -286,7 +284,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 
 		if (_treeItems == null) {
 			_treeItems = new HashMap<Object, TreeItem>();
-		} else {
+		}
+		else {
 			_treeItems.clear();
 		}
 
@@ -320,7 +319,8 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 				Object[] selectedObject = null;
 				if (visualValue instanceof List) {
 					selectedObject = ((List) visualValue).toArray();
-				} else if (visualValue instanceof Object[]) {
+				}
+				else if (visualValue instanceof Object[]) {
 					selectedObject = (Object[]) visualValue;
 				}
 				_sources_selected.clear();
@@ -359,15 +359,18 @@ public class DCheckedListUI<IC extends IC_ForCheckedViewer> extends DAbstractFie
 					String error = canObjectSelected(obj);
 					if (error == null) {
 						objectSelected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(false);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
-				} else {
+				}
+				else {
 					String error = canObjectDeselected(obj);
 					if (error == null) {
 						objectDeselected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(true);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}

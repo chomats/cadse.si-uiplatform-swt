@@ -14,8 +14,8 @@ import fr.imag.adele.cadse.core.ui.UIField;
 
 public class DGroup<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	Composite	composite;
-	boolean		makeColumnsEqualWidth	= false;
+	Composite composite;
+	boolean makeColumnsEqualWidth = false;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -26,13 +26,13 @@ public class DGroup<IC extends RuningInteractionController> extends DAbstractFie
 		}
 		gridData.horizontalSpan = hspan;
 		int column = _field.getAttribute(CadseGCST.DGROUP_at_COLUMN_);
-		makeColumnsEqualWidth = _field.getAttributeWithDefaultValue(CadseGCST.DGROUP_at_MAKE_COLUMNS_EQUAL_WIDTH_, false);
-		
-		composite = getLabel() == null ?
-				_swtuiplatform.getToolkit().createComposite(container, style)
-				: _swtuiplatform.getToolkit().createGroup(container, getLabel());
-		
-		composite.setData(UIField.CADSE_MODEL_KEY, _field);
+		makeColumnsEqualWidth = _field.getAttributeWithDefaultValue(CadseGCST.DGROUP_at_MAKE_COLUMNS_EQUAL_WIDTH_,
+				false);
+
+		composite = getLabel() == null ? _swtuiplatform.getToolkit().createComposite(container, style) : _swtuiplatform
+				.getToolkit().createGroup(container, getLabel());
+
+		composite.setData(UIField.CADSE_MODEL_KEY, this);
 		composite.setLayoutData(gridData);
 
 		GridLayout gridLayout = new GridLayout(column, makeColumnsEqualWidth);

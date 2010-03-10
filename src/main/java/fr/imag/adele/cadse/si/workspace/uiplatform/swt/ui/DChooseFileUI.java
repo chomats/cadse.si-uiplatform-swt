@@ -51,14 +51,14 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForChooseFile;
  */
 public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<IC> {
 
-	public String		choosemsg;
+	public String choosemsg;
 
-	private Text		textWidget;
-	private Button		btExternalFileWidget;
-	private Button		btWorkspaceWidget;
-	private Button		btExternalFolderWidget;
+	private Text textWidget;
+	private Button btExternalFileWidget;
+	private Button btWorkspaceWidget;
+	private Button btExternalFolderWidget;
 
-	protected boolean	textWidgetChanged;
+	protected boolean textWidgetChanged;
 
 	public void setPathText(String text) {
 		if (text != null) {
@@ -84,7 +84,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 		gd.grabExcessHorizontalSpace = true;
 
 		textWidget = new Text(composite, SWT.LEFT + SWT.BORDER);
-		textWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+		textWidget.setData(UIField.CADSE_MODEL_KEY, this);
 		textWidget.setLayoutData(gd);
 		textWidget.addKeyListener(new KeyAdapter() {
 			/*
@@ -96,7 +96,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 				textWidgetChanged = true;
 			}
 		});
-		textWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+		textWidget.setData(UIField.CADSE_MODEL_KEY, this);
 
 		textWidget.addFocusListener(new FocusAdapter() {
 			/*
@@ -123,7 +123,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 					handleExternalFile();
 				}
 			});
-			btExternalFileWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+			btExternalFileWidget.setData(UIField.CADSE_MODEL_KEY, this);
 		}
 		if ((kind & (IC_ForChooseFile.WORKSPACE)) != 0) {
 			btWorkspaceWidget = new Button(composite, SWT.PUSH);
@@ -134,7 +134,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 					handleWorkspace();
 				}
 			});
-			btWorkspaceWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+			btWorkspaceWidget.setData(UIField.CADSE_MODEL_KEY, this);
 		}
 		if ((kind & (IC_ForChooseFile.FOLDER_EXT)) != 0) {
 			btExternalFolderWidget = new Button(composite, SWT.PUSH);
@@ -145,7 +145,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 					handleExternalFolder();
 				}
 			});
-			btExternalFolderWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+			btExternalFolderWidget.setData(UIField.CADSE_MODEL_KEY, this);
 		}
 	}
 
@@ -187,6 +187,7 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 		}
 	}
 
+	@Override
 	public int getVSpan() {
 		int v = 0;
 		int kind = _ic.getKind();

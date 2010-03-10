@@ -13,9 +13,9 @@ import fr.imag.adele.cadse.core.ui.UIField;
 
 public class DGridUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	Composite	composite;
-	boolean		makeColumnsEqualWidth	= false;
-	int 		columnNb = 0;
+	Composite composite;
+	boolean makeColumnsEqualWidth = false;
+	int columnNb = 0;
 
 	public int getColumnNb() {
 		return columnNb;
@@ -37,7 +37,7 @@ public class DGridUI<IC extends RuningInteractionController> extends DAbstractFi
 			style |= SWT.BORDER;
 		}
 		composite = _swtuiplatform.getToolkit().createComposite(container, style);
-		composite.setData(UIField.CADSE_MODEL_KEY, _field);
+		composite.setData(UIField.CADSE_MODEL_KEY, this);
 		composite.setLayoutData(gridData);
 
 		GridLayout gridLayout = new GridLayout(columnNb, makeColumnsEqualWidth);

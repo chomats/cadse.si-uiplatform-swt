@@ -32,16 +32,15 @@ import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
 
 /**
- * attributes : -ui controller : IInteractiveComboBoxController - combo-values :
- * String[] si IC_StaticArrayOfObjectForBrowser_Combo comme interactive
- * controller ///- enable-editor : Boolean, default : Boolean.FALSE value -
- * Object or String
+ * attributes : -ui controller : IInteractiveComboBoxController - combo-values : String[] si
+ * IC_StaticArrayOfObjectForBrowser_Combo comme interactive controller ///- enable-editor : Boolean, default :
+ * Boolean.FALSE value - Object or String
  */
 
 public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> {
 
-	protected CCombo	attributWidget;
-	Object[]			values;
+	protected CCombo attributWidget;
+	Object[] values;
 
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
@@ -51,7 +50,7 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
 		attributWidget.setLayoutData(gd);
-		attributWidget.setData(UIField.CADSE_MODEL_KEY, _field);
+		attributWidget.setData(UIField.CADSE_MODEL_KEY, this);
 
 		attributWidget.addSelectionListener(new SelectionListener() {
 
@@ -98,7 +97,8 @@ public class DComboUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC
 		}
 		if (visualValue instanceof String) {
 			attributWidget.setText((String) visualValue);
-		} else if (values.length > 0) {
+		}
+		else if (values.length > 0) {
 			attributWidget.select(0);
 		}
 	}

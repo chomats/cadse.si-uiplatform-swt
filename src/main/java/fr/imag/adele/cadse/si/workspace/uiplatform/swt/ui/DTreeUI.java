@@ -38,15 +38,14 @@ import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_Tree;
 
 /**
- * The "New" wizard page allows setting the container for the new file as well
- * as the file name. The page will only accept file name without the extension
- * OR with the extension that matches the expected one (f).
+ * The "New" wizard page allows setting the container for the new file as well as the file name. The page will only
+ * accept file name without the extension OR with the extension that matches the expected one (f).
  */
 
 public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
-	private Object[]	_rootNodes;
-	private Object[]	_selectedObjects;
-	private Tree		_treeControl;
+	private Object[] _rootNodes;
+	private Object[] _selectedObjects;
+	private Tree _treeControl;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -54,7 +53,7 @@ public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 200;
 		_treeControl.setLayoutData(gd);
-		_treeControl.setData(UIField.CADSE_MODEL_KEY, _field);
+		_treeControl.setData(UIField.CADSE_MODEL_KEY, this);
 
 		_treeControl.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -77,7 +76,8 @@ public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
 			TreeItem ti;
 			if (superTreeItem instanceof TreeItem) {
 				ti = new TreeItem((TreeItem) superTreeItem, SWT.NONE);
-			} else {
+			}
+			else {
 				ti = new TreeItem((Tree) superTreeItem, SWT.NONE);
 			}
 			ti.setImage(getImage(obj));
@@ -122,9 +122,8 @@ public class DTreeUI<IC extends IC_Tree> extends DAbstractField<IC> {
 	}
 
 	/**
-	 * Returns the single selected object contained in the passed
-	 * selectionEvent, or <code>null</code> if the selectionEvent contains
-	 * either 0 or 2+ selected objects.
+	 * Returns the single selected object contained in the passed selectionEvent, or <code>null</code> if the
+	 * selectionEvent contains either 0 or 2+ selected objects.
 	 */
 	protected Object getSingleSelection(IStructuredSelection selection) {
 		return selection.size() == 1 ? selection.getFirstElement() : null;

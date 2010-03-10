@@ -44,28 +44,27 @@ import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
-import fr.imag.adele.cadse.util.ArraysUtil;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeCheckedUI;
+import fr.imag.adele.cadse.util.ArraysUtil;
 
 /**
- * This class handles a tabbed panel containing a list of selected items
- * belonging to the configuration, choosen from the associated domain.
+ * This class handles a tabbed panel containing a list of selected items belonging to the configuration, choosen from
+ * the associated domain.
  * 
  * @author vega
- * 
  */
 public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<IC> implements SelectionListener,
 		TreeListener {
 
-	public boolean					_fillBoth			= false;
+	public boolean _fillBoth = false;
 
-	public boolean					_selectDelectButton	= true;
+	public boolean _selectDelectButton = true;
 
-	private Object[]				_sources;
-	private Set<Object>				_sources_selected	= new HashSet<Object>();
+	private Object[] _sources;
+	private final Set<Object> _sources_selected = new HashSet<Object>();
 
-	private Map<Object, TreeItem[]>	_treeItems;
-	private Tree					_treeObjects;
+	private Map<Object, TreeItem[]> _treeItems;
+	private Tree _treeObjects;
 
 	public void addNode(final Object item) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
@@ -101,7 +100,6 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 	}
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object deselectionne.
 	 * @return Un message d'erreur si impossible or null.
@@ -111,7 +109,6 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 	}
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object selectionne.
 	 * @return Un message d'erreur si impossible or null.
@@ -127,7 +124,7 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		_treeObjects = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		_treeObjects.addSelectionListener(this);
 		_treeObjects.addTreeListener(this);
-		_treeObjects.setData(UIField.CADSE_MODEL_KEY, _field);
+		_treeObjects.setData(UIField.CADSE_MODEL_KEY, this);
 
 		int fillkind = GridData.FILL_BOTH;
 		// /if (fillBoth)
@@ -141,7 +138,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		if (!_fillBoth) {
 			gd.minimumHeight = 150;
 			// gd.grabExcessVerticalSpace = true;
-		} else {
+		}
+		else {
 			gd.grabExcessVerticalSpace = false;
 		}
 		_treeObjects.setLayoutData(gd);
@@ -235,7 +233,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		TreeItem ti;
 		if (parent == null) {
 			ti = new TreeItem(this._treeObjects, treeItemDefaultStyle());
-		} else {
+		}
+		else {
 			ti = new TreeItem(parent, treeItemDefaultStyle());
 		}
 		ti.setText(toStringFromObject(obj));
@@ -390,7 +389,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 		}
 		if (sel) {
 			_sources_selected.add(object);
-		} else {
+		}
+		else {
 			_sources_selected.remove(object);
 		}
 	}
@@ -426,7 +426,8 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 
 		if (_treeItems == null) {
 			_treeItems = new HashMap<Object, TreeItem[]>();
-		} else {
+		}
+		else {
 			_treeItems.clear();
 		}
 
@@ -489,15 +490,18 @@ public class DCheckedTreeUI<IC extends IC_TreeCheckedUI> extends DAbstractField<
 					String error = canObjectSelected(obj);
 					if (error == null) {
 						objectSelected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(false);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
-				} else {
+				}
+				else {
 					String error = canObjectDeselected(obj);
 					if (error == null) {
 						objectDeselected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(true);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
