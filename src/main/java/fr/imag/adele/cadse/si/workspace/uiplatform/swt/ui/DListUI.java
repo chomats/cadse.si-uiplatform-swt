@@ -78,7 +78,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		@Override
 		protected Control createTreeControl(Composite parent, int style) {
 			final Control ret = super.createTreeControl(parent, style);
-			ret.setData(UIField.CADSE_MODEL_KEY, this);
+			ret.setData(UIField.CADSE_MODEL_KEY, DListUI.this);
 			return ret;
 		}
 
