@@ -55,7 +55,7 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
  */
 public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-	static boolean	_temp;
+	static boolean _temp;
 
 	private final class MyFilteredTree extends FilteredTree {
 
@@ -78,36 +78,35 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		@Override
 		protected Control createTreeControl(Composite parent, int style) {
 			final Control ret = super.createTreeControl(parent, style);
-			ret.setData(UIField.CADSE_MODEL_KEY, _field);
+			ret.setData(UIField.CADSE_MODEL_KEY, this);
 			return ret;
 		}
 
 	}
 
 	/** The edit. */
-	private boolean			add_remove	= true;
-	private boolean			update;
-	private boolean			order;
-	private boolean			re_order;
-	private boolean			showfilter;
+	private boolean add_remove = true;
+	private boolean update;
+	private boolean order;
+	private boolean re_order;
+	private boolean showfilter;
 
 	/** The elements. */
-	List<Object>			fElements;
+	List<Object> fElements;
 
 	/** The package table. */
-	private FilteredTree	packageTable;
+	private FilteredTree packageTable;
 
 	/** The button add. */
-	private Button			buttonAdd;
+	private Button buttonAdd;
 
 	/** The button remove. */
-	private Button			buttonRemove;
-	private Button			buttonUp;
-	private Button			buttonDown;
-	private Button			buttonReOrder;
-	private Button			buttonEdit;
+	private Button buttonRemove;
+	private Button buttonUp;
+	private Button buttonDown;
+	private Button buttonReOrder;
+	private Button buttonEdit;
 
-		
 	@Override
 	public int getVSpan() {
 		int vspan = 0;
@@ -115,7 +114,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 			if (add_remove) {
 				vspan++;
 				vspan++;
-	
+
 			}
 			if (order) {
 				vspan++;
@@ -133,10 +132,9 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		}
 		return vspan;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see fr.imag.adele.cadse.core.ui.UIField#getVisualValue()
 	 */
 	@Override
@@ -146,11 +144,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse
-	 * .core.ui.IPageController, fr.imag.adele.cadse.core.ui.IFedeFormToolkit,
-	 * java.lang.Object, int)
+	 * @see fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse .core.ui.IPageController,
+	 * fr.imag.adele.cadse.core.ui.IFedeFormToolkit, java.lang.Object, int)
 	 */
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
@@ -171,7 +166,8 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 		if (getPage().isLast(_field.getAttributeDefinition())) {
 			gd = new GridData(GridData.FILL_BOTH);
-		} else {
+		}
+		else {
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.heightHint = 100;
 		}
@@ -194,7 +190,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonAdd = null;
 					}
 				});
-				buttonAdd.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonAdd.setData(UIField.CADSE_MODEL_KEY, this);
 
 				vspan++;
 
@@ -217,7 +213,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonRemove = null;
 					}
 				});
-				buttonRemove.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonRemove.setData(UIField.CADSE_MODEL_KEY, this);
 
 				vspan++;
 
@@ -242,7 +238,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonUp = null;
 					}
 				});
-				buttonUp.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonUp.setData(UIField.CADSE_MODEL_KEY, this);
 
 				vspan++;
 
@@ -265,7 +261,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonDown = null;
 					}
 				});
-				buttonDown.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonDown.setData(UIField.CADSE_MODEL_KEY, this);
 
 				vspan++;
 			}
@@ -289,7 +285,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonReOrder = null;
 					}
 				});
-				buttonReOrder.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonReOrder.setData(UIField.CADSE_MODEL_KEY, this);
 				vspan++;
 			}
 			if (update) {
@@ -312,7 +308,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 						buttonEdit = null;
 					}
 				});
-				buttonEdit.setData(UIField.CADSE_MODEL_KEY, _field);
+				buttonEdit.setData(UIField.CADSE_MODEL_KEY, this);
 				vspan++;
 			}
 		}
@@ -327,8 +323,6 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		packageTable.getViewer().setLabelProvider(getLabelProvider());
 		packageTable.getViewer().setContentProvider(_ic.getContentProvider());
 	}
-	
-	
 
 	protected void handleReOrder(ITreeSelection sel) {
 		// TODO Auto-generated method stub
@@ -460,8 +454,9 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	 * @return the label provider
 	 */
 	protected ILabelProvider getLabelProvider() {
-		if (_ic == null) 
-			throw new CadseIllegalArgumentException("Ic not found : "+this);
+		if (_ic == null) {
+			throw new CadseIllegalArgumentException("Ic not found : " + this);
+		}
 		return _ic.getLabelProvider();
 	}
 
@@ -482,14 +477,14 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		if (viewer.getContentProvider() != null) {
 			viewer.setInput(fElements);
 			viewer.refresh();
-		} else {
+		}
+		else {
 
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see fr.imag.adele.cadse.core.ui.UIField#setEnabled(boolean)
 	 */
 	@Override
@@ -511,7 +506,6 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see fr.imag.adele.cadse.core.ui.UIField#setEditable(boolean)
 	 */
 	@Override
