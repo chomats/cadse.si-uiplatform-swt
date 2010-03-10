@@ -27,12 +27,12 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_TreeModel;
 public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> implements ISelectionChangedListener,
 		SelectionListener, ICheckStateListener, TreeListener {
 
-	public boolean				_useCheckBox	= true;
-	public boolean				_useColumns	= false;
-	private Tree				_treeControl;
-	private CheckboxTreeViewer	_treeViewer;
-	private FilteredItemNode	_rootNode;
-	public String[]			_columns;
+	public boolean _useCheckBox = true;
+	public boolean _useColumns = false;
+	private Tree _treeControl;
+	private CheckboxTreeViewer _treeViewer;
+	private FilteredItemNode _rootNode;
+	public String[] _columns;
 
 	@Override
 	public void dispose() {
@@ -55,7 +55,7 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> im
 		_treeControl = new Tree(container, style);
 		_treeControl.addSelectionListener(this);
 		_treeControl.addTreeListener(this);
-		_treeControl.setData(UIField.CADSE_MODEL_KEY, _field);
+		_treeControl.setData(UIField.CADSE_MODEL_KEY, this);
 		int fillkind = GridData.FILL_BOTH;
 		// /if (fillBoth)
 		// fillkind = GridData.FILL_BOTH;
@@ -72,10 +72,10 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> im
 		// } else
 		// gd.grabExcessVerticalSpace = false;
 		_treeControl.setLayoutData(gd);
-		
+
 		if (_columns != null) {
 			_treeControl.setHeaderVisible(true);
-			for (int i = 0 ; i < _columns.length; i++) {
+			for (int i = 0; i < _columns.length; i++) {
 				TreeColumn column = new TreeColumn(_treeControl, SWT.CENTER);
 				column.setText(_columns[i]);
 				column.setWidth(200);
@@ -134,15 +134,18 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> im
 					String error = canObjectSelected(obj);
 					if (error == null) {
 						objectSelected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(false);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
-				} else {
+				}
+				else {
 					String error = canObjectDeselected(obj);
 					if (error == null) {
 						objectDeselected(obj);
-					} else {
+					}
+					else {
 						item.setChecked(true);
 						_swtuiplatform.setMessage(error, UIPlatform.ERROR);
 					}
@@ -156,7 +159,6 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> im
 	}
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object selectionne.
 	 * @return Un message d'erreur si impossible or null.
@@ -166,7 +168,6 @@ public class DTreeModelUI<IC extends IC_TreeModel> extends DAbstractField<IC> im
 	}
 
 	/**
-	 * 
 	 * @param object
 	 *            l'object deselectionne.
 	 * @return Un message d'erreur si impossible or null.

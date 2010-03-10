@@ -46,14 +46,13 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
  * </li>
  * 
  * @author chomats
- * 
  */
 public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-	List<Object>			fElements;
-	private FilteredTree	packageTable;
-	private Button			buttonAdd;
-	private Button			buttonRemove;
+	List<Object> fElements;
+	private FilteredTree packageTable;
+	private Button buttonAdd;
+	private Button buttonRemove;
 
 	@Override
 	public Object getVisualValue() {
@@ -73,7 +72,7 @@ public class DTreeFilteredUI<IC extends IC_ForList> extends DAbstractField<IC> {
 		gd.horizontalSpan = hspan - 1;
 		packageTable.setLayoutData(gd);
 		packageTable.getViewer().setContentProvider(_ic.getContentProvider());
-		packageTable.setData(UIField.CADSE_MODEL_KEY, _field);
+		packageTable.setData(UIField.CADSE_MODEL_KEY, this);
 
 		buttonAdd = new Button(container, SWT.PUSH);
 		buttonAdd.setText("Add...");

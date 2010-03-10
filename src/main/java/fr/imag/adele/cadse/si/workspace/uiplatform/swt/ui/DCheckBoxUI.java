@@ -33,13 +33,12 @@ import fr.imag.adele.cadse.core.ui.UIField;
  * attribut : check-label : string value : Boolean
  * 
  * @author chomats
- * 
  */
 public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstractField<IC> {
 
-	private Button	_control;
+	private Button _control;
 
-	private Boolean	_value;
+	private Boolean _value;
 
 	public Object __getVisualValue() {
 		_value = _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
@@ -71,7 +70,7 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
 		_control.setLayoutData(gd);
-		_control.setData(UIField.CADSE_MODEL_KEY, _field);
+		_control.setData(UIField.CADSE_MODEL_KEY, this);
 	}
 
 	@Override

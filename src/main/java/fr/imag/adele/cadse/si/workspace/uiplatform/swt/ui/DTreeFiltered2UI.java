@@ -39,13 +39,12 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForList;
  * </li>
  * 
  * @author chomats
- * 
  */
 public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> {
 
-	List<Object>			fElements;
+	List<Object> fElements;
 
-	private FilteredTree	fFilteredTree;
+	private FilteredTree fFilteredTree;
 
 	@Override
 	public Object getVisualValue() {
@@ -64,7 +63,7 @@ public class DTreeFiltered2UI<IC extends IC_ForList> extends DAbstractField<IC> 
 		gd.horizontalSpan = hspan - 1;
 		fFilteredTree.setLayoutData(gd);
 		fFilteredTree.getViewer().setContentProvider(_ic.getContentProvider());
-		fFilteredTree.setData(UIField.CADSE_MODEL_KEY, _field);
+		fFilteredTree.setData(UIField.CADSE_MODEL_KEY, this);
 
 	}
 
