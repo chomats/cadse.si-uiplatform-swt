@@ -19,6 +19,8 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -39,9 +41,9 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	private Button _control;
 
 	private Boolean _value;
-
+	boolean _not_notif = false;
 	public Object __getVisualValue() {
-		_value = _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
+		_value = _control.getGrayed() ? null : _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
 		return _value;
 	}
 
@@ -55,10 +57,20 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		_control.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
+				_control.setGrayed(false);
 				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 			}
 
 			public void widgetSelected(SelectionEvent e) {
+				if (_not_notif) {
+					_not_notif = false;
+					return;
+				}
+				if ((e.stateMask & SWT.SHIFT) != 0) {
+					_control.setGrayed(true);
+				}
+				else 
+					_control.setGrayed(false);
 				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 			}
 
@@ -66,6 +78,27 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		if (!_field.isEditable()) {
 			_control.setEnabled(false);
 		}
+		
+		_control.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				_not_notif = true;
+				_control.setSelection(true);
+				_not_notif = true;
+				_control.setGrayed(true);
+				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+			}
+			
+		});
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
@@ -114,6 +147,7 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
 			if (_control != null && !_control.isDisposed()) {
+				(_control).setSelection(true);
 				(_control).setGrayed(true);
 			}
 			_value = null;

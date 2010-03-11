@@ -113,7 +113,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		_textControl.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
-				if (e.character == '\u0008') { // Escape character
+				if (e.character == '\u0008' || e.character == '\u007f') { // 
 					if (_currentValueToSend == null || "".equals(_currentValueToSend)) {
 						_currentValueToSend = null;
 						_sendNotification = false;
@@ -121,7 +121,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 						_sendNotification = true;
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-						_textControl.setSelection(0, 0);
+						//_textControl.setSelection(0, 0);
 						sendModificationIfNeed(_currentValueToSend, false);
 						e.doit= false;
 					} else {
@@ -219,9 +219,6 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 
 	@Override
 	public Object getVisualValue() {
-		if (_currentValueToSend == null) {
-			_currentValueToSend = __getVisualValue();
-		}
 		return _currentValueToSend;
 	}
 
