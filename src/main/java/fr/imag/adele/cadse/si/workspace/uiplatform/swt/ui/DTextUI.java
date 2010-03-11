@@ -18,6 +18,9 @@
  */
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 
+import java.awt.Color;
+import java.awt.color.ColorSpace;
+
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalListener;
@@ -29,15 +32,19 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.ui.RuningInteractionController;
 import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.UIPlatform;
@@ -53,6 +60,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 	public int							_vspan				= 1;
 	private boolean						_sendNotification	= true;
 
+	
 	public String __getVisualValue() {
 		return (_textControl).getText();
 	}
@@ -105,10 +113,47 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		_textControl.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
-				if (e.character == '\u001b') { // Escape character
-					cancelEditor();
+				if (e.character == '\u0008') { // Escape character
+					if (_currentValueToSend == null || "".equals(_currentValueToSend)) {
+						_currentValueToSend = null;
+						_sendNotification = false;
+						_textControl.setText("UNDEFINED");
+						_sendNotification = true;
+						_textControl.setForeground(Display.getCurrent()
+					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+						_textControl.setSelection(0, 0);
+						sendModificationIfNeed(_currentValueToSend, false);
+						e.doit= false;
+					} else {
+						if (_currentValueToSend != null && _currentValueToSend.length() == 1) {
+							_sendNotification = false;
+							_currentValueToSend = "";
+							_textControl.setText("EMPTY");
+							_sendNotification = true;
+							_textControl.setForeground(Display.getCurrent()
+						              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+							_textControl.setSelection(0, 0);
+							sendModificationIfNeed(_currentValueToSend, false);
+							e.doit= false;
+						}
+					}
+				} else if (e.keyCode == SWT.ARROW_RIGHT || e.keyCode == SWT.ARROW_LEFT) {
+					if (_currentValueToSend == null || _currentValueToSend.length() == 0) {
+						_textControl.setSelection(0, 0);
+						e.doit= false;
+					}
+				}
+				else if (e.character == '\u001b') { // Escape character
+					
 				} else if (e.character == '\n' || e.character == '\r') {
 					sendModificationIfNeed(_currentValueToSend, true);
+				} else {
+					if (_currentValueToSend == null || _currentValueToSend.length() == 0) {
+						_textControl.setText("");
+						_textControl.setForeground(Display.getCurrent()
+					              .getSystemColor(SWT.COLOR_BLACK));
+
+					}
 				}
 			}
 
@@ -230,18 +275,38 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		if (_swtuiplatform.isDisposed()) {
 			return;
 		}
-		if (visualValue == null) {
-			visualValue = "";
-		}
-		if (visualValue.equals(_currentValueToSend)) {
-			return; // to do nothing;
-		}
+		String localVisualValue = null;
+		if (visualValue != null) {
+			if (visualValue.equals(_currentValueToSend)) {
+				return; // to do nothing;
+			} else {
+				localVisualValue = visualValue.toString();
+			}
+		} 
 
 		_sendNotification = sendNotification;
 		try {
-			_currentValueToSend = _currentValue = visualValue.toString();
+			_currentValueToSend = _currentValue = localVisualValue;
 			if (_textControl != null && !_textControl.isDisposed()) {
-				_textControl.setText(_currentValue);
+				if (_currentValue == null) {
+					_sendNotification = false;
+					_textControl.setText("UNDEFINED");
+					_textControl.setForeground(Display.getCurrent()
+				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_textControl.setSelection(0, 0);
+					if (sendNotification)
+						sendModificationIfNeed(_currentValueToSend, false);
+				} else if ("".equals(_currentValue)) {
+					_sendNotification = false;
+					_textControl.setText("EMPTY");
+					_textControl.setForeground(Display.getCurrent()
+				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_textControl.setSelection(0, 0);
+					if (sendNotification)
+						sendModificationIfNeed(_currentValueToSend, false);
+				} else {
+					_textControl.setText(_currentValue);
+				}
 			}
 		} finally {
 			_sendNotification = true;
