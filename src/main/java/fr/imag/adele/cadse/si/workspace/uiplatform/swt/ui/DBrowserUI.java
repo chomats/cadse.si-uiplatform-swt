@@ -168,8 +168,13 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		setEditable(_field.isEditable());
 	}
 
+	@Override
+	public void setFocus() {
+		if (_textControl != null && !_textControl.isDisposed())
+			_textControl.setFocus();
+	}
+	
 	protected void cancelEditor() {
-		// TODO Auto-generated method stub
 
 	}
 

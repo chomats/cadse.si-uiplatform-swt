@@ -333,4 +333,7 @@ public abstract class UIRunningField<IC extends RuningInteractionController> {
 		return _swtuiplatform;
 	}
 
+	public void setFocus() {
+	}
+
 }

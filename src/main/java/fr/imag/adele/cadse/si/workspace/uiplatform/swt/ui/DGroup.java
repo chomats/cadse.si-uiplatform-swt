@@ -74,5 +74,12 @@ public class DGroup<IC extends RuningInteractionController> extends DAbstractFie
 	public Object[] getSelectedObjects() {
 		return null;
 	}
+	
+	@Override
+	public void setFocus() {
+		if (_children != null && _children.length != 0) {
+			_children[0].setFocus();
+		}
+	}
 
 }
