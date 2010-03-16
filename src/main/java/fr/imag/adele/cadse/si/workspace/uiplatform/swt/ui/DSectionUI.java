@@ -71,5 +71,12 @@ public class DSectionUI<IC extends RuningInteractionController> extends DAbstrac
 	public Object[] getSelectedObjects() {
 		return null;
 	}
+	
+	@Override
+	public void setFocus() {
+		if (_children != null && _children.length != 0) {
+			_children[0].setFocus();
+		}
+	}
 
 }

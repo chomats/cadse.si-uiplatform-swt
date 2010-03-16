@@ -358,7 +358,8 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public Composite createPage(IPage page, Composite parentPage, boolean initAfterUi) {
 		Composite container = getToolkit().createComposite(parentPage);
-		Composite ret = createFieldsControl(page, null, container, getFields(page), null);
+		final UIField[] fields = getFields(page);
+		Composite ret = createFieldsControl(page, null, container, fields, null);
 		if (initAfterUi) {
 			try {
 				initAfterUI(page);
@@ -375,11 +376,20 @@ public class SWTUIPlatform implements UIPlatform {
 					v.initAfterUI();
 				}
 			}
+			if (fields.length != 0) {
+				setFocus(fields[0], page);
+			}
 		}
 		return ret;
 
 	}
 	
+	private void setFocus(UIField uiField, IPage page) {
+		UIRunningField<?> rf = getRunningField(uiField, page);
+		rf.setFocus();
+	}
+
+
 	public UIField[] getFields(HierarchicPage page) {
 		IPage[] blocks = page.getBlocks();
 		ArrayList<UIField> ret = new ArrayList<UIField>();
@@ -580,6 +590,8 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 		if (ui != null) {
 			ui._children = (UIRunningField<?>[]) children.toArray(new UIRunningField<?>[children.size()]);
+			if (ui._field.getAttributeDefinition() instanceof FictifAttribute)
+				((UIFieldImpl)ui._field)._children = fields;
 		}
 
 		add(page, children);

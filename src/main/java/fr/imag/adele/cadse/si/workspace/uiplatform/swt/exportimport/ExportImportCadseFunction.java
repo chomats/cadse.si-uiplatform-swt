@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import adele.util.io.FileUtil;
 import adele.util.io.ZipUtil;
 import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseRuntime;
@@ -305,11 +306,14 @@ public class ExportImportCadseFunction {
 			ZipUtil.unzipFile(file, pf);
 			String cadse = readCadseFolder(pf);
 			if (cadse != null) {
-				pf.renameTo(new File(dir, cadse));
-				pf = new File(dir, cadse);
+				final File newDir = new File(dir, cadse);
+				FileUtil.deleteDir(newDir);
+				pf.renameTo(newDir);
+				pf = newDir;
 			}
 			
 			File melusineDir = new File(pf, ".melusine-dir");
+			if (!melusineDir.exists()) throw new CadseException("Internal error : cannot find .melusine-dir");
 			File[] filesserxml = melusineDir.listFiles();
 			Collection<URL> itemdescription = new ArrayList<URL>();
 			for (File fser : filesserxml) {

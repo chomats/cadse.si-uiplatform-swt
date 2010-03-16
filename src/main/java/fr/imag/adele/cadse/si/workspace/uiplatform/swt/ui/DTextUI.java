@@ -178,6 +178,12 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 			_textControl.setToolTipText(_toolTips);
 		}
 	}
+	
+	@Override
+	public void setFocus() {
+		if (_textControl != null && !_textControl.isDisposed())
+			_textControl.setFocus();
+	}
 
 	protected void cancelEditor() {
 		_sendNotification = false;
