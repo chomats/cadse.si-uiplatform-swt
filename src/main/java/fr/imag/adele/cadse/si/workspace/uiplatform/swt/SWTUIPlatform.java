@@ -76,7 +76,7 @@ import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
 import fr.imag.adele.cadse.core.impl.ui.PageImpl;
 import fr.imag.adele.cadse.core.impl.ui.UIFieldImpl;
-import fr.imag.adele.cadse.core.impl.ui.mc.LinkModelController;
+import fr.imag.adele.cadse.core.impl.ui.mc.MC_Link;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_AttributesItem;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_DefaultForList;
 import fr.imag.adele.cadse.core.impl.ui.mc.MC_Descriptor;
@@ -1629,7 +1629,7 @@ public class SWTUIPlatform implements UIPlatform {
 		// SWT.BORDER | SWT.SINGLE);
 
 		DBrowserUI<IC_LinkForBrowser_Combo_List> rf = initDefaultRunningField(page, key, label, poslabel,
-				new LinkModelController(mandatory, msg), ic, new DBrowserUI<IC_LinkForBrowser_Combo_List>(),
+				new MC_Link(mandatory, msg), ic, new DBrowserUI<IC_LinkForBrowser_Combo_List>(),
 				CadseGCST.DBROWSER);
 
 		rf._field.setStyle(SWT.BORDER | SWT.SINGLE);
