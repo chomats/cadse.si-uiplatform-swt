@@ -895,7 +895,7 @@ public class SWTUIPlatform implements UIPlatform {
 			gd = new GridData();
 			gd.verticalSpan = field.getVSpan();
 			l.setLayoutData(gd);
-			if (!field.getUIField().isEditable()) {
+			if (!field.getUIField().isEditable() || isReadOnly(field.getAttributeDefinition())) {
 				l.setEnabled(false);
 			}
 			labels.put(field.getUIField(), l);
@@ -904,7 +904,7 @@ public class SWTUIPlatform implements UIPlatform {
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = hspan;
 			l.setLayoutData(gd);
-			if (!field.getUIField().isEditable()) {
+			if (!field.getUIField().isEditable() || isReadOnly(field.getAttributeDefinition())) {
 				l.setEnabled(false);
 			}
 			labels.put(field.getUIField(), l);
