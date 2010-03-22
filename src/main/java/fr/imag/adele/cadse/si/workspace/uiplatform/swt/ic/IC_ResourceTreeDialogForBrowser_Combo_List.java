@@ -158,7 +158,7 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 
 	public String toString(Object value) {
 		if (value == null) {
-			return "<none>";
+			return null;
 		}
 		if (value instanceof IResource) {
 			IResource rvalue = (IResource) value;
