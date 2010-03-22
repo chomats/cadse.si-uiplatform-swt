@@ -115,10 +115,10 @@ public class IC_IconResourceForBrowser_Combo_List extends IC_FileResourceForBrow
 	}
 
 	@Override
-	protected IResource getRootSelect() {
+	protected IResource[] getRootSelect() {
 		// Item manager = (Item) description.getContext();
 		// Item model = ManagerManager._getWorkspaceModel(manager);
-		return _uiPlatform.getItem(getUIField()).getMainMappingContent(IResource.class);
+		return new IResource[]{_uiPlatform.getItem(getUIField()).getMainMappingContent(IResource.class)};
 	}
 
 	@Override
