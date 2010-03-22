@@ -132,7 +132,7 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 		return getRootSelect();
 	}
 
-	protected IResource getRootSelect() {
+	protected IResource[] getRootSelect() {
 		if (_selectRoot >= 1) {
 			Item theItem = _uiPlatform.getItem(getUIField());
 			IResource r = theItem.getMainMappingContent(IResource.class);
@@ -142,10 +142,10 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 			while (_selectRoot-- > 1) {
 				r = r.getParent();
 			}
-			return r;
+			return new IResource[] { r };
 		}
 		if (_selectRoot == 0) {
-			return ResourcesPlugin.getWorkspace().getRoot();
+			return new IResource[] { ResourcesPlugin.getWorkspace().getRoot() };
 		}
 		return null;
 
@@ -173,7 +173,7 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 	}
 
 	public Object[] getValues() {
-		IResource r = getRootSelect();
+		IResource[] r = getRootSelect();
 		if (r == null) {
 			return new Object[0];
 		}
@@ -181,12 +181,14 @@ public class IC_ResourceTreeDialogForBrowser_Combo_List extends IC_AbstractTreeD
 		// allr.add(r);
 
 		try {
-			r.accept(new IResourceVisitor() {
-				public boolean visit(IResource resource) throws CoreException {
-					allr.add(resource);
-					return true;
-				}
-			});
+			for (IResource res : allr) {
+				res.accept(new IResourceVisitor() {
+					public boolean visit(IResource resource) throws CoreException {
+						allr.add(resource);
+						return true;
+					}
+				});
+			}
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
