@@ -38,6 +38,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistField;
 
@@ -102,28 +103,14 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 
 		if (_ic == null)
 			throw new CadseIllegalArgumentException("Cannot create ic for {0}({1})", this, getAttributeDefinition());
-		if (_ic.hasDeleteFunction()) {
-			_textControl.addKeyListener(new KeyListener() {
-
-				public void keyPressed(KeyEvent e) {
-					if (e.keyCode == 8 || e.keyCode == 127) {
-						deleteValue();
-					}
-				}
-
-				public void keyReleased(KeyEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-			});
-		}
 		_textControl.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (!_sendNotification) {
 					return;
 				}
 				_currentValueTextToSend = _textControl.getText();
+				_textControl.setForeground(Display.getCurrent()
+			              .getSystemColor(SWT.COLOR_BLACK));
 				sendModificationIfNeed(_currentValueTextToSend, false);
 
 			}
@@ -132,10 +119,51 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		_textControl.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
-				if (e.character == '\u001b') { // Escape character
-					cancelEditor();
+				if (_ic.hasDeleteFunction()) {
+					if (e.keyCode == 8 || e.keyCode == 127) {
+						deleteValue();
+					}
+				} else if (e.character == '\u0008' || e.character == '\u007f') { // 
+					if (_currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
+						_currentValueTextToSend = null;
+						_sendNotification = false;
+						_textControl.setText("UNDEFINED");
+						_sendNotification = true;
+						_textControl.setForeground(Display.getCurrent()
+					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+						//_textControl.setSelection(0, 0);
+						sendModificationIfNeed(_currentValueTextToSend, false);
+						e.doit= false;
+					} else {
+						if (_currentValueTextToSend != null && _currentValueTextToSend.length() == 1) {
+							_sendNotification = false;
+							_currentValueTextToSend = "";
+							_textControl.setText("EMPTY");
+							_sendNotification = true;
+							_textControl.setForeground(Display.getCurrent()
+						              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+							_textControl.setSelection(0, 0);
+							sendModificationIfNeed(_currentValueTextToSend, false);
+							e.doit= false;
+						}
+					}
+				} else if (e.keyCode == SWT.ARROW_RIGHT || e.keyCode == SWT.ARROW_LEFT) {
+					if (_currentValueTextToSend == null || _currentValueTextToSend.length() == 0) {
+						_textControl.setSelection(0, 0);
+						e.doit= false;
+					}
+				}
+				else if (e.character == '\u001b') { // Escape character
+					
 				} else if (e.character == '\n' || e.character == '\r') {
 					sendModificationIfNeed(_currentValueTextToSend, true);
+				} else {
+					if (_currentValueTextToSend == null || _currentValueTextToSend.length() == 0) {
+						_textControl.setText("");
+						_textControl.setForeground(Display.getCurrent()
+					              .getSystemColor(SWT.COLOR_BLACK));
+
+					}
 				}
 			}
 
@@ -263,19 +291,43 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		_value = visualValue;
-		if (_textControl == null || _textControl.isDisposed()) {
+		if (_swtuiplatform.isDisposed() || _textControl == null || _textControl.isDisposed()) {
+			return;
+		}
+		
+		final String localVisualValue = toString(_value);
+		if ( localVisualValue == _currentValueTextToSend || (localVisualValue != null && localVisualValue.equals(_currentValueTextToSend))) {
 			return;
 		}
 
-		final String valueText = toString(_value);
-		if (valueText.equals(_currentValueText)) {
-			return;
-		}
-		_currentValueText = valueText;
 		_sendNotification = sendNotification;
 		try {
-			_textControl.setText(valueText);
-			_textControl.setSelection(valueText.length(), valueText.length());
+			_currentValueTextToSend = _currentValueText = localVisualValue;
+			if (_textControl != null && !_textControl.isDisposed()) {
+				if (_currentValueText == null) {
+					_sendNotification = false;
+					_textControl.setText("UNDEFINED");
+					_textControl.setForeground(Display.getCurrent()
+				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_textControl.setSelection(0, 0);
+					if (sendNotification)
+						sendModificationIfNeed(_currentValueTextToSend, false);
+				} else if ("".equals(_currentValueText)) {
+					_sendNotification = false;
+					_textControl.setText("EMPTY");
+					_textControl.setForeground(Display.getCurrent()
+				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_textControl.setSelection(0, 0);
+					if (sendNotification)
+						sendModificationIfNeed(_currentValueTextToSend, false);
+				} else {
+					_textControl.setForeground(Display.getCurrent()
+				              .getSystemColor(SWT.COLOR_BLACK));
+					_textControl.setText(_currentValueText);
+					_textControl.setSelection(_currentValueText.length(), _currentValueText.length());
+					
+				}
+			}
 		} finally {
 			_sendNotification = true;
 		}
@@ -285,11 +337,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		String ret;
 		try {
 			ret = _ic.toString(object);
-			if (ret == null) {
-				ret = "";
-			}
 		} catch (Throwable e) {
-			ret = "<invalid value>";
+			ret = null;
 			_swtuiplatform.setMessage("Internal error " + e.getClass().getCanonicalName() + ": " + e.getMessage(),
 					UIPlatform.ERROR);
 			Activator.getDefault().getLog().log(
@@ -330,9 +379,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		}
 
 		Object goodValue = fromString(value);
-		if (goodValue == null) {
-			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
-			_swtuiplatform.validateValueChanged(_field, value);
+		if (goodValue == null && value != null) {
+			return;
 		}
 		if (Convert.equals(goodValue, _value)) {
 			return;
