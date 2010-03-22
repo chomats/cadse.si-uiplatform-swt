@@ -106,6 +106,8 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 				if (!_sendNotification) {
 					return;
 				}
+				_textControl.setForeground(Display.getCurrent()
+			              .getSystemColor(SWT.COLOR_BLACK));
 				setTextModified();
 			}
 		});
