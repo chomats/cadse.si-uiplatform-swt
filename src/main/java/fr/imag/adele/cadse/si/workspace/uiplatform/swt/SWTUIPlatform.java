@@ -786,9 +786,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public void addListener(IAttributeType<?> attr, UIRunningValidator v) {
 		UIRunningValidator[] l = _listen.get(attr);
 		l = ArraysUtil.add(UIRunningValidator.class, l, v);
-		if (l.length == 1) {
-			_listen.put(attr, l);
-		}
+		_listen.put(attr, l);
 	}
 
 	protected <T extends RuningInteractionController> UIRunningField<T> createControl(IPage page, UIField field,
