@@ -31,10 +31,8 @@ final public class MaxModelController extends MC_Integer  {
 	static final String			MINUS_1		= "-1";
 
 	
-
 	@Override
-	public Object getValue() {
-		Object value = super.getValue();
+	protected Object modelToVisual(Object value) {
 		if (value == null) {
 			return null;
 		}
@@ -42,14 +40,6 @@ final public class MaxModelController extends MC_Integer  {
 			return UNBOUNDED;
 		}
 		return value;
-	}
-
-	@Override
-	public void notifieValueChanged(UIField field, Object value) {
-		if (value.equals(UNBOUNDED)) {
-			value = -1;
-		}
-		super.notifieValueChanged(field, value);
 	}
 	
 	@Override
