@@ -123,7 +123,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 					if (_ic.hasDeleteFunction() || _currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
 						_currentValueTextToSend = null;
 						_sendNotification = false;
-						_textControl.setText("UNDEFINED");
+						
+						setUndefinedValue();
 						_sendNotification = true;
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
@@ -302,7 +303,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			if (_textControl != null && !_textControl.isDisposed()) {
 				if (_currentValueText == null) {
 					_sendNotification = false;
-					_textControl.setText("UNDEFINED");
+					 setUndefinedValue();
 					_textControl.setForeground(Display.getCurrent()
 				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 					_textControl.setSelection(0, 0);
@@ -397,5 +398,13 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 				_swtuiplatform.validateFields(_field, _page);
 			}
 		}
+	}
+
+	protected void setUndefinedValue() {
+		Object hvalue = getModelController().getHeritableValue();
+		if (hvalue == null)
+			_textControl.setText("UNDEFINED");
+		else
+			_textControl.setText("UNDEFINED ("+toString(hvalue)+")");
 	}
 }

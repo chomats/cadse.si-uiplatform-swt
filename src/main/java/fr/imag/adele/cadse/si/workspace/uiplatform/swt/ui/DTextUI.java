@@ -65,6 +65,14 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 		return (_textControl).getText();
 	}
 
+	protected void setUndefinedValue() {
+		Object hvalue = getModelController().getHeritableValue();
+		if (hvalue == null)
+			_textControl.setText("UNDEFINED");
+		else
+			_textControl.setText("UNDEFINED ("+hvalue.toString()+")");
+	}
+	
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
 
@@ -119,7 +127,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 					if (_currentValueToSend == null || "".equals(_currentValueToSend)) {
 						_currentValueToSend = null;
 						_sendNotification = false;
-						_textControl.setText("UNDEFINED");
+						setUndefinedValue();
 						_sendNotification = true;
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
@@ -295,7 +303,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 			if (_textControl != null && !_textControl.isDisposed()) {
 				if (_currentValue == null) {
 					_sendNotification = false;
-					_textControl.setText("UNDEFINED");
+					setUndefinedValue();
 					_textControl.setForeground(Display.getCurrent()
 				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 					_textControl.setSelection(0, 0);
