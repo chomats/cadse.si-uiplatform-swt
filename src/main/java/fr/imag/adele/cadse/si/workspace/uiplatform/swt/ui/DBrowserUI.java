@@ -119,12 +119,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		_textControl.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
-				if (_ic.hasDeleteFunction()) {
-					if (e.keyCode == 8 || e.keyCode == 127) {
-						deleteValue();
-					}
-				} else if (e.character == '\u0008' || e.character == '\u007f') { // 
-					if (_currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
+				if (e.character == '\u0008' || e.character == '\u007f') { // 
+					if (_ic.hasDeleteFunction() || _currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
 						_currentValueTextToSend = null;
 						_sendNotification = false;
 						_textControl.setText("UNDEFINED");
@@ -132,7 +128,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 						//_textControl.setSelection(0, 0);
-						sendModificationIfNeed(_currentValueTextToSend, false);
+						sendModificationIfNeed(_currentValueTextToSend, _ic.hasDeleteFunction());
 						e.doit= false;
 					} else {
 						if (_currentValueTextToSend != null && _currentValueTextToSend.length() == 1) {
@@ -296,7 +292,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		}
 		
 		final String localVisualValue = toString(_value);
-		if ( localVisualValue == _currentValueTextToSend || (localVisualValue != null && localVisualValue.equals(_currentValueTextToSend))) {
+		if (localVisualValue != null && (localVisualValue.equals(_currentValueTextToSend) ||  localVisualValue == _currentValueTextToSend)) {
 			return;
 		}
 
