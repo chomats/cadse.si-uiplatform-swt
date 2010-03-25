@@ -123,13 +123,13 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 					if (_ic.hasDeleteFunction() || _currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
 						_currentValueTextToSend = null;
 						_sendNotification = false;
-						
+						sendModificationIfNeed(_currentValueTextToSend, _ic.hasDeleteFunction());
 						setUndefinedValue();
 						_sendNotification = true;
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 						//_textControl.setSelection(0, 0);
-						sendModificationIfNeed(_currentValueTextToSend, _ic.hasDeleteFunction());
+						
 						e.doit= false;
 					} else {
 						if (_currentValueTextToSend != null && _currentValueTextToSend.length() == 1) {
