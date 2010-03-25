@@ -77,7 +77,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 
 	public String toString(Object value) {
 		if (value == null) {
-			return "<none>";
+			return null;
 		}
 
 		if (value instanceof Link) {
@@ -299,11 +299,7 @@ public class IC_LinkForBrowser_Combo_List extends IC_AbstractTreeDialogForList_B
 	public Object fromString(String value) {
 
 		Link v = (Link) _uiPlatform.getModelValue(getUIField());
-		if (value == null) {
-			throw new CadseIllegalArgumentException("Argument value is null");
-		}
-
-		if (value.equals("<none>")) {
+		if (value == null || value.equals("<none>")) {
 			if (v != null) {
 				try {
 					v.delete();
