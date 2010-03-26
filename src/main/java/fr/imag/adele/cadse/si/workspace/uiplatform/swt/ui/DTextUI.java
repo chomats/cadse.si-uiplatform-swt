@@ -251,6 +251,7 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 
 	@Override
 	public void setVisible(boolean v) {
+		super.setVisible(v);
 		this._textControl.setVisible(v);
 	}
 
