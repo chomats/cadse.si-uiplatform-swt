@@ -47,7 +47,7 @@ final public class MaxModelController extends MC_Integer  {
 		if (visualValue.equals(UNBOUNDED)) {
 			visualValue = -1;
 		}
-		return visualValue;
+		return super.visualToModel(visualValue);
 	}
 	
 	@Override
