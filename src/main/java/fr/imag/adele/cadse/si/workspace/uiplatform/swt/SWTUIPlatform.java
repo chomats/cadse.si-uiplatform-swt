@@ -19,6 +19,8 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -232,7 +234,7 @@ public class SWTUIPlatform implements UIPlatform {
 	protected Map<IPage, PageInfo> _pageToPageInfo 	= new HashMap<IPage, PageInfo>();
 	private boolean _disposed;
 	private UIRunningValidator[] _allListen;
-	
+	private Set<IAttributeType<?>> 						_hiddenAttributes = new HashSet<IAttributeType<?>>();
 
 
 	
@@ -438,6 +440,9 @@ public class SWTUIPlatform implements UIPlatform {
 		PageInfo pi = getPageInfo(p);
 		Map<IAttributeType<?>, GroupOfAttributes> gmaps = getGroupMapGroup();
 		for (IAttributeType<?> a : attributes) {
+			if (_hiddenAttributes.contains(a)) 
+				continue;
+			
 			if (gmaps.containsKey(a)) {
 				GroupOfAttributes g = gmaps.get(a);
 				GroupInfo gi = pi.getGroupInfo(g);
@@ -504,7 +509,7 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	
 
-	private UIField[] getFields(IPage page, IAttributeType<?>[] attrs) {
+	public UIField[] getFields(IPage page, IAttributeType<?>[] attrs) {
 		List<UIField> fields = new ArrayList<UIField>();
 		for (IAttributeType<?> at : attrs) {
 			if (at == null) {
@@ -515,6 +520,9 @@ public class SWTUIPlatform implements UIPlatform {
 				fields.add(at.generateDefaultField());
 				continue;
 			}
+			if (_hiddenAttributes.contains(at))
+				continue;
+			
 			UIField f = pages.getUIField(at);
 			if (f == null)
 				f = at.generateDefaultField();
@@ -597,6 +605,45 @@ public class SWTUIPlatform implements UIPlatform {
 		add(page, children);
 
 		return container;
+	}
+	
+	public UIRunningField createFieldControl(IPage page, UIRunningField<?> ui, Composite container, UIField field,
+			GridLayout layout) {
+
+
+		if (layout == null) {
+		layout = new GridLayout();
+			container.setLayoutData(new FormData(300, 300));
+		}
+		container.setLayout(layout);
+
+		int maxHspan = 1;
+		if (layout.numColumns > 1)
+			layout.numColumns = maxHspan *layout.numColumns;
+		else
+			layout.numColumns = maxHspan;
+		
+		layout.verticalSpacing = 5; // 9
+
+		
+		UIRunningField child = null;
+		try {
+			child = createControl(page, field, container, maxHspan);
+			if (child == null)
+				return null;
+		} catch (Throwable e) {
+			log("Cannot create field "+field.getType()+":"+field.getName()+":"+field.getAttributeDefinition().getType(), e);
+			return null;
+		}
+		if (ui != null) {
+			ui._children = new UIRunningField<?>[] { child };
+			if (ui._field.getAttributeDefinition() instanceof FictifAttribute)
+				((UIFieldImpl)ui._field)._children = new UIField[] { field };
+		}
+
+		add(page, Collections.singletonList(child));
+
+		return child;
 	}
 
 	private void add(IPage page, List<UIRunningField> children) {
@@ -1199,6 +1246,17 @@ public class SWTUIPlatform implements UIPlatform {
 	};
 	
 	@Override
+	public void setHidden(IAttributeType<?> att, boolean b) {
+		_hiddenAttributes.add(att);
+		
+		UIField uiField = pages.getUIField(att);
+		if (uiField == null) {
+			return;
+		}
+		setVisible(uiField, !b);
+	}
+	
+	@Override
 	public void setMessageError(String string) {
 		setMessage(string, ERROR);
 	}
@@ -1555,7 +1613,7 @@ public class SWTUIPlatform implements UIPlatform {
 				CadseGCST.DCHECK_BOX);
 	}
 
-	private <IC extends RuningInteractionController, T extends UIRunningField<IC>> T initDefaultRunningField(
+	public <IC extends RuningInteractionController, T extends UIRunningField<IC>> T initDefaultRunningField(
 			IPage page, IAttributeType<?> attributte, String label, EPosLabel posLabel,
 			AbstractModelController defaultMC, IC ic, T ret, ItemType it, UIRunningField<?>... children) {
 		ret._field = createDefaultField(attributte);
@@ -1678,6 +1736,20 @@ public class SWTUIPlatform implements UIPlatform {
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, IAttributeType<?> attributte,
 			String label, EPosLabel posLabel, AbstractModelController mc, IC ic, boolean checkBox) {
 		return createTreeModelUI(page, attributte, label, posLabel, mc, ic, checkBox, false, null);
+	}
+	
+	public <IC extends RuningInteractionController, UI extends UIRunningField<IC>> UI createField(IPage page, String attributte,
+			String label, EPosLabel posLabel, AbstractModelController mc, IC ic, UI ui, ItemType type, UIRunningField<?>... children) {
+		UI ret = initDefaultRunningField(page, createFictifAttributte(attributte), label, posLabel, mc, ic,
+				ui, type, children);
+		return ret;
+	}
+	
+	public <IC extends RuningInteractionController, UI extends UIRunningField<IC>> UI createField(IPage page, IAttributeType<?> attributte,
+			String label, EPosLabel posLabel, AbstractModelController mc, IC ic, UI ui, ItemType type) {
+		UI ret = initDefaultRunningField(page, attributte, label, posLabel, mc, ic,
+				ui, type);
+		return ret;
 	}
 	
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, IAttributeType<?> attributte,
