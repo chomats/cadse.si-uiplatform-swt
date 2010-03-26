@@ -66,7 +66,13 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 	}
 
 	protected void setUndefinedValue() {
-		Object hvalue = getModelController().getHeritableValue();
+		Object hvalue = null;
+		try {
+			hvalue = getModelController().getHeritableValue();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (hvalue == null)
 			_textControl.setText("UNDEFINED");
 		else
@@ -127,12 +133,11 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 					if (_currentValueToSend == null || "".equals(_currentValueToSend)) {
 						_currentValueToSend = null;
 						_sendNotification = false;
+						sendModificationIfNeed(_currentValueToSend, false);
 						setUndefinedValue();
 						_sendNotification = true;
 						_textControl.setForeground(Display.getCurrent()
 					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-						//_textControl.setSelection(0, 0);
-						sendModificationIfNeed(_currentValueToSend, false);
 						e.doit= false;
 					} else {
 						if (_currentValueToSend != null && _currentValueToSend.length() == 1) {
@@ -256,20 +261,25 @@ public class DTextUI<IC extends RuningInteractionController> extends DAbstractFi
 	}
 
 	protected synchronized void sendModificationIfNeed(String value, boolean send) {
-		if (!_field.isEditable()) {
-			return;
-		}
-		if (send) {
-			// true, if error
-			if (!_swtuiplatform.broadcastValueChanged(_page, _field, value)) {
-				_currentValue = value;
+		try {
+			if (!_field.isEditable()) {
+				return;
 			}
-		} else {
-			// validate value and if it's ok, test other fields
-			// true if error
-			if (!_swtuiplatform.validateValueChanged(_field, value)) {
-				_swtuiplatform.validateFields(_field, _page);
+			if (send) {
+				// true, if error
+				if (!_swtuiplatform.broadcastValueChanged(_page, _field, value)) {
+					_currentValue = value;
+				}
+			} else {
+				// validate value and if it's ok, test other fields
+				// true if error
+				if (!_swtuiplatform.validateValueChanged(_field, value)) {
+					_swtuiplatform.validateFields(_field, _page);
+				}
 			}
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
