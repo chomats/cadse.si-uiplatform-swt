@@ -52,7 +52,7 @@ final public class MaxModelController extends MC_Integer  {
 	
 	@Override
 	public boolean validValueChanged(UIField field, Object value) {
-		if (value.equals(MaxModelController.UNBOUNDED)) {
+		if (value != null && value.equals(MaxModelController.UNBOUNDED)) {
 			return false;
 		}
 		return super.validValueChanged(field, value);
