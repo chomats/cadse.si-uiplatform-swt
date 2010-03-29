@@ -109,7 +109,7 @@ public abstract class IC_AbstractTreeDialogForList_Browser_Combo extends IC_With
 	protected abstract ITreeContentProvider getTreeContentProvider();
 
 	public IContentProvider getContentProvider() {
-		return getTreeContentProvider();
+		return new ObjectArrayContentProvider();
 	}
 
 	public Object fromString(String value) {
