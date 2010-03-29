@@ -1720,7 +1720,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	protected FictifAttribute<?> createFictifAttributte(String name, IAttributeType<?>...children) {
-		return new FictifAttribute(newID(), name, 0, children);
+		return new FictifAttribute(null, name, 0, children);
 	}
 
 	public <IC extends IC_TreeModel> DTreeModelUI<IC> createTreeModelUI(IPage page, String attributte, String label,
