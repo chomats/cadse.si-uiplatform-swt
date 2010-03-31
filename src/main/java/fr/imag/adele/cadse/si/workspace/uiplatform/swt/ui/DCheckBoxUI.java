@@ -41,7 +41,6 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	private Button _control;
 
 	private Boolean _value;
-	boolean _not_notif = false;
 	public Object __getVisualValue() {
 		_value = _control.getGrayed() ? null : _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
 		return _value;
@@ -54,51 +53,31 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 
 		String label = getLabel();
 		_control = _swtuiplatform.getToolkit().createButton(container, label, SWT.CHECK);
-		_control.addSelectionListener(new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				_control.setGrayed(false);
-				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				if (_not_notif) {
-					_not_notif = false;
-					return;
+		if (getAttributeDefinition().canBeUndefined()) {
+			_control.addSelectionListener(new SelectionListener() {
+	
+				public void widgetDefaultSelected(SelectionEvent e) {
 				}
-				if ((e.stateMask & SWT.SHIFT) != 0) {
-					_control.setGrayed(true);
+	
+				public void widgetSelected(SelectionEvent e) {
+					if (_value == null) {
+						_control.setSelection(true);
+						_control.setGrayed(false);
+					} else if (_value == Boolean.TRUE) {
+						_control.setSelection(false);
+					} else {
+						_control.setGrayed(true);
+						_control.setSelection(true);
+					}
+					e.doit = false;
+					_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 				}
-				else 
-					_control.setGrayed(false);
-				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
-			}
-
-		});
+	
+			});
+		}
 		if (!_field.isEditable()) {
 			_control.setEnabled(false);
 		}
-		
-		_control.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				_not_notif = true;
-				_control.setSelection(true);
-				_not_notif = true;
-				_control.setGrayed(true);
-				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-			}
-			
-		});
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
