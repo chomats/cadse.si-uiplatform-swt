@@ -19,8 +19,6 @@
 package fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -41,6 +39,7 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	private Button _control;
 
 	private Boolean _value;
+
 	public Object __getVisualValue() {
 		_value = _control.getGrayed() ? null : _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
 		return _value;
@@ -53,28 +52,32 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 
 		String label = getLabel();
 		_control = _swtuiplatform.getToolkit().createButton(container, label, SWT.CHECK);
-		if (getAttributeDefinition().canBeUndefined()) {
-			_control.addSelectionListener(new SelectionListener() {
-	
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-	
-				public void widgetSelected(SelectionEvent e) {
+
+		_control.addSelectionListener(new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				if (getAttributeDefinition().canBeUndefined()) {
 					if (_value == null) {
 						_control.setSelection(true);
 						_control.setGrayed(false);
-					} else if (_value == Boolean.TRUE) {
+					}
+					else if (_value == Boolean.TRUE) {
 						_control.setSelection(false);
-					} else {
+					}
+					else {
 						_control.setGrayed(true);
 						_control.setSelection(true);
 					}
 					e.doit = false;
-					_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 				}
-	
-			});
-		}
+				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
+			}
+
+		});
+
 		if (!_field.isEditable()) {
 			_control.setEnabled(false);
 		}
