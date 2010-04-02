@@ -423,6 +423,8 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 		return _attToGroup;
 	}
+	
+	
 	private void parsegroup(GroupOfAttributes g, GroupOfAttributes firstLevelG) {
 		IAttributeType<?>[] attrs = g.getAttributes();
 		if (attrs == null) return;
@@ -435,6 +437,13 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 	}
 
+	/**
+	 * Filtre les attribut de la page en fonction du group.
+	 * Tout les attributs dans un group sont enlevé.
+	 * @param p une pages
+	 * @param attributes les attributs de la pages
+	 * @return les attributs filtrés
+	 */
 	private IAttributeType<?>[] filterGroup(IPage p, IAttributeType<?>[] attributes) {
 		List<IAttributeType<?>> attrs = new ArrayList<IAttributeType<?>>();
 		PageInfo pi = getPageInfo(p);
