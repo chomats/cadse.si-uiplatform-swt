@@ -38,7 +38,8 @@ public class DTabUI<IC extends RuningInteractionController> extends DAbstractFie
 		UIField[] fields = _swtuiplatform.getFields(_page, _swtuiplatform.getAttributes(_page, this));
 		
 		for (UIField f : fields) {
-			UIRunningField child = _swtuiplatform.createFieldControl(_page, this, _tabFolder, f, null);
+			Composite tabControl = new Composite(_tabFolder, SWT.NONE);
+			UIRunningField child = _swtuiplatform.createFieldControl(_page, this, tabControl, f, null);
 			if (child == null) continue;
 			String title = f.getLabel();
 			if (title == null) {
@@ -46,8 +47,8 @@ public class DTabUI<IC extends RuningInteractionController> extends DAbstractFie
 			}
 			TabItem ti = new TabItem(_tabFolder, SWT.NONE);
 			ti.setText(title);
-			// TODO set an image...
-			ti.setControl(((DAbstractField) child).getMainControl());
+					
+			ti.setControl(tabControl);
 		}
 	}
 
