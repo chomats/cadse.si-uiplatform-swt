@@ -256,7 +256,6 @@ public class DChooseFileUI<IC extends IC_ForChooseFile> extends DAbstractField<I
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		setFilePath((IPath) visualValue);
-
 	}
 
 	public ItemType getType() {

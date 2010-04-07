@@ -621,12 +621,12 @@ public class SWTUIPlatform implements UIPlatform {
 
 
 		if (layout == null) {
-		layout = new GridLayout();
+			layout = new GridLayout();
 			container.setLayoutData(new FormData(300, 300));
 		}
 		container.setLayout(layout);
 
-		int maxHspan = 1;
+		int maxHspan = field.getHSpan();
 		if (layout.numColumns > 1)
 			layout.numColumns = maxHspan *layout.numColumns;
 		else
