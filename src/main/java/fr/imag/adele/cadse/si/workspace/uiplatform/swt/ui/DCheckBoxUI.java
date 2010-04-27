@@ -41,7 +41,7 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	private Boolean _value;
 
 	public Object __getVisualValue() {
-		_value = _control.getGrayed() ? null : _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
+		_value = _control.getSelection() ? Boolean.TRUE : _control.getGrayed() ? null : Boolean.FALSE;
 		return _value;
 	}
 
@@ -72,6 +72,9 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 						_control.setSelection(true);
 					}
 					e.doit = false;
+				}
+				else {
+					_control.setGrayed(false);
 				}
 				_swtuiplatform.broadcastValueChanged(_page, _field, __getVisualValue());
 			}
@@ -128,12 +131,18 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	@Override
 	public void setVisualValue(Object visualValue, boolean sendNotification) {
 		if (visualValue == null) {
-			if (_control != null && !_control.isDisposed()) {
-				(_control).setSelection(true);
-				(_control).setGrayed(true);
+			if (getAttributeDefinition().canBeUndefined()) {
+				if (_control != null && !_control.isDisposed()) {
+					(_control).setSelection(true);
+					(_control).setGrayed(true);
+				}
+				_value = null;
+				return;
 			}
-			_value = null;
-			return;
+			else {
+				visualValue = false;
+				_swtuiplatform.broadcastValueChanged(_page, _field, false);
+			}
 		}
 		assert visualValue instanceof Boolean;
 
