@@ -150,10 +150,10 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
 
-		order = _field.getAttribute(CadseGCST.DLIST_at_ORDER_BUTTON_);
-		showfilter = _field.getAttribute(CadseGCST.DLIST_at_SHOW_FILTER_);
-		add_remove = _field.getAttribute(CadseGCST.DLIST_at_EDITABLE_BUTTON_);
-		update = _field.getAttribute(CadseGCST.DLIST_at_UPDATE_BUTTON_);
+		order = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_ORDER_BUTTON_, false);
+		showfilter = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_SHOW_FILTER_, false);
+		add_remove = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_EDITABLE_BUTTON_, false);
+		update = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_UPDATE_BUTTON_, false);
 		GridData gd;
 		Composite container = ocontainer;
 		// IMPORTANT : impossible sinon de changer la valeur de
