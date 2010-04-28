@@ -41,7 +41,7 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 	private Boolean _value;
 
 	public Object __getVisualValue() {
-		_value = _control.getSelection() ? Boolean.TRUE : _control.getGrayed() ? null : Boolean.FALSE;
+		_value = _control.getGrayed() ? null : _control.getSelection() ? Boolean.TRUE : Boolean.FALSE;
 		return _value;
 	}
 
