@@ -56,18 +56,17 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.ic.IC_ForBrowserOrCombo;
  * Display a browser field which has a text field and a button "...".
  * 
  * @author chomats
- * 
  */
 public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<IC> implements IContentProposalListener {
-	private Button				_buttonBrowser;
-	private ContentAssistField	_contentAssistField;
-	private Text				_textControl;
-	private Object				_value;
+	private Button _buttonBrowser;
+	private ContentAssistField _contentAssistField;
+	private Text _textControl;
+	private Object _value;
 
-	private String				_currentValueTextToSend;
+	private String _currentValueTextToSend;
 
-	private String				_currentValueText;
-	private boolean				_sendNotification;
+	private String _currentValueText;
+	private boolean _sendNotification;
 
 	@Override
 	public void createControl(Composite container, int hspan) {
@@ -92,7 +91,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			_textControl = (Text) _contentAssistField.getControl();
 			swtControl = _contentAssistField.getLayoutControl();
 			_contentAssistField.getContentAssistCommandAdapter().addContentProposalListener(this);
-		} else {
+		}
+		else {
 			swtControl = _textControl = new Text(container, style);
 		}
 		_textControl.setData(UIField.CADSE_MODEL_KEY, this);
@@ -101,17 +101,32 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		gd.horizontalSpan = hspan - 1;
 		swtControl.setLayoutData(gd);
 
-		if (_ic == null)
+		if (_ic == null) {
 			throw new CadseIllegalArgumentException("Cannot create ic for {0}({1})", this, getAttributeDefinition());
+		}
 		_textControl.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (!_sendNotification) {
 					return;
 				}
 				_currentValueTextToSend = _textControl.getText();
-				_textControl.setForeground(Display.getCurrent()
-			              .getSystemColor(SWT.COLOR_BLACK));
-				sendModificationIfNeed(_currentValueTextToSend, false);
+				if (_currentValueTextToSend.equals("")) {
+					_currentValueTextToSend = null;
+				}
+
+				_sendNotification = false;
+				sendModificationIfNeed(_currentValueTextToSend,
+						(_ic.hasDeleteFunction() && _currentValueTextToSend == null) || _currentValueTextToSend != null);
+				if (_currentValueTextToSend == null) {
+					setUndefinedValue();
+					_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_value = null;
+					_currentValueText = null;
+				}
+				else {
+					_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+				}
+				_sendNotification = true;
 
 			}
 		});
@@ -120,46 +135,52 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 
 			public void keyPressed(KeyEvent e) {
 				if (e.character == '\u0008' || e.character == '\u007f') { // 
-					if (_ic.hasDeleteFunction() || _currentValueTextToSend == null || "".equals(_currentValueTextToSend)) {
+					if (_ic.hasDeleteFunction() || _currentValueTextToSend == null
+							|| "".equals(_currentValueTextToSend)) {
 						_currentValueTextToSend = null;
 						_sendNotification = false;
 						sendModificationIfNeed(_currentValueTextToSend, _ic.hasDeleteFunction());
 						setUndefinedValue();
 						_sendNotification = true;
-						_textControl.setForeground(Display.getCurrent()
-					              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-						//_textControl.setSelection(0, 0);
-						
-						e.doit= false;
-					} else {
+						_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+						// _textControl.setSelection(0, 0);
+
+						e.doit = false;
+					}
+					else {
 						if (_currentValueTextToSend != null && _currentValueTextToSend.length() == 1) {
 							_sendNotification = false;
 							_currentValueTextToSend = "";
 							_textControl.setText("EMPTY");
 							_sendNotification = true;
-							_textControl.setForeground(Display.getCurrent()
-						              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+							_textControl.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_WIDGET_LIGHT_SHADOW));
 							_textControl.setSelection(0, 0);
 							sendModificationIfNeed(_currentValueTextToSend, false);
-							e.doit= false;
+							e.doit = false;
 						}
 					}
-				} else if (e.keyCode == SWT.ARROW_RIGHT || e.keyCode == SWT.ARROW_LEFT) {
+				}
+				else if (e.keyCode == SWT.ARROW_RIGHT || e.keyCode == SWT.ARROW_LEFT) {
 					if (_currentValueTextToSend == null || _currentValueTextToSend.length() == 0) {
 						_textControl.setSelection(0, 0);
-						e.doit= false;
+						e.doit = false;
 					}
 				}
 				else if (e.character == '\u001b') { // Escape character
-					
-				} else if (e.character == '\n' || e.character == '\r') {
-					sendModificationIfNeed(_currentValueTextToSend, true);
-				} else {
-					if (_currentValueTextToSend == null || _currentValueTextToSend.length() == 0) {
-						_textControl.setText("");
-						_textControl.setForeground(Display.getCurrent()
-					              .getSystemColor(SWT.COLOR_BLACK));
 
+				}
+				else if (e.character == '\n' || e.character == '\r') {
+					sendModificationIfNeed(_currentValueTextToSend, true);
+				}
+				else {
+					if (_currentValueTextToSend == null || _currentValueTextToSend.length() == 0) {
+						_currentValueTextToSend = Character.toString(e.character);
+						_textControl.setText(_currentValueTextToSend);
+						_textControl.setSelection(_currentValueTextToSend.length(), _currentValueTextToSend.length());
+						_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						sendModificationIfNeed(_currentValueTextToSend, false);
+						e.doit = false;
 					}
 				}
 			}
@@ -195,10 +216,11 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 
 	@Override
 	public void setFocus() {
-		if (_textControl != null && !_textControl.isDisposed())
+		if (_textControl != null && !_textControl.isDisposed()) {
 			_textControl.setFocus();
+		}
 	}
-	
+
 	protected void cancelEditor() {
 
 	}
@@ -291,9 +313,10 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		if (_swtuiplatform.isDisposed() || _textControl == null || _textControl.isDisposed()) {
 			return;
 		}
-		
+
 		final String localVisualValue = toString(_value);
-		if (localVisualValue != null && (localVisualValue.equals(_currentValueTextToSend) ||  localVisualValue == _currentValueTextToSend)) {
+		if (localVisualValue != null
+				&& (localVisualValue.equals(_currentValueTextToSend) || localVisualValue == _currentValueTextToSend)) {
 			return;
 		}
 
@@ -303,29 +326,31 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 			if (_textControl != null && !_textControl.isDisposed()) {
 				if (_currentValueText == null) {
 					_sendNotification = false;
-					 setUndefinedValue();
-					_textControl.setForeground(Display.getCurrent()
-				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					setUndefinedValue();
+					_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 					_textControl.setSelection(0, 0);
-					if (sendNotification)
+					if (sendNotification) {
 						sendModificationIfNeed(_currentValueTextToSend, false);
-				} else if ("".equals(_currentValueText)) {
+					}
+				}
+				else if ("".equals(_currentValueText)) {
 					_sendNotification = false;
 					_textControl.setText("EMPTY");
-					_textControl.setForeground(Display.getCurrent()
-				              .getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+					_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 					_textControl.setSelection(0, 0);
-					if (sendNotification)
+					if (sendNotification) {
 						sendModificationIfNeed(_currentValueTextToSend, false);
-				} else {
-					_textControl.setForeground(Display.getCurrent()
-				              .getSystemColor(SWT.COLOR_BLACK));
+					}
+				}
+				else {
+					_textControl.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 					_textControl.setText(_currentValueText);
 					_textControl.setSelection(_currentValueText.length(), _currentValueText.length());
-					
+
 				}
 			}
-		} finally {
+		}
+		finally {
 			_sendNotification = true;
 		}
 	}
@@ -334,7 +359,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		String ret;
 		try {
 			ret = _ic.toString(object);
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			ret = null;
 			_swtuiplatform.setMessage("Internal error " + e.getClass().getCanonicalName() + ": " + e.getMessage(),
 					UIPlatform.ERROR);
@@ -361,7 +387,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 				_value = newValue;
 				_swtuiplatform.broadcastValueChanged(_page, _field, newValue);
 
-			} else {
+			}
+			else {
 				_swtuiplatform.broadcastValueDeleted(_page, _field, _value);
 				_value = null;
 			}
@@ -376,7 +403,7 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 		}
 
 		Object goodValue = fromString(value);
-		if (goodValue == null && value != null) {
+		if (!send && goodValue == null && value != null && !"".equals(value)) {
 			return;
 		}
 		if (Convert.equals(goodValue, _value)) {
@@ -389,7 +416,8 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 				_currentValueText = value;
 				_value = goodValue;
 			}
-		} else {
+		}
+		else {
 			_swtuiplatform.setMessage(null, UIPlatform.ERROR);
 
 			// validate value and if it's ok, test other fields
@@ -402,9 +430,11 @@ public class DBrowserUI<IC extends IC_ForBrowserOrCombo> extends DAbstractField<
 
 	protected void setUndefinedValue() {
 		Object hvalue = getModelController().getHeritableValue();
-		if (hvalue == null)
+		if (hvalue == null) {
 			_textControl.setText("UNDEFINED");
-		else
-			_textControl.setText("UNDEFINED ("+toString(hvalue)+")");
+		}
+		else {
+			_textControl.setText("UNDEFINED (" + toString(hvalue) + ")");
+		}
 	}
 }
