@@ -1981,6 +1981,9 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public <UI extends UIRunningField<?>> UI getRunningField(UIField field, IPage page) {
+		if (page == null)
+			page = _currentPage;
+		
 		UIRunningField<?>[] uiRunningFields = _runningPage.get(page);
 		if (uiRunningFields == null) {
 			return null;
