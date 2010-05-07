@@ -38,6 +38,7 @@ import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.LinkType;
 import fr.imag.adele.cadse.core.ui.IFieldDescription;
 import fr.imag.adele.cadse.core.ui.Pages;
+import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.core.ui.view.FilterContext;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
@@ -175,7 +176,11 @@ public class ItemPropertySheetPage extends Page implements SWTService.MyProperty
 
 		_swtuiPlatform.setFilterContext(fc);
 		
-		return _swtuiPlatform.createControlPage(parent);
+		final Composite createControlPage = _swtuiPlatform.createControlPage(parent);
+		parent.setData(UIField.CADSE_MODEL_KEY, _swtuiPlatform);
+		parent.getParent().setData(UIField.CADSE_MODEL_KEY, _swtuiPlatform);
+		parent.getParent().getParent().getParent().getParent().getParent().setData(UIField.CADSE_MODEL_KEY, _swtuiPlatform);
+		return createControlPage;
 	}
 
 	@Override
