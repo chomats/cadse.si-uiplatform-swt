@@ -38,6 +38,7 @@ import fr.imag.adele.cadse.core.IItemNode;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.Link;
 import fr.imag.adele.cadse.core.LinkType;
+import fr.imag.adele.cadse.core.ui.UIField;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseTreeViewUI;
 import fr.imag.adele.cadse.eclipse.view.AbstractCadseView;
 import fr.imag.adele.fede.workspace.as.eclipse.SWTService;
@@ -149,8 +150,12 @@ public class FieldsPropertySheetPage extends Page implements IPropertySheetPage,
 			propertySource.dispose();
 		
 		propertySource = _service.createPropertySheetPage(view, itemNode);
+		
 		propertySource.init(getSite());
 		propertySource.createControl(pageBook);
+		Object data = propertySource.getControl().getData(UIField.CADSE_MODEL_KEY);
+		if (data != null)
+			pageBook.setData(UIField.CADSE_MODEL_KEY, data);
 		pageBook.showPage(propertySource.getControl());
 		
 	}

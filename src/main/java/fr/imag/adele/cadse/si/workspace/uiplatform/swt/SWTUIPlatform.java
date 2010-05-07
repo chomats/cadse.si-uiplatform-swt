@@ -44,6 +44,8 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
@@ -689,7 +691,19 @@ public class SWTUIPlatform implements UIPlatform {
 			ti.setText(title);
 			// TODO set an image...
 			ti.setControl(createPage(mf, container, false));
+			ti.setData(UIField.CADSE_MODEL_KEY, mf);
 		}
+		container.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				_currentPage = (IPage) e.item.getData(UIField.CADSE_MODEL_KEY);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 		
 		
 		for (IPage page : pages.getPages()) {
