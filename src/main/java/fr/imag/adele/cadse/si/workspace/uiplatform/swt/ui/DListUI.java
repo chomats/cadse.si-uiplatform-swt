@@ -85,7 +85,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	}
 
 	/** The edit. */
-	private boolean add_remove = true;
+	private boolean add_remove;
 	private boolean update;
 	private boolean order;
 	private boolean re_order;
@@ -141,7 +141,16 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	public Object getVisualValue() {
 		return fElements;
 	}
+	
 
+	@Override
+	public void init() {
+		order = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_ORDER_BUTTON_, false);
+		showfilter = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_SHOW_FILTER_, false);
+		add_remove = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_EDITABLE_BUTTON_, false);
+		update = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_UPDATE_BUTTON_, false);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see fr.imag.adele.cadse.core.ui.UIField#createControl(fr.imag.adele.cadse .core.ui.IPageController,
@@ -150,10 +159,7 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	@Override
 	public void createControl(Composite ocontainer, int hspan) {
 
-		order = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_ORDER_BUTTON_, false);
-		showfilter = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_SHOW_FILTER_, false);
-		add_remove = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_EDITABLE_BUTTON_, false);
-		update = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_UPDATE_BUTTON_, false);
+		
 		GridData gd;
 		Composite container = ocontainer;
 		// IMPORTANT : impossible sinon de changer la valeur de
