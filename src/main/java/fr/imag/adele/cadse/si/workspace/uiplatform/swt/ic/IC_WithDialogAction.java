@@ -5,8 +5,8 @@ import fr.imag.adele.cadse.core.CadseGCST;
 
 public class IC_WithDialogAction extends ICRunningField {
 
-	public String	_title;
-	public String	_message;
+	public String _title;
+	public String _message;
 
 	public IC_WithDialogAction() {
 	}
@@ -21,6 +21,9 @@ public class IC_WithDialogAction extends ICRunningField {
 		if (_ic != null) {
 			_title = _ic.getAttribute(CadseGCST.IC_WITH_TITLE_FOR_DIALOG_at_SELECT_TITLE_);
 			_message = _ic.getAttribute(CadseGCST.IC_WITH_TITLE_FOR_DIALOG_at_SELECT_MESSAGE_);
+		}
+		if (_title == null || _title.length() == 0) {
+			_title = "Add";
 		}
 	}
 
