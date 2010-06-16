@@ -36,10 +36,10 @@ import fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform;
 public class ExportCadseAction extends IMenuAction {
 
 	/** The Constant EXPORT_BINARY_CADSE. */
-	public static final String	EXPORT_BINARY_CADSE	= "Export cadse";
+	public static final String	EXPORT_BINARY_CADSE	= "Export items";
 
 	/** The cadsedef. */
-	private Item[]				cadsedef;
+	private Item[]				rootItems;
 
 	/**
 	 * Instantiates a new export cadse action.
@@ -48,7 +48,7 @@ public class ExportCadseAction extends IMenuAction {
 	 *            the cadsedef
 	 */
 	public ExportCadseAction(Item... cadsedef) {
-		this.cadsedef = cadsedef;
+		this.rootItems = cadsedef;
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class ExportCadseAction extends IMenuAction {
 
 			ExportCadsePagesAction myaction = new ExportCadsePagesAction(new SWTUIPlatform(), "Export cadse",
 					"Export cadse");
-			myaction.setCadsedef(cadsedef);
+			myaction.setCadsedef(rootItems);
 			myaction.setSelectJar(null);
 			myaction.setPageSize(300, 200);
 			myaction.open(null);
