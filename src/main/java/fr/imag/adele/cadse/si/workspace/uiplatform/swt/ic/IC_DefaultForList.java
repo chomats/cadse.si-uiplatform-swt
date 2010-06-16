@@ -51,6 +51,9 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 		_allowDuplicate = allowDuplicate;
 		this._message = message;
 		this._title = title;
+		if (_title == null || _title.length()== 0) {
+			_title = "Add";
+		}
 	}
 
 	@Override
