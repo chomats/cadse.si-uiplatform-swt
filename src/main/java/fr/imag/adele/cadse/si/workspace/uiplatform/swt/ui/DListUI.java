@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
+import fr.imag.adele.cadse.core.CadseException;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.CadseIllegalArgumentException;
 import fr.imag.adele.cadse.core.ItemType;
@@ -144,7 +145,9 @@ public class DListUI<IC extends IC_ForList> extends DAbstractField<IC> {
 	
 
 	@Override
-	public void init() {
+	public void init() throws CadseException {
+		// it's important to call super (init mc and ic...)
+		super.init();
 		order = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_ORDER_BUTTON_, false);
 		showfilter = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_SHOW_FILTER_, false);
 		add_remove = _field.getAttributeWithDefaultValue(CadseGCST.DLIST_at_EDITABLE_BUTTON_, false);
