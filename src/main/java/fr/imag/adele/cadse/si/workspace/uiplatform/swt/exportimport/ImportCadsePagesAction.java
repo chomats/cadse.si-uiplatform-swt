@@ -45,6 +45,7 @@ import fede.workspace.tool.view.WSPlugin;
 import java.util.UUID;
 import fr.imag.adele.cadse.core.Item;
 import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.core.impl.ExportImportCadseFunction;
 import fr.imag.adele.cadse.core.impl.ui.AbstractActionPage;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
@@ -299,7 +300,7 @@ public class ImportCadsePagesAction extends SWTDialog {
 			super.doFinish(uiPlatform, monitor);
 
 			IProgressMonitor pmo = (IProgressMonitor) monitor;
-			ExportImportCadseFunction i = new ExportImportCadseFunction();
+			ExportImportCadseFunctionUI i = new ExportImportCadseFunctionUI();
 			i.importCadseItems(pmo, file);
 		}
 	}
