@@ -378,7 +378,7 @@ public class ExportCadsePagesAction extends SWTDialog {
 		public void doFinish(UIPlatform uiPlatform, Object monitor) throws Exception {
 			super.doFinish(uiPlatform, monitor);
 			IProgressMonitor pmo = (IProgressMonitor) monitor;
-			ExportImportCadseFunction e = new ExportImportCadseFunction();
+			ExportImportCadseFunctionUI e = new ExportImportCadseFunctionUI();
 			e.exportItems(pmo, file, name, tstamp, cadsedef);
 		}
 	}
