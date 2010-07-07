@@ -74,7 +74,9 @@ import fr.imag.adele.cadse.core.attribute.GroupOfAttributes;
 import fr.imag.adele.cadse.core.attribute.IAttributeType;
 import fr.imag.adele.cadse.core.attribute.IntegerAttributeType;
 import fr.imag.adele.cadse.core.transaction.delta.CreateOperation;
+import fr.imag.adele.cadse.core.transaction.delta.ItemDelta;
 import fr.imag.adele.cadse.core.impl.CadseCore;
+import fr.imag.adele.cadse.core.impl.PageRuntimeModel;
 import fr.imag.adele.cadse.core.impl.attribute.AttributeType;
 import fr.imag.adele.cadse.core.impl.internal.ui.PagesImpl;
 import fr.imag.adele.cadse.core.impl.ui.AbstractModelController;
@@ -218,7 +220,7 @@ public class SWTUIPlatform implements UIPlatform {
 		
 	}
 	private Map<UIField, Label>								labels			= new HashMap<UIField, Label>();
-	private Pages											pages;
+	private Pages											_pages;
 	private Map<IAttributeType<?>, UIRunningValidator[]>	_listen			= new HashMap<IAttributeType<?>, UIRunningValidator[]>();
 	private Map<UIField, UIRunningField>					_runningFields	= new HashMap<UIField, UIRunningField>();
 	private Composite										parent;
@@ -276,7 +278,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 */
 
 	public SWTUIPlatform(Pages desc, Composite parent) {
-		this.pages = desc;
+		this._pages = desc;
 		this.parent = parent;
 	}
 
@@ -285,7 +287,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public Pages getPages() {
-		return pages;
+		return _pages;
 	}
 	
 	public void openCreationWizard(Shell parentShell, Pages f) throws CadseException {
@@ -345,7 +347,7 @@ public class SWTUIPlatform implements UIPlatform {
 			init();
 			parent = parentShell;
 			if (dialogAction != null) {
-				pages.setAction(dialogAction);
+				_pages.setAction(dialogAction);
 			}
 			if (openDetailDialog) {
 				dialog = new DetailWizardDialog(parentShell, wc);
@@ -375,8 +377,8 @@ public class SWTUIPlatform implements UIPlatform {
 			// Reset visual value. and set UI_running at true
 			resetVisualValue(page);
 			
-			if (pages.getUIValidators() != null) {
-				for (UIRunningValidator v : pages.getUIValidators()) {
+			if (_pages.getUIValidators() != null) {
+				for (UIRunningValidator v : _pages.getUIValidators()) {
 					v.initAfterUI();
 				}
 			}
@@ -420,7 +422,7 @@ public class SWTUIPlatform implements UIPlatform {
 		if (_attToGroup != null) return _attToGroup;
 		_attToGroup = new HashMap<IAttributeType<?>, GroupOfAttributes>();
 		
-		for (GroupOfAttributes g : pages.getGroupOfAttributes()) {
+		for (GroupOfAttributes g : _pages.getGroupOfAttributes()) {
 			parsegroup(g, g);
 		}
 		return _attToGroup;
@@ -534,7 +536,7 @@ public class SWTUIPlatform implements UIPlatform {
 			if (_hiddenAttributes.contains(at))
 				continue;
 			
-			UIField f = pages.getUIField(at);
+			UIField f = _pages.getUIField(at);
 			if (f == null)
 				f = at.generateDefaultField();
 			if (f != null) {
@@ -682,7 +684,7 @@ public class SWTUIPlatform implements UIPlatform {
 		TabFolder container = new TabFolder(parent, SWT.V_SCROLL + SWT.H_SCROLL);
 		getToolkit().adapt(container);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-		for (IPage mf : pages.getPages()) {
+		for (IPage mf : _pages.getPages()) {
 			String title = mf.getLabel();
 			if (title == null) {
 				title = mf.getName();
@@ -706,15 +708,15 @@ public class SWTUIPlatform implements UIPlatform {
 		});
 		
 		
-		for (IPage page : pages.getPages()) {
+		for (IPage page : _pages.getPages()) {
 			initAfterUI(page);
 		}
 		// Reset visual value.
-		for (IPage page : pages.getPages()) {
+		for (IPage page : _pages.getPages()) {
 			resetVisualValue(page);
 		}
-		if (pages.getUIValidators() != null) {
-			for (UIRunningValidator v : pages.getUIValidators()) {
+		if (_pages.getUIValidators() != null) {
+			for (UIRunningValidator v : _pages.getUIValidators()) {
 				v.initAfterUI();
 			}
 		}
@@ -825,11 +827,11 @@ public class SWTUIPlatform implements UIPlatform {
 
 
 	protected void init() throws CadseException {
-		if (pages.getAction() != null) {
-			pages.getAction().init(this);
+		if (_pages.getAction() != null) {
+			_pages.getAction().init(this);
 		}
-		if (pages.getUIValidators() != null) {
-			for (UIRunningValidator v : pages.getUIValidators()) {
+		if (_pages.getUIValidators() != null) {
+			for (UIRunningValidator v : _pages.getUIValidators()) {
 				UIValidator desc = (UIValidator) v.getDescriptor();
 				boolean add = true;
 				if (desc != null) {
@@ -846,7 +848,7 @@ public class SWTUIPlatform implements UIPlatform {
 				v.init(this);
 			}
 		}
-		for (IPage p : pages.getPages()) {
+		for (IPage p : _pages.getPages()) {
 			IActionPage actionPage = p.getActionPage();
 			if (actionPage == null) continue;
 			actionPage.init(this);
@@ -930,7 +932,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 
 	public boolean isReadOnly(IAttributeType<?> attributeDefinition) {
-		return pages.getReadOnlyAttributes().contains(attributeDefinition);
+		return _pages.getReadOnlyAttributes().contains(attributeDefinition);
 	}
 
 
@@ -1229,13 +1231,13 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public boolean contains(IAttributeType<?> att) {
-		UIField uiField = pages.getUIField(att);
+		UIField uiField = _pages.getUIField(att);
 		return uiField != null ? _runningFields.containsKey(uiField): false;
 	}
 	
 	@Override
 	public void setEnabled(IAttributeType<?> att, boolean b) {
-		UIField uiField = pages.getUIField(att);
+		UIField uiField = _pages.getUIField(att);
 		if (uiField == null) {
 			return;
 		}
@@ -1253,7 +1255,7 @@ public class SWTUIPlatform implements UIPlatform {
 	
 	@Override
 	public void setEditable(IAttributeType<?> att, boolean b) {
-		UIField uiField = pages.getUIField(att);
+		UIField uiField = _pages.getUIField(att);
 		if (uiField == null) {
 			return;
 		}
@@ -1272,7 +1274,7 @@ public class SWTUIPlatform implements UIPlatform {
 	public void setHidden(IAttributeType<?> att, boolean b) {
 		_hiddenAttributes.add(att);
 		
-		UIField uiField = pages.getUIField(att);
+		UIField uiField = _pages.getUIField(att);
 		if (uiField == null) {
 			return;
 		}
@@ -1314,7 +1316,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public void setVisualValue(IAttributeType<?> attributeDefinition, Object visualValue, boolean b) {
-		UIField uiField = pages.getUIField(attributeDefinition);
+		UIField uiField = _pages.getUIField(attributeDefinition);
 		if (uiField == null) {
 			return;
 		}
@@ -1476,13 +1478,14 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public boolean isModification() {
-		return pages.isModificationPages();
+		return _pages.isModificationPages();
 	}
 
 	
 	private NewContext		_context;
 	private FedeFormToolkit				_toolkit;
 	private IPageSite					_pageSite;
+	private boolean _commitable = true;
 
 
 	public <T> T create(Item desc) {
@@ -1497,8 +1500,8 @@ public class SWTUIPlatform implements UIPlatform {
 	 * @see fr.imag.adele.cadse.core.ui.Pages#doFinish(java.lang.Object)
 	 */
 	public boolean doFinish(Object monitor) throws Exception {
-		pages.getAction().doFinish(this, monitor);
-		if (_context != null && _context.getTransaction() != null)
+		_pages.getAction().doFinish(this, monitor);
+		if (_context != null && _context.getTransaction() != null && _commitable )
 			_context.getTransaction().commit();
 		return true;
 	}
@@ -1509,7 +1512,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 * @see fr.imag.adele.cadse.core.ui.Pages#doCancel(java.lang.Object)
 	 */
 	public void doCancel(Object monitor) {
-		pages.getAction().doCancel(this, monitor);
+		_pages.getAction().doCancel(this, monitor);
 		if (_context != null && _context.getTransaction() != null)
 			_context.getTransaction().rollback();
 	}
@@ -1520,7 +1523,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 * @see fr.imag.adele.cadse.core.ui.Pages#getItem()
 	 */
 	public Item getItem() {
-		String typeid = this.pages.getAction().getTypeId();
+		String typeid = this._pages.getAction().getTypeId();
 		return (Item) getVariable(typeid);
 	}
 
@@ -1535,7 +1538,7 @@ public class SWTUIPlatform implements UIPlatform {
 	 * fr.imag.adele.cadse.core.ui.Pages#setItem(fr.imag.adele.cadse.core.Item)
 	 */
 	public void setItem(Item item) {
-		String typeid = this.pages.getAction().getTypeId();
+		String typeid = this._pages.getAction().getTypeId();
 		setVariable(typeid, item);
 	}
 
@@ -1551,7 +1554,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public int getNextPageIndex(int currentPage) throws Exception {
-		if (pages.getPages().length == currentPage + 1) {
+		if (_pages.getPages().length == currentPage + 1) {
 			return -1;
 		}
 		return currentPage + 1;
@@ -1566,7 +1569,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public IWizardPage[] createWizardPage(WizardController wizardController) {
-		for (IPage afd : this.pages.getPages()) {
+		for (IPage afd : this._pages.getPages()) {
 			try {
 				init(afd);
 				final FieldsWizardPage page = new FieldsWizardPage(this, afd, true);
@@ -1669,7 +1672,7 @@ public class SWTUIPlatform implements UIPlatform {
 		}
 
 		this._runningFields.put(ret._field, ret);
-		this.pages.setUIField(attributte, ret._field);
+		this._pages.setUIField(attributte, ret._field);
 		if (children.length != 0) {
 			ret._children = children;
 			UIField[] uiFields = new UIField[children.length];
@@ -1847,7 +1850,7 @@ public class SWTUIPlatform implements UIPlatform {
 
 	public IPage createPageDescription(String title, String description) {
 		PageImpl pageImpl = new PageImpl("p1", "Page p1", title, description, true);
-		pages.addPage(pageImpl);
+		_pages.addPage(pageImpl);
 		return pageImpl;
 	}
 
@@ -1918,11 +1921,11 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public void setAction(IActionPage newAction) {
-		pages.setAction(newAction);
+		_pages.setAction(newAction);
 	}
 
 	public void addUIValidator(UIRunningValidator v) {
-		pages.addUIValidator(v);
+		_pages.addUIValidator(v);
 	}
 
 	public <IC extends IC_ForChooseFile> DChooseFileUI<IC> createDChooseFileUI(IPage page, String attributte,
@@ -1990,8 +1993,8 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	public void setPages(Pages lastItemPages) {
-		pages = lastItemPages;
-		_context = pages.getContext();
+		_pages = lastItemPages;
+		_context = _pages.getContext();
 	}
 
 	public <UI extends UIRunningField<?>> UI getRunningField(UIField field, IPage page) {
@@ -2017,6 +2020,19 @@ public class SWTUIPlatform implements UIPlatform {
 
 	@Override
 	public UIField getField(IAttributeType<?> att) {
-		return pages != null ? pages.getUIField(att) : null;
+		return _pages != null ? _pages.getUIField(att) : null;
+	}
+
+
+	@Override
+	public ItemDelta openInTransactionDialog(String defaultName, Item parent, LinkType lt, ItemType destItemType, IAttributeType<?>... hiddenAttributes) throws CadseException {
+		SWTUIPlatform p = new SWTUIPlatform();
+		p._commitable = false;
+		NewContext context = new NewContext(parent, lt, destItemType);
+		context.initTransaction(getCopy());
+		Pages localPages = PageRuntimeModel.INSTANCE.getCreationPages(context.getNewItem(), context, hiddenAttributes);
+		context.setDefaultName(defaultName);
+		p.openCreationWizard(dialog.getShell(), localPages);
+		return (ItemDelta) context.getNewItem();
 	}
 }
