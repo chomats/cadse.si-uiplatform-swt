@@ -146,9 +146,12 @@ public class DCheckBoxUI<IC extends RuningInteractionController> extends DAbstra
 		}
 		assert visualValue instanceof Boolean;
 
+		if (visualValue.equals(_value)) return;
+		
 		_value = (Boolean) visualValue;
 		if (_control != null && !_control.isDisposed()) {
 			(_control).setSelection(_value.booleanValue());
+			(_control).setGrayed(false);
 		}
 	}
 

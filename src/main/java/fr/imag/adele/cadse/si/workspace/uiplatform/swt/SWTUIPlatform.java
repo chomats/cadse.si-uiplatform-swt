@@ -1310,11 +1310,6 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 	@Override
-	public void setVisualField(IAttributeType<?> attributeDefinition, Object visualValue) {
-		setVisualValue(attributeDefinition, visualValue, true);
-	}
-
-	@Override
 	public void setVisualValue(IAttributeType<?> attributeDefinition, Object visualValue, boolean b) {
 		UIField uiField = _pages.getUIField(attributeDefinition);
 		if (uiField == null) {
