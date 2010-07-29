@@ -91,7 +91,7 @@ import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransaction;
 import fr.imag.adele.cadse.core.transaction.LogicalWorkspaceTransactionListener;
 import fr.imag.adele.cadse.core.ui.AbstractUIRunningValidator;
 import fr.imag.adele.cadse.core.ui.EPosLabel;
-import fr.imag.adele.cadse.core.ui.HierarchicPage;
+import fr.imag.adele.cadse.core.ui.HierarchicalPage;
 import fr.imag.adele.cadse.core.ui.IActionPage;
 import fr.imag.adele.cadse.core.ui.IPage;
 import fr.imag.adele.cadse.core.ui.Pages;
@@ -217,8 +217,8 @@ public class SWTUIPlatform implements UIPlatform {
 		UIField _f;
 		ArrayList<IAttributeType<?>> _attrs = new ArrayList<IAttributeType<?>>();
 		boolean added = false;
-		
 	}
+	
 	private Map<UIField, Label>								labels			= new HashMap<UIField, Label>();
 	private Pages											_pages;
 	private Map<IAttributeType<?>, UIRunningValidator[]>	_listen			= new HashMap<IAttributeType<?>, UIRunningValidator[]>();
@@ -396,7 +396,7 @@ public class SWTUIPlatform implements UIPlatform {
 	}
 
 
-	public UIField[] getFields(HierarchicPage page) {
+	public UIField[] getFields(HierarchicalPage page) {
 		IPage[] blocks = page.getBlocks();
 		ArrayList<UIField> ret = new ArrayList<UIField>();
 		for (int i = 0; i < blocks.length; i++) {
@@ -513,8 +513,8 @@ public class SWTUIPlatform implements UIPlatform {
 
 
 	public UIField[] getFields(IPage page) {
-		if (page instanceof HierarchicPage) {
-			return getFields(((HierarchicPage)page));
+		if (page instanceof HierarchicalPage) {
+			return getFields(((HierarchicalPage)page));
 		} else {
 			return getFields(page, filterGroup(page, page.getAttributes()));
 		}
