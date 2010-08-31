@@ -128,9 +128,9 @@ public class IC_DefaultForList extends IC_AbstractForList implements IC_ForList,
 		ListAttributeType<?> att = (ListAttributeType<?>) getUIField().getAttributeDefinition();
 		final IAttributeType<?> subAtt = att == null ? null : att.getSubAttributeType();
 		InputDialog dialog;
+		String initialValue = subAtt == null ? "" : subAtt.getDefaultValue() == null ? "" : subAtt.getDefaultValue().toString();
 		dialog = new InputDialog(parentShell, _title, _message,
-
-		"", new IInputValidator() {
+		initialValue , new IInputValidator() {
 
 			public String isValid(String newText) {
 				if (subAtt != null) {
